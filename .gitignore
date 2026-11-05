@@ -71,13 +71,18 @@ Saved/*
 Intermediate/*
 Plugins/**/Intermediate/*
 
+
+
 # Cache files for the editor to use
 DerivedDataCache/*
 
+# FMOD plugin: keep FMOD's own libraries
 !Plugins/FMODStudio/Binaries/
 !Plugins/FMODStudio/Binaries/**
+# ...but not what Unreal rebuilds locally
+Plugins/FMODStudio/Binaries/**/UnrealEditor*
+Plugins/FMODStudio/Binaries/**/*.pdb
 
 FMODproj/**/.cache/
 FMODproj/**/.user/
-
 FMODproj/**/.unsaved/

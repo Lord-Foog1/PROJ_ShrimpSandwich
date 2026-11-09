@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{0cc544d9-ac81-4bc2-9735-e4f56031237d}">
+		<property name="assetPath">
+			<value>Footsteps, Human, Slippers, Dirt, Stairs, Down, Distant SND128395 S05.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>0.68154166666666671</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>1143839680</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{5bff1f21-44cd-43bd-948e-52ccf41202a0}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{5bff1f21-44cd-43bd-948e-52ccf41202a0}">
+		<relationship name="assetMarkers">
+			<destination>{c8f7a64e-4226-42c3-8446-085ab75b6cbb}</destination>
+			<destination>{81dc888f-ee0d-4e87-9583-6c2cf6079c3a}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{c8f7a64e-4226-42c3-8446-085ab75b6cbb}">
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{81dc888f-ee0d-4e87-9583-6c2cf6079c3a}">
+		<property name="positionSec">
+			<value>0.68153125000000003</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

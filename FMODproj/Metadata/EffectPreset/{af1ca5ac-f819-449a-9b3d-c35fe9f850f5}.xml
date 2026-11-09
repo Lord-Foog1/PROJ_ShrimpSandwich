@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="EffectPreset" id="{af1ca5ac-f819-449a-9b3d-c35fe9f850f5}">
+		<property name="name">
+			<value>Occlusion LPF</value>
+		</property>
+		<relationship name="folder">
+			<destination>{f1147646-1d8a-4372-8b5a-974c496f5efe}</destination>
+		</relationship>
+		<relationship name="effect">
+			<destination>{93c17208-2264-421a-9aa2-5379ac2a797e}</destination>
+		</relationship>
+	</object>
+	<object class="MultibandEqEffect" id="{93c17208-2264-421a-9aa2-5379ac2a797e}">
+		<property name="name" />
+		<property name="frequencyA">
+			<value>17000</value>
+		</property>
+		<property name="qualityA">
+			<value>0.459999979</value>
+		</property>
+		<relationship name="automators">
+			<destination>{2dd319fe-64c4-4ba5-992e-8c4a1adcdae2}</destination>
+		</relationship>
+		<relationship name="modulators">
+			<destination>{b5260b91-0eee-4a90-8a2c-c49500e73a5a}</destination>
+		</relationship>
+	</object>
+	<object class="Automator" id="{2dd319fe-64c4-4ba5-992e-8c4a1adcdae2}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>frequencyA</value>
+		</property>
+		<relationship name="automationCurves">
+			<destination>{d1bc77a2-5800-4e21-a0b2-bdc9df5a34f0}</destination>
+		</relationship>
+	</object>
+	<object class="SeekModulator" id="{b5260b91-0eee-4a90-8a2c-c49500e73a5a}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>frequencyA</value>
+		</property>
+		<property name="speedAscending">
+			<value>0.25</value>
+		</property>
+	</object>
+	<object class="AutomationCurve" id="{d1bc77a2-5800-4e21-a0b2-bdc9df5a34f0}">
+		<relationship name="automationPoints">
+			<destination>{2170fcdb-1900-49c4-ae92-d5195effbde6}</destination>
+			<destination>{5231b721-fd42-43c5-b0ce-ac90f7a9781f}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{abcf79de-fb82-4f04-bf1c-6d8e5a98db6d}</destination>
+		</relationship>
+	</object>
+	<object class="AutomationPoint" id="{2170fcdb-1900-49c4-ae92-d5195effbde6}">
+		<property name="position">
+			<value>0</value>
+		</property>
+		<property name="value">
+			<value>20000</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{5231b721-fd42-43c5-b0ce-ac90f7a9781f}">
+		<property name="position">
+			<value>0.99293785310734461</value>
+		</property>
+		<property name="value">
+			<value>1100</value>
+		</property>
+	</object>
+</objects>

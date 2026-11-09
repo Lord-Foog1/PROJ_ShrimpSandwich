@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{918ac06a-b141-404a-9d39-8a5df4c6e7a2}">
+		<property name="assetPath">
+			<value>Cloth, Movement, Cotton, Sprint, Close Up Perspective SND129142 3.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>0.33700000000000002</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3508695058</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{1ff469ac-f2b9-4aa5-b147-019fbbf69178}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{1ff469ac-f2b9-4aa5-b147-019fbbf69178}">
+		<relationship name="assetMarkers">
+			<destination>{85b62c7a-2cae-4189-b3c3-a11eac02ae1a}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{85b62c7a-2cae-4189-b3c3-a11eac02ae1a}">
+		<property name="positionSec">
+			<value>0.014770833333333334</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

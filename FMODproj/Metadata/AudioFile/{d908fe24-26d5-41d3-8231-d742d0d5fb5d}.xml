@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{d908fe24-26d5-41d3-8231-d742d0d5fb5d}">
+		<property name="assetPath">
+			<value>User Interface, Click, Notification, Select, Confirm, Synthetic, Shimmery SND129562.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.63821874999999995</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3815178179</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{4aba6cde-2ce4-4b03-9c00-c70fe0f07805}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{4aba6cde-2ce4-4b03-9c00-c70fe0f07805}">
+		<relationship name="assetMarkers">
+			<destination>{ef116263-46de-4de6-aee6-7d95d9857803}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{ef116263-46de-4de6-aee6-7d95d9857803}">
+		<property name="name" />
+	</object>
+</objects>

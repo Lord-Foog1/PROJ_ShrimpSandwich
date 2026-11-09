@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{163975bf-1460-4508-8661-2151882e077a}">
+		<property name="assetPath">
+			<value>User Interface, Alert, Notifications, Notification, Digital, Tick SND115546.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.112125</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3815178179</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{90ff5863-ec22-420c-9080-b847b654136c}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{90ff5863-ec22-420c-9080-b847b654136c}">
+		<relationship name="assetMarkers">
+			<destination>{557e4782-8e16-4bf0-b261-8b45a702e751}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{557e4782-8e16-4bf0-b261-8b45a702e751}">
+		<property name="name" />
+	</object>
+</objects>

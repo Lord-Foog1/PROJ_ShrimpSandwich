@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{25d44e8e-929a-4805-9431-f55fc8f777e2}">
+		<property name="assetPath">
+			<value>Magic, Spell, Magic, Impact SND84396 2.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.1197395833333332</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>2779162396</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{5ca4ca75-d251-4aaf-a715-a08a08c0462d}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{5ca4ca75-d251-4aaf-a715-a08a08c0462d}">
+		<relationship name="assetMarkers">
+			<destination>{cb7c6133-0104-4597-86f4-9716735c4763}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{cb7c6133-0104-4597-86f4-9716735c4763}">
+		<property name="positionSec">
+			<value>0.01128125</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

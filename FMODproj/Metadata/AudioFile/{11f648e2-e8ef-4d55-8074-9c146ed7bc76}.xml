@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{11f648e2-e8ef-4d55-8074-9c146ed7bc76}">
+		<property name="assetPath">
+			<value>Voices, Male, Hurt, Combat, Damaged, Pain 03 SND85295.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.31244791666666666</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3815178179</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{fca6469b-e75f-425b-8b22-b4d028062c92}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{fca6469b-e75f-425b-8b22-b4d028062c92}">
+		<relationship name="assetMarkers">
+			<destination>{d83fe04e-19f4-4f72-9d1d-f41f34ab2bbe}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{d83fe04e-19f4-4f72-9d1d-f41f34ab2bbe}">
+		<property name="name" />
+	</object>
+</objects>

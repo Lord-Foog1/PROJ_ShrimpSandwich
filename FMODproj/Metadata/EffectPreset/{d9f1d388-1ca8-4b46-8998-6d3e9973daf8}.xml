@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="EffectPreset" id="{d9f1d388-1ca8-4b46-8998-6d3e9973daf8}">
+		<property name="name">
+			<value>Occlusion Gain</value>
+		</property>
+		<relationship name="folder">
+			<destination>{f1147646-1d8a-4372-8b5a-974c496f5efe}</destination>
+		</relationship>
+		<relationship name="effect">
+			<destination>{b4962e99-e159-4fbb-9ea8-0fd1aa3216bf}</destination>
+		</relationship>
+	</object>
+	<object class="GainEffect" id="{b4962e99-e159-4fbb-9ea8-0fd1aa3216bf}">
+		<property name="name" />
+		<relationship name="automators">
+			<destination>{e4c2505f-b7db-4deb-8e81-3b6798e75a5d}</destination>
+		</relationship>
+	</object>
+	<object class="Automator" id="{e4c2505f-b7db-4deb-8e81-3b6798e75a5d}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>gain</value>
+		</property>
+		<relationship name="automationCurves">
+			<destination>{0cb513d4-4151-4a6e-bd78-f8dedecabf5b}</destination>
+		</relationship>
+	</object>
+	<object class="AutomationCurve" id="{0cb513d4-4151-4a6e-bd78-f8dedecabf5b}">
+		<relationship name="automationPoints">
+			<destination>{d5048592-978f-48ef-9b69-92b453585a23}</destination>
+			<destination>{2fbb188e-f294-40f4-a115-d0fa5fb91fd0}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{abcf79de-fb82-4f04-bf1c-6d8e5a98db6d}</destination>
+		</relationship>
+	</object>
+	<object class="AutomationPoint" id="{d5048592-978f-48ef-9b69-92b453585a23}">
+		<property name="position">
+			<value>1</value>
+		</property>
+		<property name="value">
+			<value>-8</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{2fbb188e-f294-40f4-a115-d0fa5fb91fd0}">
+		<property name="position">
+			<value>0.012005649717514125</value>
+		</property>
+		<property name="value">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

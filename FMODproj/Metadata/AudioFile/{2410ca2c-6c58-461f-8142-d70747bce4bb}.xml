@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{2410ca2c-6c58-461f-8142-d70747bce4bb}">
+		<property name="assetPath">
+			<value>Footsteps, Human, Sandals, Jump, on Grass SND147285 S22.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.75096874999999996</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>4118621120</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{540bd625-d081-425b-aa5b-09047eb095f8}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{540bd625-d081-425b-aa5b-09047eb095f8}">
+		<relationship name="assetMarkers">
+			<destination>{0970294b-3f5f-4fc4-adf2-2085a73d0595}</destination>
+			<destination>{f3a81b6f-48fe-4d15-96da-127276783c5a}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{0970294b-3f5f-4fc4-adf2-2085a73d0595}">
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{f3a81b6f-48fe-4d15-96da-127276783c5a}">
+		<property name="positionSec">
+			<value>0.75096874999999996</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

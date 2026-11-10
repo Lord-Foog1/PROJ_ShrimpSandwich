@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{9e19cdd2-7038-4af5-b384-f9fda327984c}">
+		<property name="assetPath">
+			<value>Magic, Elemental, Wind Magic Spell, Air Manipulation SND117366 2.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.7578020833333334</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>2635121615</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{71391b46-a0c0-47f1-9900-c7343d2aedac}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{71391b46-a0c0-47f1-9900-c7343d2aedac}">
+		<relationship name="assetMarkers">
+			<destination>{88b3747b-88eb-4cea-9e4e-ebe78230d825}</destination>
+			<destination>{e7d8a592-a18a-4439-b6cb-8c31164a4463}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{88b3747b-88eb-4cea-9e4e-ebe78230d825}">
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{e7d8a592-a18a-4439-b6cb-8c31164a4463}">
+		<property name="positionSec">
+			<value>1.3378125000000001</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

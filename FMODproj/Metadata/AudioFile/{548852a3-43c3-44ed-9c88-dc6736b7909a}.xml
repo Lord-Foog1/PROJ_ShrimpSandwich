@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{548852a3-43c3-44ed-9c88-dc6736b7909a}">
+		<property name="assetPath">
+			<value>Magic, Elemental, Earth Magic Spell, Fast, Earth Blast, Stone Impact SND117303.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.8159062500000001</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>843100836</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{e0960643-956c-4ab5-95c5-3a729fb140f4}</destination>
+		</relationship>
+		<relationship name="overridingMetadataTags">
+			<destination>{fb4db091-b7e2-4b0a-89f8-48901b7c6085}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{e0960643-956c-4ab5-95c5-3a729fb140f4}">
+		<relationship name="assetMarkers">
+			<destination>{45aa3567-64ea-4ad5-8911-4f684c09610a}</destination>
+		</relationship>
+	</object>
+	<object class="OverridingMetadataTags" id="{fb4db091-b7e2-4b0a-89f8-48901b7c6085}">
+		<property name="assetMarkersOverridden">
+			<value>true</value>
+		</property>
+		<relationship name="assetMarkers">
+			<destination>{c39e1b2c-4c8c-48f5-871f-390731872ffa}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{45aa3567-64ea-4ad5-8911-4f684c09610a}">
+		<property name="positionSec">
+			<value>0.14410416666666667</value>
+		</property>
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{c39e1b2c-4c8c-48f5-871f-390731872ffa}">
+		<property name="positionSec">
+			<value>0.16589504166666669</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

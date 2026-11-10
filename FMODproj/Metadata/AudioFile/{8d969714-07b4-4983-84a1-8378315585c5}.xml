@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{8d969714-07b4-4983-84a1-8378315585c5}">
+		<property name="assetPath">
+			<value>Weapons, Blunt, Police Baton, Attack, Hit, Impact SND117348 S00.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.99675</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>617076352</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{34b6ab7d-bdf5-4fc2-a1e5-6f0c25e73199}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{34b6ab7d-bdf5-4fc2-a1e5-6f0c25e73199}">
+		<relationship name="assetMarkers">
+			<destination>{8348a0fc-7534-405c-8947-ed3e5564afc7}</destination>
+			<destination>{abd46f02-ab88-452f-8a06-7843598faf95}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{8348a0fc-7534-405c-8947-ed3e5564afc7}">
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{abd46f02-ab88-452f-8a06-7843598faf95}">
+		<property name="positionSec">
+			<value>1.99675</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

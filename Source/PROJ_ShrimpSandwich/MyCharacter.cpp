@@ -1,13 +1,21 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "MyCharacter.h"
+
+#include <ThirdParty/ShaderConductor/ShaderConductor/External/DirectXShaderCompiler/include/dxc/DXIL/DxilConstants.h>
+
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
+#include "SNegativeActionButton.h"
+#include "EditorState/EditorState.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "opensubdiv/far/error.h"
+#include "Shader/Preshader2.h"
+#include "WorldPartition/ContentBundle/ContentBundleLog.h"
 
 AMyCharacter::AMyCharacter()
 {
@@ -41,6 +49,9 @@ AMyCharacter::AMyCharacter()
 	// Configure character movement
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 	GetCharacterMovement()->AirControl = 0.5f;
+	
+	// Set players health
+	CurHealth = MaxHealth;
 }
 
 void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -58,11 +69,25 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		// Looking/Aiming
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AMyCharacter::LookInput);
 		EnhancedInputComponent->BindAction(MouseLookAction, ETriggerEvent::Triggered, this, &AMyCharacter::LookInput);
+		
+		// Dashing
+		EnhancedInputComponent->BindAction(DashAction, ETriggerEvent::Started, this, &AMyCharacter::DoDash);
 	}
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("'%s' Failed to find an Enhanced Input Component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
 	}
+}
+
+/**
+ * Deals damage to the player
+ * 
+ * @param DamageAmount Amount of damage taken
+ */
+void AMyCharacter::TakeDamage(float DamageAmount)
+{
+	CurHealth -= DamageAmount;
+	UE_LOG(LogTemp, Warning, TEXT("Current Health: %f"), CurHealth);
 }
 
 
@@ -117,3 +142,9 @@ void AMyCharacter::DoJumpEnd()
 	// pass StopJumping to the character
 	StopJumping();
 }
+
+void AMyCharacter::DoDash()
+{
+	
+}
+	

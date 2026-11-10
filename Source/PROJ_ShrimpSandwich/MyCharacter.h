@@ -49,6 +49,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category ="Input")
 	class UInputAction* MouseLookAction;
 	
+	UPROPERTY(EditAnywhere, Category ="Input")
+	UInputAction* DashAction;
+	
 public:
 	AMyCharacter();
 
@@ -75,6 +78,9 @@ protected:
 	/** Handles jump end inputs from either controls or UI interfaces */
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void DoJumpEnd();
+	
+	UFUNCTION(BlueprintCallable, Category="Input")
+	void DoDash();
 
 protected:
 
@@ -89,6 +95,16 @@ public:
 
 	/** Returns first person camera component **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+	
+	UFUNCTION(BlueprintCallable, Category="Damage")
+	void TakeDamage(float DamageAmount);
+	
+private:
+	
+	UPROPERTY(EditAnywhere, Category="Health")
+	float MaxHealth = 100.0f;
 
+	UPROPERTY(EditAnywhere, Category="Health")
+	float CurHealth;
 };
 

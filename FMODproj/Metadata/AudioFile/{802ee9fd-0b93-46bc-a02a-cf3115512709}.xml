@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{802ee9fd-0b93-46bc-a02a-cf3115512709}">
+		<property name="assetPath">
+			<value>Objects, Coin, Video Game, Money, Gold, Pick Up SND115076 S00 1.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.3685</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3846999197</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{e6bde7ad-dffa-40e2-95f0-af3e91f476c4}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{e6bde7ad-dffa-40e2-95f0-af3e91f476c4}">
+		<relationship name="assetMarkers">
+			<destination>{3d2285a8-e381-49db-957f-f5b647416982}</destination>
+			<destination>{7c969315-eb38-4c0d-b8d0-466683709443}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{3d2285a8-e381-49db-957f-f5b647416982}">
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{7c969315-eb38-4c0d-b8d0-466683709443}">
+		<property name="positionSec">
+			<value>1.3685</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

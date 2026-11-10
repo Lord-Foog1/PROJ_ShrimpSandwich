@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{651ed2d3-1a6c-4a2f-87c4-d236c6216418}">
+		<property name="assetPath">
+			<value>Objects, Coin, Video Game, Money, Gold, Pick Up SND115076 S11.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.42817708333333332</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3815178179</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{8619cee1-0d2c-4b42-b961-11d09304f1f4}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{8619cee1-0d2c-4b42-b961-11d09304f1f4}">
+		<relationship name="assetMarkers">
+			<destination>{6fa73232-030f-45a3-b7bf-e8235b619afa}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{6fa73232-030f-45a3-b7bf-e8235b619afa}">
+		<property name="name" />
+	</object>
+</objects>

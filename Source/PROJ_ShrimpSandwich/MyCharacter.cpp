@@ -144,6 +144,6 @@ void AMyCharacter::DoJumpEnd()
 
 void AMyCharacter::DoDash()
 {
-	
+	GetCharacterMovement()->AddForce(GetCharacterMovement()->GetForwardVector() * 100);
 }
 	

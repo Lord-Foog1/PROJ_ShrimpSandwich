@@ -115,6 +115,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{c5b8fce9-6310-4717-ab2d-5656e6dd5ee3}">
+		<property name="volume">
+			<value>-7.5</value>
+		</property>
 		<property name="name">
 			<value>OneShot</value>
 		</property>
@@ -143,6 +146,7 @@
 	<object class="MixerBusEffectChain" id="{b10e7684-cb47-4a54-8cd2-3766b3a1b61d}">
 		<relationship name="effects">
 			<destination>{00c941e7-e5b2-446d-829f-58a38b74e47a}</destination>
+			<destination>{383acc00-14fb-4fe0-856e-2dda5cb4905b}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{c995cb5b-8f72-4429-8c3e-9af0ae269d57}" />
@@ -200,6 +204,11 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{00c941e7-e5b2-446d-829f-58a38b74e47a}" />
+	<object class="ThreeEQEffect" id="{383acc00-14fb-4fe0-856e-2dda5cb4905b}">
+		<property name="lowGain">
+			<value>-2.5</value>
+		</property>
+	</object>
 	<object class="Automator" id="{a306da58-2f13-43a1-a95d-07e571a7dfcb}">
 		<property name="nameOfPropertyBeingAutomated">
 			<value>frequencyA</value>

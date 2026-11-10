@@ -33,9 +33,9 @@
 			<destination>{e9225bd8-e112-4457-a077-0859b7c592bd}</destination>
 		</relationship>
 		<relationship name="parameters">
+			<destination>{f55c04cb-f49c-452f-bbb3-30a6ad7923ff}</destination>
 			<destination>{7157c1b8-3db6-46e6-aa81-57525d495296}</destination>
 			<destination>{f7d9d4e2-89a3-46df-8fb0-4da8462c865d}</destination>
-			<destination>{f55c04cb-f49c-452f-bbb3-30a6ad7923ff}</destination>
 		</relationship>
 		<relationship name="banks">
 			<destination>{6184c178-9244-411b-9c3c-109c89df57c4}</destination>
@@ -93,16 +93,6 @@
 			<value>false</value>
 		</property>
 	</object>
-	<object class="ParameterProxy" id="{7157c1b8-3db6-46e6-aa81-57525d495296}">
-		<relationship name="preset">
-			<destination>{5914414c-fad5-4356-a104-9ccf324b9f31}</destination>
-		</relationship>
-	</object>
-	<object class="ParameterProxy" id="{f7d9d4e2-89a3-46df-8fb0-4da8462c865d}">
-		<relationship name="preset">
-			<destination>{abcf79de-fb82-4f04-bf1c-6d8e5a98db6d}</destination>
-		</relationship>
-	</object>
 	<object class="ParameterProxy" id="{f55c04cb-f49c-452f-bbb3-30a6ad7923ff}">
 		<relationship name="modules">
 			<destination>{1afe2996-0f58-4077-ba98-cdba41611b2b}</destination>
@@ -114,6 +104,16 @@
 		</relationship>
 		<relationship name="preset">
 			<destination>{6a92c12d-55da-4790-bbf5-6b2f0916804a}</destination>
+		</relationship>
+	</object>
+	<object class="ParameterProxy" id="{7157c1b8-3db6-46e6-aa81-57525d495296}">
+		<relationship name="preset">
+			<destination>{5914414c-fad5-4356-a104-9ccf324b9f31}</destination>
+		</relationship>
+	</object>
+	<object class="ParameterProxy" id="{f7d9d4e2-89a3-46df-8fb0-4da8462c865d}">
+		<relationship name="preset">
+			<destination>{abcf79de-fb82-4f04-bf1c-6d8e5a98db6d}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{abe476f3-438b-4975-a05b-9a0971d08d87}">
@@ -134,6 +134,12 @@
 	</object>
 	<object class="MixerBusPanner" id="{06f72005-f80b-470f-9a1d-e5a79b323e4b}" />
 	<object class="MultiSound" id="{1afe2996-0f58-4077-ba98-cdba41611b2b}">
+		<property name="volume">
+			<value>-2</value>
+		</property>
+		<property name="pitch">
+			<value>2.79999995</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{9df00758-0098-44c0-b6e1-bb3ea83ecde6}</destination>
 			<destination>{b546e190-5d6a-4a37-888a-eaadde69512a}</destination>

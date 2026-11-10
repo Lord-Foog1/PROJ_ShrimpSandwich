@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{b9ef278f-7e14-4ba9-ace8-98ff8015836a}">
+		<property name="assetPath">
+			<value>Swooshes, Swish, Large Stick, Heavy, Swing, Swoosh, Air SND37947 S02.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.78570833333333334</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3788790709</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{beed2be6-e11a-4dcb-84b5-2a9b24f1fc7f}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{beed2be6-e11a-4dcb-84b5-2a9b24f1fc7f}">
+		<relationship name="assetMarkers">
+			<destination>{53a06918-6066-4c39-b6e1-758e87ccef46}</destination>
+			<destination>{bf160c15-6069-487c-91df-325712c2a4e4}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{53a06918-6066-4c39-b6e1-758e87ccef46}">
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{bf160c15-6069-487c-91df-325712c2a4e4}">
+		<property name="positionSec">
+			<value>0.78570833333333334</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

@@ -13,7 +13,6 @@
 #include "SNegativeActionButton.h"
 #include "EditorState/EditorState.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "opensubdiv/far/error.h"
 #include "Shader/Preshader2.h"
 #include "WorldPartition/ContentBundle/ContentBundleLog.h"
 
@@ -51,7 +50,7 @@ AMyCharacter::AMyCharacter()
 	GetCharacterMovement()->AirControl = 0.5f;
 	
 	// Set players health
-	CurHealth = MaxHealth;
+	CurHealth = PlayerMaxHealth;
 }
 
 void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

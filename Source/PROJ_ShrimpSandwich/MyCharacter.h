@@ -102,7 +102,7 @@ public:
 private:
 	
 	UPROPERTY(EditAnywhere, Category="Health")
-	float MaxHealth = 100.0f;
+	float PlayerMaxHealth = 100.0f;
 
 	UPROPERTY(EditAnywhere, Category="Health")
 	float CurHealth;

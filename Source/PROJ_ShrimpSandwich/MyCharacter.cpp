@@ -10,11 +10,11 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
-#include "SNegativeActionButton.h"
-#include "EditorState/EditorState.h"
+//#include "SNegativeActionButton.h"
+//#include "EditorState/EditorState.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Shader/Preshader2.h"
-#include "WorldPartition/ContentBundle/ContentBundleLog.h"
+//#include "Shader/Preshader2.h"
+//#include "WorldPartition/ContentBundle/ContentBundleLog.h"
 
 AMyCharacter::AMyCharacter()
 {
@@ -144,6 +144,9 @@ void AMyCharacter::DoJumpEnd()
 
 void AMyCharacter::DoDash()
 {
+	FVector Forward = GetControlRotation().Vector();
 	
+	FVector DashForce = Forward * 3000000;
+	
+	GetCharacterMovement()->AddForce(DashForce);
 }
-	

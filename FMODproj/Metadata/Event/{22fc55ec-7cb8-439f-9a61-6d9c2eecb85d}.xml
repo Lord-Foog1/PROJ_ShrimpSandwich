@@ -93,7 +93,7 @@
 			<value>0.68402592142711061</value>
 		</property>
 		<property name="pitch">
-			<value>-1.20000005</value>
+			<value>3</value>
 		</property>
 		<relationship name="audioFile">
 			<destination>{d908fe24-26d5-41d3-8231-d742d0d5fb5d}</destination>

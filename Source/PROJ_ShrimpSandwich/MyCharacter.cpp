@@ -51,6 +51,8 @@ AMyCharacter::AMyCharacter()
 	
 	// Set players health
 	CurHealth = PlayerMaxHealth;
+	
+	WalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
 }
 
 void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -71,6 +73,10 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		
 		// Dashing
 		EnhancedInputComponent->BindAction(DashAction, ETriggerEvent::Started, this, &AMyCharacter::DoDash);
+		
+		// Sprinting
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &AMyCharacter::DoSprint);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AMyCharacter::StopSprint);
 	}
 	else
 	{
@@ -144,9 +150,43 @@ void AMyCharacter::DoJumpEnd()
 
 void AMyCharacter::DoDash()
 {
-	FVector Forward = GetControlRotation().Vector();
+	float CurrentTime = GetWorld()->GetTimeSeconds();
+	if (CurrentTime - LastDashTime < DashCooldown)
+	{
+		return;
+	}
+    
+	LastDashTime = CurrentTime;
+    
+	if (!HasAuthority())
+	{
+		ServerDoDash();
+		return;
+	}
+    
+	float DashForce = DashSpeed;
+	FVector Velocity = GetActorForwardVector() * DashForce;
 	
-	FVector DashForce = Forward * 3000000;
-	
-	GetCharacterMovement()->AddForce(DashForce);
+	if (GetCharacterMovement()->MovementMode == MOVE_Falling)
+	{
+		Velocity /= 3.75f;
+	}
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Falling);
+    
+	LaunchCharacter(Velocity, true, false);
+}
+
+void AMyCharacter::ServerDoDash_Implementation()
+{
+	DoDash();
+}
+
+void AMyCharacter::DoSprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+}
+
+void AMyCharacter::StopSprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }

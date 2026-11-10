@@ -160,6 +160,9 @@
 		<property name="start">
 			<value>1</value>
 		</property>
+		<property name="volume">
+			<value>-1.5</value>
+		</property>
 		<property name="pitch">
 			<value>4</value>
 		</property>
@@ -279,7 +282,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{59ef636d-acc0-41f0-a245-5e07742273aa}">
 		<property name="volume">
-			<value>-14</value>
+			<value>-17</value>
 		</property>
 		<property name="name">
 			<value>Cloth</value>

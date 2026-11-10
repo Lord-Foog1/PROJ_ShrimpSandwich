@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{e31abeee-83ee-4b7c-944c-23ce478609cd}">
+		<property name="assetPath">
+			<value>Magic, Elemental, Whoosh, Fire SND112979.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>192</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.0113750000000001</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3815178179</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{1ab7fbeb-5e87-48e3-a26c-2a1aa76b0481}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{1ab7fbeb-5e87-48e3-a26c-2a1aa76b0481}">
+		<relationship name="assetMarkers">
+			<destination>{ad553a8e-7347-4355-9420-ac0b574f97f4}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{ad553a8e-7347-4355-9420-ac0b574f97f4}">
+		<property name="name" />
+	</object>
+</objects>

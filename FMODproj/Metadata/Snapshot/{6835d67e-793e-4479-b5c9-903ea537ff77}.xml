@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.04.00">
 	<object class="Snapshot" id="{6835d67e-793e-4479-b5c9-903ea537ff77}">
 		<property name="name">
-			<value>Reverb_Dungeon</value>
+			<value>Reverb_Arena</value>
 		</property>
 		<relationship name="mixer">
 			<destination>{41387dd2-d945-4859-8a35-58996b386807}</destination>
@@ -50,7 +50,7 @@
 			<value>decayTime</value>
 		</property>
 		<property name="value">
-			<value>2300</value>
+			<value>1500</value>
 		</property>
 		<relationship name="automatableObject">
 			<destination>{b938459c-c707-416a-afa8-be7d8be17f99}</destination>
@@ -61,7 +61,7 @@
 			<value>earlyDelay</value>
 		</property>
 		<property name="value">
-			<value>12</value>
+			<value>300</value>
 		</property>
 		<relationship name="automatableObject">
 			<destination>{b938459c-c707-416a-afa8-be7d8be17f99}</destination>
@@ -72,7 +72,7 @@
 			<value>lateDelay</value>
 		</property>
 		<property name="value">
-			<value>17</value>
+			<value>100</value>
 		</property>
 		<relationship name="automatableObject">
 			<destination>{b938459c-c707-416a-afa8-be7d8be17f99}</destination>
@@ -94,7 +94,7 @@
 			<value>HFDecayRatio</value>
 		</property>
 		<property name="value">
-			<value>64</value>
+			<value>21</value>
 		</property>
 		<relationship name="automatableObject">
 			<destination>{b938459c-c707-416a-afa8-be7d8be17f99}</destination>
@@ -105,7 +105,7 @@
 			<value>diffusion</value>
 		</property>
 		<property name="value">
-			<value>100</value>
+			<value>27</value>
 		</property>
 		<relationship name="automatableObject">
 			<destination>{b938459c-c707-416a-afa8-be7d8be17f99}</destination>
@@ -149,7 +149,7 @@
 			<value>highCut</value>
 		</property>
 		<property name="value">
-			<value>7800</value>
+			<value>1220</value>
 		</property>
 		<relationship name="automatableObject">
 			<destination>{b938459c-c707-416a-afa8-be7d8be17f99}</destination>
@@ -160,7 +160,7 @@
 			<value>earlyLateMix</value>
 		</property>
 		<property name="value">
-			<value>71</value>
+			<value>82</value>
 		</property>
 		<relationship name="automatableObject">
 			<destination>{b938459c-c707-416a-afa8-be7d8be17f99}</destination>
@@ -171,7 +171,7 @@
 			<value>wetLevel</value>
 		</property>
 		<property name="value">
-			<value>-7.5</value>
+			<value>-24</value>
 		</property>
 		<relationship name="automatableObject">
 			<destination>{b938459c-c707-416a-afa8-be7d8be17f99}</destination>

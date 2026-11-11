@@ -240,7 +240,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{c6fa5a0e-14af-462e-b088-2566d853e810}">
 		<property name="volume">
-			<value>-14</value>
+			<value>-16.5</value>
 		</property>
 		<property name="name">
 			<value>Cloth</value>
@@ -324,7 +324,7 @@
 	</object>
 	<object class="SingleSound" id="{c1588343-c8b8-440b-8de0-302ccb1fb990}">
 		<property name="volume">
-			<value>2.5</value>
+			<value>7.5</value>
 		</property>
 		<relationship name="audioFile">
 			<destination>{70e5be79-0b82-44c4-8463-23acbf8cf9d9}</destination>

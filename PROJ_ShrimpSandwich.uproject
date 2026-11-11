@@ -35,11 +35,7 @@
 		},
 		{
 			"Name": "NiagaraUIRenderer",
-			"Enabled": true,
-			"SupportedTargetPlatforms": [
-				"Win64",
-				"Android"
-			]
+			"Enabled": true
 		}
 	]
 }

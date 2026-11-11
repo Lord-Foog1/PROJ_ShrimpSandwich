@@ -52,6 +52,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* DashAction;
 	
+	UPROPERTY(EditAnywhere, Category ="Input")
+	UInputAction* SprintAction;
+	
+	UPROPERTY(EditAnywhere, Category ="Dash")
+	float DashCooldown = 3.0f;
+	
 public:
 	AMyCharacter();
 
@@ -81,6 +87,15 @@ protected:
 	
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoDash();
+	
+	UFUNCTION(Server, Reliable)
+	void ServerDoDash();
+	
+	UFUNCTION(BlueprintCallable, Category="Input")
+	void DoSprint();
+	
+	UFUNCTION(BlueprintCallable, Category="Input")
+	void StopSprint();
 
 protected:
 
@@ -104,7 +119,18 @@ private:
 	UPROPERTY(EditAnywhere, Category="Health")
 	float PlayerMaxHealth = 100.0f;
 
-	UPROPERTY(EditAnywhere, Category="Health")
+	UPROPERTY()
 	float CurHealth;
+	
+	UPROPERTY(EditAnywhere, Category="Dash")
+	float DashSpeed = 4000.0f;
+	
+	UPROPERTY(EditAnywhere, Category="Sprint")
+	float SprintSpeed = 1000.0f;
+	
+	float WalkSpeed;
+	
+	// dash cooldown helper variable
+	float LastDashTime = 0.0f;
 };
 

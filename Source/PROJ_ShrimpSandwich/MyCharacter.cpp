@@ -160,7 +160,7 @@ void AMyCharacter::DoDash()
     
 	if (!HasAuthority())
 	{
-		ServerDoDash();
+		Server_DoDash();
 		return;
 	}
     
@@ -176,7 +176,7 @@ void AMyCharacter::DoDash()
 	LaunchCharacter(Velocity, true, false);
 }
 
-void AMyCharacter::ServerDoDash_Implementation()
+void AMyCharacter::Server_DoDash_Implementation()
 {
 	DoDash();
 }

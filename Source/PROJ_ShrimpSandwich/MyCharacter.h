@@ -89,7 +89,7 @@ protected:
 	void DoDash();
 	
 	UFUNCTION(Server, Reliable)
-	void ServerDoDash();
+	void Server_DoDash();
 	
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoSprint();

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{2196eafa-ec36-4a38-9208-17cf7d2985e5}">
+		<property name="assetPath">
+			<value>User Interface, Click, Sci Fi Games, UI Menu, Very Short, Open 17 SND85047.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.9865625</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+	</object>
+</objects>

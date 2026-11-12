@@ -61,6 +61,12 @@
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{56479f73-7994-4a24-bee3-255ddf6ea5a3}">
+		<property name="dopplerEnabled">
+			<value>true</value>
+		</property>
+		<property name="dopplerScale">
+			<value>90</value>
+		</property>
 		<property name="maximumDistance">
 			<value>25</value>
 		</property>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{b59fb6a6-d2d5-4554-9d1a-b619846c10d8}">
+		<property name="assetPath">
+			<value>User Interface, Click, Accept, Select, Digital, Short, Synthetic SND129589.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.29916666666666669</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3815178179</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{771a6722-a924-4b95-bf29-64ace2f1523d}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{771a6722-a924-4b95-bf29-64ace2f1523d}">
+		<relationship name="assetMarkers">
+			<destination>{2bbfb825-4c6d-495f-9766-f5a40f5df6db}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{2bbfb825-4c6d-495f-9766-f5a40f5df6db}">
+		<property name="name" />
+	</object>
+</objects>

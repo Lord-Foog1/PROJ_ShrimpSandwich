@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{5a24461f-af53-476a-9d6f-77a945a5a493}">
+		<property name="assetPath">
+			<value>Magic, Elemental, Water Magic Spell, Hydromancy, Water Blast SND117367 1.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>3.3725520833333333</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>18429398</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{d7438f86-b7b1-4938-aa08-b0112af9095d}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{d7438f86-b7b1-4938-aa08-b0112af9095d}">
+		<relationship name="assetMarkers">
+			<destination>{13b3ac3c-74fc-4091-a981-4be7529238ca}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{13b3ac3c-74fc-4091-a981-4be7529238ca}">
+		<property name="positionSec">
+			<value>0.22287499999999999</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

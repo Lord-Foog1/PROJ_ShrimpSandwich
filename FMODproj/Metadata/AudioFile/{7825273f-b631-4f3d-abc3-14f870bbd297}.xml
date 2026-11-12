@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{7825273f-b631-4f3d-abc3-14f870bbd297}">
+		<property name="assetPath">
+			<value>Magic, Elemental, Magic, Fire Impact, Medium Projectile, Missile, Short SND167168 S01.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.0683437499999999</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3737333901</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{0a39f771-84be-4fa1-952c-a04072714604}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{0a39f771-84be-4fa1-952c-a04072714604}">
+		<relationship name="assetMarkers">
+			<destination>{3fd8daef-1004-4713-91be-a402050a7e99}</destination>
+			<destination>{387737cc-6569-40d7-bdaa-2cdc08c43411}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{3fd8daef-1004-4713-91be-a402050a7e99}">
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{387737cc-6569-40d7-bdaa-2cdc08c43411}">
+		<property name="positionSec">
+			<value>2.0683437499999999</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

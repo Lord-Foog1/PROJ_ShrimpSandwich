@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{f1ce1e22-bb13-412a-8c87-0368f53c6aaa}">
+		<property name="assetPath">
+			<value>Footsteps, Human, Walk, Grass, Mono SND62088 S02 1.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>1.0603333333333333</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>2216856491</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{494778af-b5a0-42f4-9c86-0fe20726a823}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{494778af-b5a0-42f4-9c86-0fe20726a823}">
+		<relationship name="assetMarkers">
+			<destination>{2f97e24a-4506-486e-9bdc-2c895ab72b18}</destination>
+			<destination>{be5e8c55-b6b7-4b7d-9284-01d3fc98fda9}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{2f97e24a-4506-486e-9bdc-2c895ab72b18}">
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{be5e8c55-b6b7-4b7d-9284-01d3fc98fda9}">
+		<property name="positionSec">
+			<value>1.0603229166666666</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{30ee697e-2cd2-409b-9e13-989fb95ed2c7}">
+		<property name="assetPath">
+			<value>Designed, Whoosh, Doppler, Movement, Dash, Ability SND111762 S07.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.3828645833333333</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>2511317348</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{0df75637-606d-458b-a90e-262192b4514e}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{0df75637-606d-458b-a90e-262192b4514e}">
+		<relationship name="assetMarkers">
+			<destination>{b9cc20e2-13bb-4b50-b363-df0b1924d751}</destination>
+			<destination>{06b44612-3ecf-4c78-8e19-d058845f502f}</destination>
+			<destination>{93721e7c-4b04-4d5f-8722-929bc5fca4ee}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{b9cc20e2-13bb-4b50-b363-df0b1924d751}">
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{06b44612-3ecf-4c78-8e19-d058845f502f}">
+		<property name="positionSec">
+			<value>0.88286458333333329</value>
+		</property>
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{93721e7c-4b04-4d5f-8722-929bc5fca4ee}">
+		<property name="positionSec">
+			<value>1.3828645833333333</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

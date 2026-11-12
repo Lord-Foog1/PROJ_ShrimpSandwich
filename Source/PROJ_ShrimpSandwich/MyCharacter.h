@@ -49,6 +49,15 @@ protected:
 	UPROPERTY(EditAnywhere, Category ="Input")
 	class UInputAction* MouseLookAction;
 	
+	UPROPERTY(EditAnywhere, Category ="Input")
+	UInputAction* DashAction;
+	
+	UPROPERTY(EditAnywhere, Category ="Input")
+	UInputAction* SprintAction;
+	
+	UPROPERTY(EditAnywhere, Category ="Dash")
+	float DashCooldown = 3.0f;
+	
 public:
 	AMyCharacter();
 
@@ -75,6 +84,18 @@ protected:
 	/** Handles jump end inputs from either controls or UI interfaces */
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void DoJumpEnd();
+	
+	UFUNCTION(BlueprintCallable, Category="Input")
+	void DoDash();
+	
+	UFUNCTION(Server, Reliable)
+	void Server_DoDash();
+	
+	UFUNCTION(BlueprintCallable, Category="Input")
+	void DoSprint();
+	
+	UFUNCTION(BlueprintCallable, Category="Input")
+	void StopSprint();
 
 protected:
 
@@ -89,6 +110,27 @@ public:
 
 	/** Returns first person camera component **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+	
+	UFUNCTION(BlueprintCallable, Category="Damage")
+	void TakeDamage(float DamageAmount);
+	
+private:
+	
+	UPROPERTY(EditAnywhere, Category="Health")
+	float PlayerMaxHealth = 100.0f;
 
+	UPROPERTY()
+	float CurHealth;
+	
+	UPROPERTY(EditAnywhere, Category="Dash")
+	float DashSpeed = 4000.0f;
+	
+	UPROPERTY(EditAnywhere, Category="Sprint")
+	float SprintSpeed = 1000.0f;
+	
+	float WalkSpeed;
+	
+	// dash cooldown helper variable
+	float LastDashTime = 0.0f;
 };
 

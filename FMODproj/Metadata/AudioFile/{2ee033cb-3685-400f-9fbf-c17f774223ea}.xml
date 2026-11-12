@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{2ee033cb-3685-400f-9fbf-c17f774223ea}">
+		<property name="assetPath">
+			<value>Magic, Elemental, Magic, Fire Impact, Medium Projectile, Missile, Short SND167168 1.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>8.4855104166666671</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3284470384</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{a0757b9f-cc07-4243-8daf-3f360cdd1bfe}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{a0757b9f-cc07-4243-8daf-3f360cdd1bfe}">
+		<relationship name="assetMarkers">
+			<destination>{5afa8305-6acd-4aa4-8f1d-67b3a30b43c1}</destination>
+			<destination>{e68341c3-58c4-42b7-8007-f19c3c53c452}</destination>
+			<destination>{774bc4c6-6c36-4a61-97fd-43839632f89a}</destination>
+			<destination>{251ca3f7-cc21-40c2-8133-83164935b374}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{5afa8305-6acd-4aa4-8f1d-67b3a30b43c1}">
+		<property name="positionSec">
+			<value>2.1627604166666665</value>
+		</property>
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{e68341c3-58c4-42b7-8007-f19c3c53c452}">
+		<property name="positionSec">
+			<value>4.2311041666666664</value>
+		</property>
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{774bc4c6-6c36-4a61-97fd-43839632f89a}">
+		<property name="positionSec">
+			<value>6.1562916666666663</value>
+		</property>
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{251ca3f7-cc21-40c2-8133-83164935b374}">
+		<property name="positionSec">
+			<value>7.8824895833333333</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

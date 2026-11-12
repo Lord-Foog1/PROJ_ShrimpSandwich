@@ -32,6 +32,10 @@
 		{
 			"Name": "SocketSubsystemSteamIP",
 			"Enabled": true
+		},
+		{
+			"Name": "NiagaraUIRenderer",
+			"Enabled": true
 		}
 	]
 }

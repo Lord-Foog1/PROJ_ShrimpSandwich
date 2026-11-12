@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{c7375f30-ed2a-489b-a053-1bced9690e49}">
+		<property name="assetPath">
+			<value>Magic, Spell, Plants Magic Spell, Fast, Zap, Plant Whip SND117359.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.44921875</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3815178179</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{5294128c-6de0-45af-8088-bb4d81aa6e4b}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{5294128c-6de0-45af-8088-bb4d81aa6e4b}">
+		<relationship name="assetMarkers">
+			<destination>{3960fc4d-f443-4043-824f-4e9102eb9e8b}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{3960fc4d-f443-4043-824f-4e9102eb9e8b}">
+		<property name="name" />
+	</object>
+</objects>

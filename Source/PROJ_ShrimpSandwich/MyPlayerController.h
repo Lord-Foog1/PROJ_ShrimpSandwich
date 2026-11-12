@@ -20,12 +20,9 @@ class PROJ_SHRIMPSANDWICH_API AMyPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 public:
-
-	/** Constructor */
 	AMyPlayerController();
 
 protected:
-
 	/** Input Mapping Contexts */
 	UPROPERTY(EditAnywhere, Category="Input|Input Mappings")
 	TArray<UInputMappingContext*> DefaultMappingContexts;

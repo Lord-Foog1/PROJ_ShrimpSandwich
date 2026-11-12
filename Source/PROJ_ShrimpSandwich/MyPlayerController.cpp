@@ -1,6 +1,5 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-
 #include "MyPlayerController.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
@@ -16,7 +15,6 @@ AMyPlayerController::AMyPlayerController()
 void AMyPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-
 	
 	// only spawn touch controls on local player controllers
 	if (IsLocalPlayerController() && ShouldUseTouchControls())
@@ -30,7 +28,6 @@ void AMyPlayerController::BeginPlay()
 			MobileControlsWidget->AddToPlayerScreen(0);
 
 		}
-
 	}
 }
 
@@ -59,7 +56,6 @@ void AMyPlayerController::SetupInputComponent()
 			}
 		}
 	}
-	
 }
 
 bool AMyPlayerController::ShouldUseTouchControls() const

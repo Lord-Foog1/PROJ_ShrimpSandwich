@@ -39,7 +39,7 @@ AMyCharacter::AMyCharacter()
 	FirstPersonCameraComponent->FirstPersonFieldOfView = 70.0f;
 	FirstPersonCameraComponent->FirstPersonScale = 0.6f;
 
-	// configure the character comps
+	// Configure the character comps
 	GetMesh()->SetOwnerNoSee(true);
 	GetMesh()->FirstPersonPrimitiveType = EFirstPersonPrimitiveType::WorldSpaceRepresentation;
 
@@ -95,7 +95,6 @@ void AMyCharacter::TakeDamage(float DamageAmount)
 	UE_LOG(LogTemp, Warning, TEXT("Current Health: %f"), CurHealth);
 }
 
-
 void AMyCharacter::MoveInput(const FInputActionValue& Value)
 {
 	// get the Vector2D move axis
@@ -103,7 +102,6 @@ void AMyCharacter::MoveInput(const FInputActionValue& Value)
 
 	// pass the axis values to the move input
 	DoMove(MovementVector.X, MovementVector.Y);
-
 }
 
 void AMyCharacter::LookInput(const FInputActionValue& Value)
@@ -113,7 +111,6 @@ void AMyCharacter::LookInput(const FInputActionValue& Value)
 
 	// pass the axis values to the aim input
 	DoAim(LookAxisVector.X, LookAxisVector.Y);
-
 }
 
 void AMyCharacter::DoAim(float Yaw, float Pitch)

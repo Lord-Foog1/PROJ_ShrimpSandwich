@@ -77,6 +77,9 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		// Sprinting
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &AMyCharacter::DoSprint);
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AMyCharacter::StopSprint);
+		
+		// Interacting
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &AMyCharacter::DoInteract);
 	}
 	else
 	{
@@ -175,6 +178,7 @@ void AMyCharacter::DoDash()
 
 void AMyCharacter::Server_DoDash_Implementation()
 {
+	// sends the function from a client to the server variant and repeats DoDash() on server
 	DoDash();
 }
 
@@ -186,4 +190,9 @@ void AMyCharacter::DoSprint()
 void AMyCharacter::StopSprint()
 {
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+}
+
+void AMyCharacter::DoInteract()
+{
+	OnInteract.Broadcast();
 }

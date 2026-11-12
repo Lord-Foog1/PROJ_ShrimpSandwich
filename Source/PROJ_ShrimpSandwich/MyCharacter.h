@@ -15,7 +15,9 @@ struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
-UCLASS(abstract)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteract);
+
+UCLASS(abstract, Blueprintable, BlueprintType)
 class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
 {
 	GENERATED_BODY()
@@ -40,6 +42,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Damage")
 	void TakeDamage(float DamageAmount);
 	
+	UPROPERTY(BlueprintAssignable, Category = "Input")
+	FOnInteract OnInteract;
+	
 protected:
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* JumpAction;
@@ -58,6 +63,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* SprintAction;
+	
+	UPROPERTY(EditAnywhere, Category ="Input")
+	UInputAction* InteractAction;
 	
 	UPROPERTY(EditAnywhere, Category ="Dash")
 	float DashCooldown = 3.0f;
@@ -98,6 +106,9 @@ protected:
 	
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void StopSprint();
+	
+	UFUNCTION(BlueprintCallable, Category="Input")
+	void DoInteract();
 	
 private:
 	UPROPERTY(EditAnywhere, Category="Health")

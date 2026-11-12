@@ -39,7 +39,7 @@ AMyCharacter::AMyCharacter()
 	FirstPersonCameraComponent->FirstPersonFieldOfView = 70.0f;
 	FirstPersonCameraComponent->FirstPersonScale = 0.6f;
 
-	// configure the character comps
+	// Configure the character comps
 	GetMesh()->SetOwnerNoSee(true);
 	GetMesh()->FirstPersonPrimitiveType = EFirstPersonPrimitiveType::WorldSpaceRepresentation;
 
@@ -77,6 +77,9 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		// Sprinting
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &AMyCharacter::DoSprint);
 		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AMyCharacter::StopSprint);
+		
+		// Interacting
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &AMyCharacter::DoInteract);
 	}
 	else
 	{
@@ -95,7 +98,6 @@ void AMyCharacter::TakeDamage(float DamageAmount)
 	UE_LOG(LogTemp, Warning, TEXT("Current Health: %f"), CurHealth);
 }
 
-
 void AMyCharacter::MoveInput(const FInputActionValue& Value)
 {
 	// get the Vector2D move axis
@@ -103,7 +105,6 @@ void AMyCharacter::MoveInput(const FInputActionValue& Value)
 
 	// pass the axis values to the move input
 	DoMove(MovementVector.X, MovementVector.Y);
-
 }
 
 void AMyCharacter::LookInput(const FInputActionValue& Value)
@@ -113,7 +114,6 @@ void AMyCharacter::LookInput(const FInputActionValue& Value)
 
 	// pass the axis values to the aim input
 	DoAim(LookAxisVector.X, LookAxisVector.Y);
-
 }
 
 void AMyCharacter::DoAim(float Yaw, float Pitch)
@@ -178,6 +178,7 @@ void AMyCharacter::DoDash()
 
 void AMyCharacter::Server_DoDash_Implementation()
 {
+	// sends the function from a client to the server variant and repeats DoDash() on server
 	DoDash();
 }
 
@@ -189,4 +190,9 @@ void AMyCharacter::DoSprint()
 void AMyCharacter::StopSprint()
 {
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+}
+
+void AMyCharacter::DoInteract()
+{
+	OnInteract.Broadcast();
 }

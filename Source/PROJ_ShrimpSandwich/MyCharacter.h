@@ -15,10 +15,9 @@ struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
-/**
- *  A basic first person character
- */
-UCLASS(abstract)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteract);
+
+UCLASS(abstract, Blueprintable, BlueprintType)
 class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
 {
 	GENERATED_BODY()
@@ -31,23 +30,33 @@ class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FirstPersonCameraComponent;
 
-protected:
+public:
+	AMyCharacter();
+	
+	/** Returns the first person mesh **/
+	USkeletalMeshComponent* GetFirstPersonMesh() const { return FirstPersonMesh; }
 
-	/** Jump Input Action */
+	/** Returns first person camera component **/
+	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+	
+	UFUNCTION(BlueprintCallable, Category="Damage")
+	void TakeDamage(float DamageAmount);
+	
+	UPROPERTY(BlueprintAssignable, Category = "Input")
+	FOnInteract OnInteract;
+	
+protected:
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* JumpAction;
-
-	/** Move Input Action */
+	
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* MoveAction;
-
-	/** Look Input Action */
+	
 	UPROPERTY(EditAnywhere, Category ="Input")
-	class UInputAction* LookAction;
-
-	/** Mouse Look Input Action */
+	UInputAction* LookAction;
+	
 	UPROPERTY(EditAnywhere, Category ="Input")
-	class UInputAction* MouseLookAction;
+	UInputAction* MouseLookAction;
 	
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* DashAction;
@@ -55,14 +64,15 @@ protected:
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* SprintAction;
 	
+	UPROPERTY(EditAnywhere, Category ="Input")
+	UInputAction* InteractAction;
+	
 	UPROPERTY(EditAnywhere, Category ="Dash")
 	float DashCooldown = 3.0f;
+
+	/** Set up input action bindings */
+	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	
-public:
-	AMyCharacter();
-
-protected:
-
 	/** Called from Input Actions for movement input */
 	void MoveInput(const FInputActionValue& Value);
 
@@ -96,26 +106,11 @@ protected:
 	
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void StopSprint();
-
-protected:
-
-	/** Set up input action bindings */
-	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	
-
-public:
-
-	/** Returns the first person mesh **/
-	USkeletalMeshComponent* GetFirstPersonMesh() const { return FirstPersonMesh; }
-
-	/** Returns first person camera component **/
-	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
-	
-	UFUNCTION(BlueprintCallable, Category="Damage")
-	void TakeDamage(float DamageAmount);
+	UFUNCTION(BlueprintCallable, Category="Input")
+	void DoInteract();
 	
 private:
-	
 	UPROPERTY(EditAnywhere, Category="Health")
 	float PlayerMaxHealth = 100.0f;
 
@@ -133,4 +128,3 @@ private:
 	// dash cooldown helper variable
 	float LastDashTime = 0.0f;
 };
-

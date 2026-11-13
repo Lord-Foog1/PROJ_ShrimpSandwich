@@ -12,9 +12,11 @@
 #include "InputActionValue.h"
 //#include "SNegativeActionButton.h"
 //#include "EditorState/EditorState.h"
+#include "Interactable.h"
 #include "GameFramework/CharacterMovementComponent.h"
 //#include "Shader/Preshader2.h"
 //#include "WorldPartition/ContentBundle/ContentBundleLog.h"
+#include "Net/UnrealNetwork.h"
 
 AMyCharacter::AMyCharacter()
 {
@@ -49,10 +51,34 @@ AMyCharacter::AMyCharacter()
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 	GetCharacterMovement()->AirControl = 0.5f;
 	
-	// Set players health
-	CurHealth = PlayerMaxHealth;
 	
 	WalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
+}
+
+void AMyCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	if (HasAuthority())
+	{
+		Health = MaxHealth;
+		OnRep_Health();
+	}
+}
+
+void AMyCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	
+	FHitResult Hit = DoInteractionSweep();
+	
+	if (Hit.GetActor() != nullptr)
+	{
+		if (Hit.GetActor()->Implements<UInteractable>())
+		{
+			OnInteractPromptUpdated.Broadcast(IInteractable::Execute_GetInteractPrompt(Hit.GetActor()));
+		}
+	}
 }
 
 void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -88,14 +114,50 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 }
 
 /**
- * Deals damage to the player
  * 
- * @param DamageAmount Amount of damage taken
+ * Listan över vilka variabler som skickas över nätverket.
+ * Health replikeras till alla datorer, machealth behövs inte (den ändras aldrig)
  */
-void AMyCharacter::TakeDamage(float DamageAmount)
+void AMyCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
-	CurHealth -= DamageAmount;
-	UE_LOG(LogTemp, Warning, TEXT("Current Health: %f"), CurHealth);
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME(AMyCharacter, Health);
+}
+
+/**
+ * 
+ * Unreals skadefunktion, anropas a apply damage
+ * körs bara på server
+ */
+float AMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
+                               AActor* DamageCauser)
+{
+	if (!HasAuthority() || Health <= 0.f)
+	{
+		return 0.f;
+	}
+	
+	const float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	if (ActualDamage <= 0.f)
+	{
+		return 0.f;
+	}
+	
+	Health = FMath::Clamp(Health - ActualDamage, 0.f, MaxHealth);
+	OnRep_Health();
+	
+	if (Health <= 0.f)
+	{
+		OnHealthDepleted();
+	}
+	
+	return ActualDamage;
+}
+
+void AMyCharacter::OnRep_Health()
+{
+	OnHealthChanged(Health, MaxHealth);
 }
 
 void AMyCharacter::MoveInput(const FInputActionValue& Value)
@@ -194,5 +256,37 @@ void AMyCharacter::StopSprint()
 
 void AMyCharacter::DoInteract()
 {
-	OnInteract.Broadcast();
+	FHitResult Hit = DoInteractionSweep();
+
+	if (Hit.GetActor() != nullptr)
+	{
+		if (Hit.GetActor()->Implements<UInteractable>())
+		{
+			// makes blueprint version available
+			IInteractable::Execute_Client_OnInteract(Hit.GetActor(), this);
+			SendServerInteract(Hit);
+		}
+	}
+}
+
+FHitResult AMyCharacter::DoInteractionSweep()
+{
+	FHitResult Hit;
+	
+	// if box trace
+	FVector TraceSize = FVector(100.0f, 100.0f, 100.0f);
+	
+	// if sphere trace
+	float TraceRadius = 20.f;
+
+	GetWorld()->SweepSingleByChannel(Hit, GetActorLocation(), GetActorLocation() + GetActorForwardVector() * InteractionRange,
+									 GetActorRotation().Quaternion(), ECC_GameTraceChannel1,
+									 FCollisionShape::MakeSphere(TraceRadius));
+	
+	return Hit;
+}
+
+void AMyCharacter::SendServerInteract_Implementation(FHitResult Hit)
+{
+	IInteractable::Execute_Server_OnInteract(Hit.GetActor(), this);
 }

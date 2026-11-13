@@ -15,7 +15,7 @@ struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteract);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractPromptUpdated, FText, InteractText);
 
 UCLASS(abstract, Blueprintable, BlueprintType)
 class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
@@ -33,19 +33,28 @@ class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
 public:
 	AMyCharacter();
 	
+	virtual void Tick(float DeltaSeconds) override;
+	
 	/** Returns the first person mesh **/
 	USkeletalMeshComponent* GetFirstPersonMesh() const { return FirstPersonMesh; }
 
 	/** Returns first person camera component **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 	
-	UFUNCTION(BlueprintCallable, Category="Damage")
-	void TakeDamage(float DamageAmount);
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	
+	UFUNCTION(BlueprintPure, Category = "Player")
+	float GetHealthPercent() const {return MaxHealth > 0.f ? Health / MaxHealth : 0.f;}
 	
 	UPROPERTY(BlueprintAssignable, Category = "Input")
-	FOnInteract OnInteract;
+	
+	FOnInteractPromptUpdated OnInteractPromptUpdated;
 	
 protected:
+	virtual void BeginPlay() override;
+	
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* JumpAction;
 	
@@ -110,6 +119,29 @@ protected:
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoInteract();
 	
+	UFUNCTION(Server, Reliable)
+	void SendServerInteract(FHitResult Hit);
+	
+	FHitResult DoInteractionSweep();
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Stats")
+	float MaxHealth = 100.f;
+	
+	//Ändras bara på server
+	UPROPERTY(ReplicatedUsing = OnRep_Health, BlueprintReadOnly, Category = "Player")
+	float Health = 0.f;
+	
+	UFUNCTION()
+	void OnRep_Health();
+	
+	//Körs på alla datorer när health ändras 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Player")
+	void OnHealthChanged(float NewHealth, float InMaxHealth);
+	
+	//Körs bara på server när health når 0 (Downed) 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Player")
+	void OnHealthDepleted();
+	
 private:
 	UPROPERTY(EditAnywhere, Category="Health")
 	float PlayerMaxHealth = 100.0f;
@@ -127,4 +159,7 @@ private:
 	
 	// dash cooldown helper variable
 	float LastDashTime = 0.0f;
+	
+	UPROPERTY(EditAnywhere, Category="Input")
+	int InteractionRange = 200;
 };

@@ -41,10 +41,15 @@ public:
 	/** Returns first person camera component **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 	
-	UFUNCTION(BlueprintCallable, Category="Damage")
-	void TakeDamage(float DamageAmount);
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	
+	UFUNCTION(BlueprintPure, Category = "Player")
+	float GetHealthPercent() const {return MaxHealth > 0.f ? Health / MaxHealth : 0.f;}
 	
 	UPROPERTY(BlueprintAssignable, Category = "Input")
+	
 	FOnInteractPromptUpdated OnInteractPromptUpdated;
 	
 protected:
@@ -111,6 +116,26 @@ protected:
 	
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoInteract();
+	
+	virtual void BeginPlay() override;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Stats")
+	float MaxHealth = 100.f;
+	
+	//Ändras bara på server
+	UPROPERTY(ReplicatedUsing = OnRep_Health, BlueprintReadOnly, Category = "Player")
+	float Health = 0.f;
+	
+	UFUNCTION()
+	void OnRep_Health();
+	
+	//Körs på alla datorer när health ändras 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Player")
+	void OnHealthChanged(float NewHealth, float InMaxHealth);
+	
+	//Körs bara på server när health når 0 (Downed) 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Player")
+	void OnHealthDepleted();
 	
 	UFUNCTION(Server, Reliable)
 	void SendServerInteract(FHitResult Hit);

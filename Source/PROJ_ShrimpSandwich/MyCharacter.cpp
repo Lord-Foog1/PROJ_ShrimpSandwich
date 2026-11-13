@@ -16,6 +16,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 //#include "Shader/Preshader2.h"
 //#include "WorldPartition/ContentBundle/ContentBundleLog.h"
+#include "Net/UnrealNetwork.h"
 
 AMyCharacter::AMyCharacter()
 {
@@ -50,8 +51,6 @@ AMyCharacter::AMyCharacter()
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 	GetCharacterMovement()->AirControl = 0.5f;
 	
-	// Set players health
-	CurHealth = PlayerMaxHealth;
 	
 	WalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
 }
@@ -103,15 +102,62 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	}
 }
 
-/**
- * Deals damage to the player
- * 
- * @param DamageAmount Amount of damage taken
- */
-void AMyCharacter::TakeDamage(float DamageAmount)
+void AMyCharacter::BeginPlay()
 {
-	CurHealth -= DamageAmount;
-	UE_LOG(LogTemp, Warning, TEXT("Current Health: %f"), CurHealth);
+	Super::BeginPlay();
+	
+	if (HasAuthority())
+	{
+		Health = MaxHealth;
+		OnRep_Health();
+	}
+}
+
+/**
+ * 
+ * Listan över vilka variabler som skickas över nätverket.
+ * Health replikeras till alla datorer, machealth behövs inte (den ändras aldrig)
+ */
+void AMyCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME(AMyCharacter, Health);
+}
+
+/**
+ * 
+ * Unreals skadefunktion, anropas a apply damage
+ * körs bara på server
+ */
+float AMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
+                               AActor* DamageCauser)
+{
+	if (!HasAuthority() || Health <= 0.f)
+	{
+		return 0.f;
+	}
+	
+	const float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	if (ActualDamage <= 0.f)
+	{
+		return 0.f;
+	}
+	
+	Health = FMath::Clamp(Health - ActualDamage, 0.f, MaxHealth);
+	OnRep_Health();
+	
+	if (Health <= 0.f)
+	{
+		OnHealthDepleted();
+	}
+	
+	return ActualDamage;
+}
+
+void AMyCharacter::OnRep_Health()
+{
+	OnHealthChanged(Health, MaxHealth);
 }
 
 void AMyCharacter::MoveInput(const FInputActionValue& Value)

@@ -12,6 +12,7 @@
 #include "InputActionValue.h"
 //#include "SNegativeActionButton.h"
 //#include "EditorState/EditorState.h"
+#include "Interactable.h"
 #include "GameFramework/CharacterMovementComponent.h"
 //#include "Shader/Preshader2.h"
 //#include "WorldPartition/ContentBundle/ContentBundleLog.h"
@@ -53,6 +54,21 @@ AMyCharacter::AMyCharacter()
 	CurHealth = PlayerMaxHealth;
 	
 	WalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
+}
+
+void AMyCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	
+	FHitResult Hit = DoInteractionSweep();
+	
+	if (Hit.GetActor() != nullptr)
+	{
+		if (Hit.GetActor()->Implements<UInteractable>())
+		{
+			OnInteractPromptUpdated.Broadcast(IInteractable::Execute_GetInteractPrompt(Hit.GetActor()));
+		}
+	}
 }
 
 void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -194,5 +210,37 @@ void AMyCharacter::StopSprint()
 
 void AMyCharacter::DoInteract()
 {
-	OnInteract.Broadcast();
+	FHitResult Hit = DoInteractionSweep();
+
+	if (Hit.GetActor() != nullptr)
+	{
+		if (Hit.GetActor()->Implements<UInteractable>())
+		{
+			// makes blueprint version available
+			IInteractable::Execute_Client_OnInteract(Hit.GetActor(), this);
+			SendServerInteract(Hit);
+		}
+	}
+}
+
+FHitResult AMyCharacter::DoInteractionSweep()
+{
+	FHitResult Hit;
+	
+	// if box trace
+	FVector TraceSize = FVector(100.0f, 100.0f, 100.0f);
+	
+	// if sphere trace
+	float TraceRadius = 20.f;
+
+	GetWorld()->SweepSingleByChannel(Hit, GetActorLocation(), GetActorLocation() + GetActorForwardVector() * InteractionRange,
+									 GetActorRotation().Quaternion(), ECC_GameTraceChannel1,
+									 FCollisionShape::MakeSphere(TraceRadius));
+	
+	return Hit;
+}
+
+void AMyCharacter::SendServerInteract_Implementation(FHitResult Hit)
+{
+	IInteractable::Execute_Server_OnInteract(Hit.GetActor(), this);
 }

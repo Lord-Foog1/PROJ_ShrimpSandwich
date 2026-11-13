@@ -15,7 +15,7 @@ struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteract);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractPromptUpdated, FText, InteractText);
 
 UCLASS(abstract, Blueprintable, BlueprintType)
 class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
@@ -33,6 +33,8 @@ class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
 public:
 	AMyCharacter();
 	
+	virtual void Tick(float DeltaSeconds) override;
+	
 	/** Returns the first person mesh **/
 	USkeletalMeshComponent* GetFirstPersonMesh() const { return FirstPersonMesh; }
 
@@ -43,7 +45,7 @@ public:
 	void TakeDamage(float DamageAmount);
 	
 	UPROPERTY(BlueprintAssignable, Category = "Input")
-	FOnInteract OnInteract;
+	FOnInteractPromptUpdated OnInteractPromptUpdated;
 	
 protected:
 	UPROPERTY(EditAnywhere, Category ="Input")
@@ -110,6 +112,11 @@ protected:
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoInteract();
 	
+	UFUNCTION(Server, Reliable)
+	void SendServerInteract(FHitResult Hit);
+	
+	FHitResult DoInteractionSweep();
+	
 private:
 	UPROPERTY(EditAnywhere, Category="Health")
 	float PlayerMaxHealth = 100.0f;
@@ -127,4 +134,7 @@ private:
 	
 	// dash cooldown helper variable
 	float LastDashTime = 0.0f;
+	
+	UPROPERTY(EditAnywhere, Category="Input")
+	int InteractionRange = 200;
 };

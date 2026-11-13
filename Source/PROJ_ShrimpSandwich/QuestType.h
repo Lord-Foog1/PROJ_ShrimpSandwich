@@ -14,14 +14,14 @@ struct FQuestType
 	GENERATED_BODY();
 	
 	UPROPERTY()
-	FString TimeFrame;
+	int TimeFrame;
 	
 	UPROPERTY()
-	float HealthRequirement;
-	
-	UPROPERTY()
-	float DamageRequirement;
+	float DamageTakenRequirement;
 	
 	UPROPERTY()
 	int EnemyKills;
+	
+	UPROPERTY()
+	AActor* EnemyType;
 };

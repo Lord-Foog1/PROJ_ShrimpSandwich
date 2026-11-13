@@ -17,6 +17,7 @@ void AQuestBoard::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	UpdateQuests();
 }
 
 // Called every frame

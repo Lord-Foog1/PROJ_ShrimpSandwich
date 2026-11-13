@@ -25,6 +25,11 @@ struct FQuest
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int LightCrystalReward;
+	
+	bool operator==(const FQuest& Other) const
+	{
+		return QuestName == Other.QuestName;
+	}
 };
 
 UCLASS()

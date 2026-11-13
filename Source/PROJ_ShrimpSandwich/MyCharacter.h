@@ -53,6 +53,8 @@ public:
 	FOnInteractPromptUpdated OnInteractPromptUpdated;
 	
 protected:
+	virtual void BeginPlay() override;
+	
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* JumpAction;
 	
@@ -117,7 +119,10 @@ protected:
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoInteract();
 	
-	virtual void BeginPlay() override;
+	UFUNCTION(Server, Reliable)
+	void SendServerInteract(FHitResult Hit);
+	
+	FHitResult DoInteractionSweep();
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Stats")
 	float MaxHealth = 100.f;
@@ -136,11 +141,6 @@ protected:
 	//Körs bara på server när health når 0 (Downed) 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Player")
 	void OnHealthDepleted();
-	
-	UFUNCTION(Server, Reliable)
-	void SendServerInteract(FHitResult Hit);
-	
-	FHitResult DoInteractionSweep();
 	
 private:
 	UPROPERTY(EditAnywhere, Category="Health")

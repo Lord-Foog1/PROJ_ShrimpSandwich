@@ -55,6 +55,17 @@ AMyCharacter::AMyCharacter()
 	WalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
 }
 
+void AMyCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	if (HasAuthority())
+	{
+		Health = MaxHealth;
+		OnRep_Health();
+	}
+}
+
 void AMyCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -99,17 +110,6 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("'%s' Failed to find an Enhanced Input Component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
-	}
-}
-
-void AMyCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-	
-	if (HasAuthority())
-	{
-		Health = MaxHealth;
-		OnRep_Health();
 	}
 }
 

@@ -55,6 +55,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	
+#pragma region INPUT_ACTIONS	
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* JumpAction;
 	
@@ -75,10 +76,12 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* InteractAction;
+#pragma endregion	
 	
 	UPROPERTY(EditAnywhere, Category ="Dash")
 	float DashCooldown = 3.0f;
 
+#pragma region INPUT_METHODS	
 	/** Set up input action bindings */
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	
@@ -121,6 +124,7 @@ protected:
 	
 	UFUNCTION(Server, Reliable)
 	void SendServerInteract(FHitResult Hit);
+#pragma endregion	
 	
 	FHitResult DoInteractionSweep();
 	

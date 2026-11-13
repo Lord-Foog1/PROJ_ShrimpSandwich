@@ -9,7 +9,7 @@ AQuestBoard::AQuestBoard()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	
 }
 
 // Called when the game starts or when spawned
@@ -29,7 +29,23 @@ void AQuestBoard::Tick(float DeltaTime)
 
 void AQuestBoard::UpdateQuests()
 {
-	QuestManager questManager;
-	questManager.SetQuests(Quests);
+	if (UWorld* World = GetWorld())
+	{
+		if (UQuestManager* QM = World->GetSubsystem<UQuestManager>())
+		{
+			QM->SetQuests(Quests);
+		}
+	}
+}
+
+void AQuestBoard::AcceptQuest(const FQuest& Quest)
+{
+	if (UWorld* World = GetWorld())
+	{
+		if (UQuestManager* QM = World->GetSubsystem<UQuestManager>())
+		{
+			QM->AcceptQuest(Quest);
+		}
+	}
 }
 

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{77660da5-06aa-46e8-9482-5d8ad3a4e48a}">
+		<property name="assetPath">
+			<value>Creatures, Ethereal, Ghost, Male, Breathe, Raspy, Death, Short, Dry SND166586 S00.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.7597708333333335</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>4257314550</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{8718d6a7-cc20-4305-bc80-1768984a5ef2}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{8718d6a7-cc20-4305-bc80-1768984a5ef2}">
+		<relationship name="assetMarkers">
+			<destination>{cee7d9d3-cda7-44ca-8865-5f2c2cf28d80}</destination>
+			<destination>{d1d965f8-5b26-43b5-bbba-24dbf5ff6268}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{cee7d9d3-cda7-44ca-8865-5f2c2cf28d80}">
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{d1d965f8-5b26-43b5-bbba-24dbf5ff6268}">
+		<property name="positionSec">
+			<value>2.7597708333333335</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

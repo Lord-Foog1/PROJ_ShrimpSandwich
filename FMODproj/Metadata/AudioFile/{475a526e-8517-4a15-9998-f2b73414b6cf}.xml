@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{475a526e-8517-4a15-9998-f2b73414b6cf}">
+		<property name="assetPath">
+			<value>Gore, Stab, Impact, Vegetables, Slurps With Air, Bloody, Flesh 02 SND10415.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.7283958333333334</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>2328246303</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{26a0d2e5-1de8-4bf4-9948-6dd97a788711}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{26a0d2e5-1de8-4bf4-9948-6dd97a788711}">
+		<relationship name="assetMarkers">
+			<destination>{e771305a-f3d2-4458-a76b-dac5016077de}</destination>
+			<destination>{77c44f77-1f3a-42ae-9ebf-c58cbaef9359}</destination>
+			<destination>{e7418368-b5c6-4746-8410-df56fae5a7c8}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{e771305a-f3d2-4458-a76b-dac5016077de}">
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{77c44f77-1f3a-42ae-9ebf-c58cbaef9359}">
+		<property name="positionSec">
+			<value>0.37501041666666668</value>
+		</property>
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{e7418368-b5c6-4746-8410-df56fae5a7c8}">
+		<property name="positionSec">
+			<value>1.0049583333333334</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

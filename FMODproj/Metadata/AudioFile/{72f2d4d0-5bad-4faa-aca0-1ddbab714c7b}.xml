@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{72f2d4d0-5bad-4faa-aca0-1ddbab714c7b}">
+		<property name="assetPath">
+			<value>Voices, Alien, Squirmy, Slime, Small, Vocalization, Short 01 SND90562.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>14.506291666666666</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>4022267468</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{5e525d61-d418-4506-9b04-3450b93f6e72}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{5e525d61-d418-4506-9b04-3450b93f6e72}">
+		<relationship name="assetMarkers">
+			<destination>{0ec1d095-6bf3-41ce-a504-53ddcc192b96}</destination>
+			<destination>{47b61630-c214-4771-9c29-2cdac2c7be86}</destination>
+			<destination>{2152c36e-23f2-430f-98ec-01b281db4368}</destination>
+			<destination>{d3b37639-becf-4f34-9ea2-7c1915f24799}</destination>
+			<destination>{d7e1b01a-f920-448f-9f22-45f6d8e3e8a8}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{0ec1d095-6bf3-41ce-a504-53ddcc192b96}">
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{47b61630-c214-4771-9c29-2cdac2c7be86}">
+		<property name="positionSec">
+			<value>3.3014999999999999</value>
+		</property>
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{2152c36e-23f2-430f-98ec-01b281db4368}">
+		<property name="positionSec">
+			<value>6.3773020833333334</value>
+		</property>
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{d3b37639-becf-4f34-9ea2-7c1915f24799}">
+		<property name="positionSec">
+			<value>9.7930624999999996</value>
+		</property>
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{d7e1b01a-f920-448f-9f22-45f6d8e3e8a8}">
+		<property name="positionSec">
+			<value>12.712458333333334</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

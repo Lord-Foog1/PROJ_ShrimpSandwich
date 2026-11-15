@@ -158,7 +158,6 @@
 		<property name="timelockedOffset">
 			<value>0.14142135623730953</value>
 		</property>
-		<property name="name" />
 		<property name="pitch">
 			<value>17.5</value>
 		</property>
@@ -311,7 +310,7 @@
 	<object class="MixerBusFader" id="{b28536d6-0873-452d-8fea-d5c46f48e5a7}" />
 	<object class="FlangerEffect" id="{b5da64af-45c5-436a-bbbc-136b81245fa9}">
 		<property name="rate">
-			<value>13.5</value>
+			<value>16</value>
 		</property>
 		<property name="delay">
 			<value>0.709999979</value>

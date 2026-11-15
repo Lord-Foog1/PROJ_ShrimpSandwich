@@ -79,6 +79,10 @@ void AMyCharacter::Tick(float DeltaSeconds)
 			OnInteractPromptUpdated.Broadcast(IInteractable::Execute_GetInteractPrompt(Hit.GetActor()));
 		}
 	}
+	else
+	{
+		OnInteractPromptUpdated.Broadcast(FText());
+	}
 }
 
 void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -279,7 +283,7 @@ FHitResult AMyCharacter::DoInteractionSweep()
 	// if sphere trace
 	float TraceRadius = 20.f;
 
-	GetWorld()->SweepSingleByChannel(Hit, GetActorLocation(), GetActorLocation() + GetActorForwardVector() * InteractionRange,
+	GetWorld()->SweepSingleByChannel(Hit, GetFirstPersonCameraComponent()->GetComponentLocation(), GetFirstPersonCameraComponent()->GetComponentLocation() + GetFirstPersonCameraComponent()->GetForwardVector() * InteractionRange,
 									 GetActorRotation().Quaternion(), ECC_GameTraceChannel1,
 									 FCollisionShape::MakeSphere(TraceRadius));
 	

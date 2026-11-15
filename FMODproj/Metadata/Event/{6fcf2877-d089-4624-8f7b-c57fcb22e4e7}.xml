@@ -110,7 +110,7 @@
 			<value>4.5</value>
 		</property>
 		<property name="pitch">
-			<value>-6</value>
+			<value>-6.5</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{1439c2f2-5277-4955-ad9a-a55da2f53286}</destination>
@@ -122,7 +122,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{df573425-6657-444f-9635-90adbc156080}">
 		<property name="volume">
-			<value>-14.5</value>
+			<value>-16</value>
 		</property>
 		<property name="name">
 			<value>Audio 1</value>
@@ -154,7 +154,7 @@
 			<value>volume</value>
 		</property>
 		<property name="amount">
-			<value>2.5</value>
+			<value>4.5</value>
 		</property>
 	</object>
 	<object class="RandomizerModulator" id="{26c94fa7-fdce-4a73-b5a8-170326385c41}">
@@ -162,7 +162,7 @@
 			<value>pitch</value>
 		</property>
 		<property name="amount">
-			<value>14</value>
+			<value>7.5</value>
 		</property>
 	</object>
 	<object class="MixerBusEffectChain" id="{9abd11ad-4331-4dca-bd79-ee1c6e358e1a}">

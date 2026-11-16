@@ -49,7 +49,6 @@ public:
 	float GetHealthPercent() const {return MaxHealth > 0.f ? Health / MaxHealth : 0.f;}
 	
 	UPROPERTY(BlueprintAssignable, Category = "Input")
-	
 	FOnInteractPromptUpdated OnInteractPromptUpdated;
 	
 protected:

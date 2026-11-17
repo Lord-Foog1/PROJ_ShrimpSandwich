@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{3044a6ac-f2f2-40a1-9a0b-1228176b9821}">
+		<property name="assetPath">
+			<value>Designed, Morph, Futuristic, Energy Portal 02 SND123161.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>6.979729166666667</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3815178179</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{c27d1de2-4a3e-4b64-be2e-9dce4bff0b12}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{c27d1de2-4a3e-4b64-be2e-9dce4bff0b12}">
+		<relationship name="assetMarkers">
+			<destination>{77ff7fa3-a6cc-46b7-81d3-3cd1fe092514}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{77ff7fa3-a6cc-46b7-81d3-3cd1fe092514}">
+		<property name="name" />
+	</object>
+</objects>

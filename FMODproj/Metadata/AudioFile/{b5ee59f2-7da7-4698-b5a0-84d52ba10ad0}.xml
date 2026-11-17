@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{b5ee59f2-7da7-4698-b5a0-84d52ba10ad0}">
+		<property name="assetPath">
+			<value>Magic, Shimmer, Potion, Cork Open, Glass Bottle SND155762.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>4.5939791666666663</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>2172995025</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{123d9229-846e-4a7a-a174-0385d25399cf}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{123d9229-846e-4a7a-a174-0385d25399cf}">
+		<relationship name="assetMarkers">
+			<destination>{76d8cb4d-a88f-4ddc-b8a2-e8ff1ce1604f}</destination>
+			<destination>{b4d93a12-58e1-41f0-bc78-6b3bbf167920}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{76d8cb4d-a88f-4ddc-b8a2-e8ff1ce1604f}">
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{b4d93a12-58e1-41f0-bc78-6b3bbf167920}">
+		<property name="positionSec">
+			<value>2.5661145833333334</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

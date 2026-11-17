@@ -17,6 +17,7 @@ struct FInputActionValue;
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractPromptUpdated, FText, InteractText);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerHealthChanged, float, NewHealth, float, InMaxHealth); 
 
 UCLASS(abstract, Blueprintable, BlueprintType)
 class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
@@ -51,6 +52,9 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, Category = "Input")
 	FOnInteractPromptUpdated OnInteractPromptUpdated;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Player")
+	FOnPlayerHealthChanged OnHealthChanged;
 	
 protected:
 	virtual void BeginPlay() override;
@@ -138,20 +142,11 @@ protected:
 	UFUNCTION()
 	void OnRep_Health();
 	
-	//Körs på alla datorer när health ändras 
-	UFUNCTION(BlueprintImplementableEvent, Category = "Player")
-	void OnHealthChanged(float NewHealth, float InMaxHealth);
-	
 	//Körs bara på server när health når 0 (Downed) 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Player")
 	void OnHealthDepleted();
 	
 private:
-	UPROPERTY(EditAnywhere, Category="Health")
-	float PlayerMaxHealth = 100.0f;
-
-	UPROPERTY()
-	float CurHealth;
 	
 	UPROPERTY(EditAnywhere, Category="Dash")
 	float DashSpeed = 4000.0f;

@@ -161,7 +161,7 @@ float AMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 
 void AMyCharacter::OnRep_Health()
 {
-	OnHealthChanged(Health, MaxHealth);
+	OnHealthChanged.Broadcast(Health, MaxHealth);
 }
 
 void AMyCharacter::MoveInput(const FInputActionValue& Value)

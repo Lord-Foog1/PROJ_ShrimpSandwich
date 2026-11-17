@@ -8,6 +8,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Net/UnrealNetwork.h"
+#include "CrystalShieldComponent.h"
 
 
 // Sets default values
@@ -55,7 +56,20 @@ float ABaseEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent
 		return 0.f;
 	}
 	
-	Health = FMath::Clamp(Health - ActualDamage, 0.f, MaxHealth);
+	//Crystal Shield: har fienden en shield så tar den skada först
+	float DamageToHealth = ActualDamage;
+	if (UCrystalShieldComponent* Shield = FindComponentByClass<UCrystalShieldComponent>())
+	{
+		DamageToHealth = Shield->AbsorbDamage(ActualDamage);
+	}
+	
+	// Shield tog allt = livet blir inte påverkad 
+	if (DamageToHealth <= 0.f)
+	{
+		return ActualDamage;
+	}
+	
+	Health = FMath::Clamp(Health - DamageToHealth, 0.f, MaxHealth);
 	OnRep_Health();
 	
 	if (Health <= 0.f)

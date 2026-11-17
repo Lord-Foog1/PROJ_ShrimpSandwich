@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{98f40fd9-6da3-4405-b5fb-27e3e937e94c}">
+		<property name="assetPath">
+			<value>Magic, Shimmer, Potion, Single Drop, Splash SND155760.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.6153020833333334</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3815178179</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{700e3ef7-308f-458b-945f-ecfd59727d7e}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{700e3ef7-308f-458b-945f-ecfd59727d7e}">
+		<relationship name="assetMarkers">
+			<destination>{ce460781-ef5b-485b-b007-9b38090a447d}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{ce460781-ef5b-485b-b007-9b38090a447d}">
+		<property name="name" />
+	</object>
+</objects>

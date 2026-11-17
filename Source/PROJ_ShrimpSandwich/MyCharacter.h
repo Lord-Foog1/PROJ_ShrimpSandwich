@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "MagicType.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 #include "MyCharacter.generated.h"
@@ -165,4 +166,7 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category="Input")
 	int InteractionRange = 200;
+	
+	UPROPERTY(EditAnywhere, Category = "Player", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EMagicType MagicType = EMagicType::Fire;
 };

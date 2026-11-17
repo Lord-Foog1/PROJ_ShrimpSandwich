@@ -1,13 +1,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Subsystems/WorldSubsystem.h"
+#include "Subsystems/GameInstanceSubsystem.h"
 #include "Quests.h"
 #include "QuestType.h"
 #include "QuestManager.generated.h"
 
 UCLASS()
-class PROJ_SHRIMPSANDWICH_API UQuestManager : public UWorldSubsystem
+class PROJ_SHRIMPSANDWICH_API UQuestManager : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 

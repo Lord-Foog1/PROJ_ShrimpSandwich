@@ -29,9 +29,9 @@ void AQuestBoard::Tick(float DeltaTime)
 
 void AQuestBoard::UpdateQuests()
 {
-	if (UWorld* World = GetWorld())
+	if (UGameInstance* Game = GetWorld()->GetGameInstance())
 	{
-		if (UQuestManager* QM = World->GetSubsystem<UQuestManager>())
+		if (UQuestManager* QM = Game->GetSubsystem<UQuestManager>())
 		{
 			QM->SetQuests(Quests);
 		}
@@ -40,12 +40,11 @@ void AQuestBoard::UpdateQuests()
 
 void AQuestBoard::AcceptQuest(const FQuest& Quest)
 {
-	if (UWorld* World = GetWorld())
+	if (UGameInstance* Game = GetWorld()->GetGameInstance())
 	{
-		if (UQuestManager* QM = World->GetSubsystem<UQuestManager>())
+		if (UQuestManager* QM = Game->GetSubsystem<UQuestManager>())
 		{
 			QM->AcceptQuest(Quest);
 		}
 	}
 }
-

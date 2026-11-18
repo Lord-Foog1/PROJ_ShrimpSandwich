@@ -124,6 +124,9 @@ void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 	}
 	
 	// Damage hit actor if possible
+	//EnemySPells skadar bara spelare, så slime inte skadar varandra
+	const bool bCanDamage = !bOnlyDamagePlayers || (HitActor && HitActor->IsA<AMyCharacter());
+	
 	if (IsValid(HitActor) && HasAuthority())
 	{
 		UGameplayStatics::ApplyDamage(
@@ -135,7 +138,13 @@ void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 		);
 	}
 	
-	// Creates AOE damage
+	//Creates AOE damage bara om spellen har en AOE komponent :p 
+	if (AOEComponent)
+	{
+		AOEComponent->Explode(HitActor);
+	}
+	
+	// Creates AOE damage 
 	AOEComponent->Explode(HitActor);
 	
 	// Turn off necessary stuff for it to not look weird

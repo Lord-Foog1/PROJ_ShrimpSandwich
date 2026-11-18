@@ -7,6 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "Kismet/GameplayStatics.h"
 #include "Spell.generated.h"
+#include "MyCharacter.h"
 
 UCLASS()
 class PROJ_SHRIMPSANDWICH_API ASpell : public AActor
@@ -69,6 +70,9 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category = "Spell", meta = (AllowPrivateAccess), BlueprintReadWrite)
 	class UNiagaraSystem* SpellImpactSystem;
+	
+	UPROPERTY(EditAnywhere, Category = "Spell", meta = (AllowPrivateAccess), BlueprintReadWrite)
+	bool bOnlyDamagePlayers = false;
 	
 	UPROPERTY()
 	class UNiagaraComponent* ParticleSystem;

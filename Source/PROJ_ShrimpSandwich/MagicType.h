@@ -7,6 +7,7 @@
 UENUM(BlueprintType)
 enum class EMagicType : uint8
 {
+	None	UMETA(DisplayName = "None"),
 	Fire	UMETA(DisplayName = "Fire"),
 	Water	UMETA(DisplayName = "Water"),
 	Nature	UMETA(DisplayName = "Nature"),

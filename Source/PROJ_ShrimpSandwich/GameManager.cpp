@@ -3,7 +3,7 @@
 #include "GameManager.h"
 #include "Kismet/GameplayStatics.h"
 
-void AGameManager::LoadLevel(TSoftObjectPtr<UWorld> Level)
+void UGameManager::LoadLevel(TSoftObjectPtr<UWorld> Level)
 {
 	// Checks if there is a previous level to despawn
 	if (!FirstTime)
@@ -30,22 +30,22 @@ void AGameManager::LoadLevel(TSoftObjectPtr<UWorld> Level)
 	
 }
 
-bool AGameManager::GetLevelStarted()
+bool UGameManager::GetLevelStarted()
 {
 	return LevelStarted;
 }
 
-TSoftObjectPtr<UWorld> AGameManager::GetCurrentLevel()
+TSoftObjectPtr<UWorld> UGameManager::GetCurrentLevel()
 {
 	return CurrentLevel;
 }
 
-TSoftObjectPtr<UWorld> AGameManager::GetPreviousLevel()
+TSoftObjectPtr<UWorld> UGameManager::GetPreviousLevel()
 {
 	return PreviousLevel;
 }
 
-void AGameManager::LevelLoaded()
+void UGameManager::LevelLoaded()
 {
 	if (FirstTime)
 	{
@@ -67,7 +67,7 @@ void AGameManager::LevelLoaded()
 	OnLevelLoadedInternal.Broadcast();
 }
 
-void AGameManager::LevelUnloaded()
+void UGameManager::LevelUnloaded()
 {
 	FLatentActionInfo LatentInfo;
 	LatentInfo.CallbackTarget = this;
@@ -77,7 +77,7 @@ void AGameManager::LevelUnloaded()
 	UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),CurrentLevel, true, false, LatentInfo);
 }
 
-void AGameManager::BroadcastLoaded()
+void UGameManager::BroadcastLoaded()
 {
 	OnLevelLoadedInternal.Broadcast();
 }

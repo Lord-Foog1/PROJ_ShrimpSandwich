@@ -86,3 +86,8 @@ Plugins/FMODStudio/Binaries/**/*.pdb
 FMODproj/**/.cache/
 FMODproj/**/.user/
 FMODproj/**/.unsaved/
+
+# Lokala IDE- och solution-filer
+*.sln
+*.slnx
+.idea/

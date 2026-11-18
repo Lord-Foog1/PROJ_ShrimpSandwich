@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "MagicType.h"
 #include "GameFramework/Actor.h"
 #include "Kismet/GameplayStatics.h"
 #include "Spell.generated.h"
@@ -52,16 +53,19 @@ public:
 private:
 	
 	UPROPERTY(EditAnywhere, Category = "Spell", meta = (ClampMin = 0, UIMin = 0, AllowPrivateAccess), BlueprintReadWrite)
-	float DamageAmount;
+	float DamageAmount = 25;
 	
 	UPROPERTY(EditAnywhere, Category = "Spell", meta = (ClampMin = 0, UIMin = 0, AllowPrivateAccess), BlueprintReadWrite)
-	float SpellSpeed;
+	float SpellSpeed = 1400;
+	
+	UPROPERTY(EditAnywhere, Category = "Spell", meta = (ClampMin = 0, UIMin = 0, AllowPrivateAccess), BlueprintReadWrite)
+	float SpellMaxSpeed = 1400;
 	
 	UPROPERTY(EditAnywhere, Category = "Spell", meta = (AllowPrivateAccess), BlueprintReadWrite)
-	FString SpellType;
+	EMagicType SpellType;
 	
 	UPROPERTY(EditAnywhere, Category = "Spell", meta = (AllowPrivateAccess, ClampMin = 0.1f, UIMin = 0.1f), BlueprintReadWrite)
-	float Lifetime = 2.0f;
+	float Lifetime = 1.5f;
 	
 	UPROPERTY(EditAnywhere, Category = "Spell", meta = (AllowPrivateAccess), BlueprintReadWrite)
 	class UNiagaraSystem* SpellImpactSystem;
@@ -74,6 +78,9 @@ private:
 	
 	UPROPERTY()
 	class UProjectileMovementComponent* Movement;
+	
+	UPROPERTY()
+	class UAoeEffectComponent* AOEComponent;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Spell", meta = (AllowPrivateAccess), BlueprintReadWrite)
 	TSubclassOf<AActor> AoeEffect;

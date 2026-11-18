@@ -2,6 +2,8 @@
 
 
 #include "Spell.h"
+
+#include "AoeEffectComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Components/SphereComponent.h"
@@ -28,6 +30,7 @@ void ASpell::BeginPlay()
 	ParticleSystem = GetComponentByClass<UNiagaraComponent>();
 	Collider = GetComponentByClass<USphereComponent>();
 	Movement = GetComponentByClass<UProjectileMovementComponent>();
+	AOEComponent = GetComponentByClass<UAoeEffectComponent>();
 	
 	if (Collider)
 	{
@@ -41,15 +44,32 @@ void ASpell::BeginPlay()
 		ParticleSystem->SetNiagaraVariableFloat("User_Lifetime", Lifetime);
 	}
 	
+	if (Movement)
+	{
+		Movement->InitialSpeed = SpellSpeed;
+		Movement->MaxSpeed = SpellMaxSpeed;
+	}
+	
+	// Handles the object after its lifetime is over
 	FTimerHandle ParticleTimerHandle;
 	TWeakObjectPtr<UNiagaraComponent> WeakParticleSystem = ParticleSystem;
+	TWeakObjectPtr<USphereComponent> WeakCollider = Collider;
+	TWeakObjectPtr<UProjectileMovementComponent> WeakMovement = Movement;
 	GetWorldTimerManager().SetTimer(
 		ParticleTimerHandle,
-		[WeakParticleSystem]()
+		[WeakParticleSystem, WeakCollider, WeakMovement]()
 		{
 			if (WeakParticleSystem.IsValid())
 			{
 				WeakParticleSystem->Deactivate();
+			}
+			if (WeakCollider.IsValid())
+			{
+				WeakCollider->Deactivate();
+			}
+			if (WeakMovement.IsValid())
+			{
+				WeakMovement->Deactivate();
 			}
 		},
 		Lifetime,
@@ -72,16 +92,19 @@ void ASpell::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimi
 
 void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 {
+	// Checks the authority of the caller of the method
 	if (!HasAuthority())
 	{
 		return;
 	}
 	
+	// Checks that it didn't hit the owner
 	if (GetOwner() == HitActor)
 	{
 		return;
 	}
 
+	// Create the impact VFX
 	if (SpellImpactSystem)
 	{
 		UNiagaraComponent* SpawnedParticle = UNiagaraFunctionLibrary::SpawnSystemAtLocation(
@@ -105,6 +128,7 @@ void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 		}
 	}
 	
+	// Damage hit actor if possible
 	if (IsValid(HitActor))
 	{
 		UGameplayStatics::ApplyDamage(
@@ -116,6 +140,10 @@ void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 		);
 	}
 	
+	// Creates AOE damage
+	AOEComponent->Explode(HitActor);
+	
+	// Turn off necessary stuff for it to not look weird
 	if (ParticleSystem) { ParticleSystem->Deactivate(); }
 	if (Collider) 
 	{
@@ -123,33 +151,6 @@ void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 		Collider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 	if (Movement) { Movement->Deactivate(); }
-	
-	SetCanBeDamaged(false);
-	
-	if (AoeEffect && GetWorld())
-	{
-		FActorSpawnParameters SpawnInfo;
-		SpawnInfo.Owner = GetOwner();
-		SpawnInfo.Instigator = GetInstigator();
-		SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::Undefined;
-		
-		GetWorld()->SpawnActor<AActor>(AoeEffect, GetActorTransform(), SpawnInfo);
-	}
-	
-	TWeakObjectPtr<ASpell> WeakThis(this);
-	FTimerHandle DamageTimerHandle;
-	GetWorldTimerManager().SetTimer(
-		DamageTimerHandle,
-		[WeakThis]()
-		{
-			if (WeakThis.IsValid())
-			{
-				WeakThis->SetCanBeDamaged(true);
-			}
-		},
-		0.5f,  
-		false  
-	);
 }
 
 void ASpell::DestroyAfterParticles(class UNiagaraComponent* PSystem)

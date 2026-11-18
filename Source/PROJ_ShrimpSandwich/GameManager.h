@@ -8,6 +8,7 @@
 
 class UWidget;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLevelLoadedInternal);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLevelHasBeenAdded);
 
 UCLASS()
 class PROJ_SHRIMPSANDWICH_API UGameManager : public UAdvancedFriendsGameInstance
@@ -15,6 +16,8 @@ class PROJ_SHRIMPSANDWICH_API UGameManager : public UAdvancedFriendsGameInstance
 	GENERATED_BODY()
 	
 public:
+	virtual void Init() override;
+	
 	void LoadLevel(TSoftObjectPtr<UWorld> Level);
 
 	FName PendingLevelName;
@@ -26,8 +29,13 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void PauseGame();
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintAssignable)
 	FOnLevelLoadedInternal OnLevelLoadedInternal;
+	
+	UPROPERTY(BlueprintAssignable)
+	FLevelHasBeenAdded LevelHasBeenAdded;
+	
+	void OnLevelAddedToWorld(ULevel* InLevel, UWorld* InWorld);
 	
 	bool GetLevelStarted();
 	

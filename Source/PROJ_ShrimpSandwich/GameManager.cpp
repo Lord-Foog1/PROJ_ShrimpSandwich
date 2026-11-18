@@ -3,6 +3,13 @@
 #include "GameManager.h"
 #include "Kismet/GameplayStatics.h"
 
+void UGameManager::Init()
+{
+	Super::Init();
+	
+	FWorldDelegates::LevelAddedToWorld.AddUObject(this, &UGameManager::OnLevelAddedToWorld);
+}
+
 void UGameManager::LoadLevel(TSoftObjectPtr<UWorld> Level)
 {
 	// Checks if there is a previous level to despawn
@@ -28,6 +35,11 @@ void UGameManager::LoadLevel(TSoftObjectPtr<UWorld> Level)
 		UGameplayStatics::UnloadStreamLevelBySoftObjectPtr(GetWorld(), Level, LatentInfo, false);
 	}
 	
+}
+
+void UGameManager::OnLevelAddedToWorld(ULevel* InLevel, UWorld* InWorld)
+{
+	LevelHasBeenAdded.Broadcast();
 }
 
 bool UGameManager::GetLevelStarted()

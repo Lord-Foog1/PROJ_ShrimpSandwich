@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Kismet/GameplayStatics.h"
 #include "Spell.generated.h"
 
 UCLASS()
@@ -38,6 +39,12 @@ public:
 	float GetSpellSpeed() { return SpellSpeed; }
 
 #pragma endregion GETTER_SETTER	
+
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	
+	UFUNCTION(BlueprintCallable, Category = "Spell")
+	void DoHit(AActor* HitActor, FHitResult HitInfo);
 	
 private:
 	
@@ -49,4 +56,19 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category = "Spell", meta = (AllowPrivateAccess), BlueprintReadWrite)
 	FString SpellType;
+	
+	UPROPERTY(EditAnywhere, Category = "Spell", meta = (AllowPrivateAccess), BlueprintReadWrite)
+	class UNiagaraSystem* SpellImpactSystem;
+	
+	UPROPERTY()
+	class UNiagaraComponent* ParticleSystem;
+	
+	UPROPERTY()
+	class USphereComponent* Collider;
+	
+	UPROPERTY()
+	class UProjectileMovementComponent* Movement;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Spell", meta = (AllowPrivateAccess), BlueprintReadWrite)
+	TSubclassOf<AActor> AoeEffect;
 };

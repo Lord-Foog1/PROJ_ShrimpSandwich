@@ -46,6 +46,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Spell")
 	void DoHit(AActor* HitActor, FHitResult HitInfo);
 	
+	UFUNCTION()
+	void DestroyAfterParticles(class UNiagaraComponent* PSystem);
+	
 private:
 	
 	UPROPERTY(EditAnywhere, Category = "Spell", meta = (ClampMin = 0, UIMin = 0, AllowPrivateAccess), BlueprintReadWrite)
@@ -56,6 +59,9 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category = "Spell", meta = (AllowPrivateAccess), BlueprintReadWrite)
 	FString SpellType;
+	
+	UPROPERTY(EditAnywhere, Category = "Spell", meta = (AllowPrivateAccess, ClampMin = 0.1f, UIMin = 0.1f), BlueprintReadWrite)
+	float Lifetime = 2.0f;
 	
 	UPROPERTY(EditAnywhere, Category = "Spell", meta = (AllowPrivateAccess), BlueprintReadWrite)
 	class UNiagaraSystem* SpellImpactSystem;

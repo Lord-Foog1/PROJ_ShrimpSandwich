@@ -20,6 +20,11 @@ void ASpell::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (!HasAuthority())
+	{
+		return;
+	}
+	
 	ParticleSystem = GetComponentByClass<UNiagaraComponent>();
 	Collider = GetComponentByClass<USphereComponent>();
 	Movement = GetComponentByClass<UProjectileMovementComponent>();
@@ -29,6 +34,27 @@ void ASpell::BeginPlay()
 		Collider->SetNotifyRigidBodyCollision(true);
 		Collider->OnComponentHit.AddDynamic(this, &ASpell::OnHit);
 	}
+	
+	if (ParticleSystem)
+	{
+		ParticleSystem->OnSystemFinished.AddDynamic(this, &ASpell::DestroyAfterParticles);
+		ParticleSystem->SetNiagaraVariableFloat("User_Lifetime", Lifetime);
+	}
+	
+	FTimerHandle ParticleTimerHandle;
+	TWeakObjectPtr<UNiagaraComponent> WeakParticleSystem = ParticleSystem;
+	GetWorldTimerManager().SetTimer(
+		ParticleTimerHandle,
+		[WeakParticleSystem]()
+		{
+			if (WeakParticleSystem.IsValid())
+			{
+				WeakParticleSystem->Deactivate();
+			}
+		},
+		Lifetime,
+		false
+	);
 }
 
 // Called every frame
@@ -124,4 +150,9 @@ void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 		0.5f,  
 		false  
 	);
+}
+
+void ASpell::DestroyAfterParticles(class UNiagaraComponent* PSystem)
+{
+	this->Destroy();
 }

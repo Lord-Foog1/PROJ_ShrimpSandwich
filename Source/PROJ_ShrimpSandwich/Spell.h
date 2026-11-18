@@ -81,7 +81,4 @@ private:
 	
 	UPROPERTY()
 	class UAoeEffectComponent* AOEComponent;
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Spell", meta = (AllowPrivateAccess), BlueprintReadWrite)
-	TSubclassOf<AActor> AoeEffect;
 };

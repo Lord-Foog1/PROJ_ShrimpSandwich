@@ -173,7 +173,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{20144be6-196d-4b22-8696-58871a5174f8}">
 		<property name="volume">
-			<value>-14.5</value>
+			<value>-19.5</value>
 		</property>
 		<property name="name">
 			<value>OneShot</value>
@@ -216,7 +216,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{402977e1-8be4-478e-bcb1-fbaf92930a1d}">
 		<property name="volume">
-			<value>-12.5</value>
+			<value>-16.5</value>
 		</property>
 		<property name="name">
 			<value>Audio 1</value>
@@ -240,15 +240,12 @@
 		</property>
 		<relationship name="sounds">
 			<destination>{1438ead7-95fc-456c-a891-eb73f9437cd9}</destination>
-			<destination>{f89dcf1c-0506-46fe-9ba1-e201209d39bf}</destination>
-			<destination>{b35a435c-2ccd-460a-b74d-2ae7072286c0}</destination>
-			<destination>{9254a906-921d-436c-927e-4c404c169300}</destination>
 			<destination>{dbb8869e-6569-40f4-86af-56c4a160c58b}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{7da9916d-c266-485c-8a41-d28474726cb2}">
 		<property name="volume">
-			<value>-9.5</value>
+			<value>-11.5</value>
 		</property>
 		<property name="name">
 			<value>Pre</value>
@@ -360,30 +357,6 @@
 		</property>
 		<relationship name="audioFile">
 			<destination>{7b3d2a0c-16ca-46a0-8037-131a4101d6d4}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{f89dcf1c-0506-46fe-9ba1-e201209d39bf}">
-		<property name="pitch">
-			<value>-1.80000007</value>
-		</property>
-		<relationship name="audioFile">
-			<destination>{7825273f-b631-4f3d-abc3-14f870bbd297}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{b35a435c-2ccd-460a-b74d-2ae7072286c0}">
-		<property name="pitch">
-			<value>-1.80000007</value>
-		</property>
-		<relationship name="audioFile">
-			<destination>{f92ec815-81e3-4f78-804a-c09196a0580e}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{9254a906-921d-436c-927e-4c404c169300}">
-		<property name="pitch">
-			<value>-1.80000007</value>
-		</property>
-		<relationship name="audioFile">
-			<destination>{443d5859-3a90-4ecc-ba17-4132d256c1c7}</destination>
 		</relationship>
 	</object>
 	<object class="SingleSound" id="{dbb8869e-6569-40f4-86af-56c4a160c58b}">

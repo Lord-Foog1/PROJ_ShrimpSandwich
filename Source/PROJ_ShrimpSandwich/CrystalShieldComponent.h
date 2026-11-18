@@ -9,7 +9,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnShieldChanged, float, NewShieldHealth, float, MaxShieldHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnShieldBroken);
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableProtocol))
 class PROJ_SHRIMPSANDWICH_API UCrystalShieldComponent : public UActorComponent
 {
 	GENERATED_BODY()

@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameMode.h"
+#include "AdvancedFriendsGameInstance.h"
 #include "GameManager.generated.h"
 
 class UWidget;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLevelLoadedInternal);
 
 UCLASS()
-class PROJ_SHRIMPSANDWICH_API UGameManager : public UGameInstance
+class PROJ_SHRIMPSANDWICH_API UGameManager : public UAdvancedFriendsGameInstance
 {
 	GENERATED_BODY()
 	

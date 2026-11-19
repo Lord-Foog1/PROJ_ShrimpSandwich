@@ -8,11 +8,14 @@
 #include "Logging/LogMacros.h"
 #include "MyCharacter.generated.h"
 
+#pragma region PREDECLARATIONS
+class UBoxComponent;
 class UInputComponent;
 class USkeletalMeshComponent;
 class UCameraComponent;
 class UInputAction;
 struct FInputActionValue;
+#pragma endregion
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -33,6 +36,9 @@ class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
 	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FirstPersonCameraComponent;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
+	UBoxComponent* MeleeBoxComponent;
 
 #pragma endregion	
 	
@@ -180,4 +186,59 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category = "Player|Magic", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EMagicType MagicType;
+	
+#pragma region MAGIC_VARIABLES
+	
+#pragma region MANA	
+	
+	/** Cost of a spell */
+	UPROPERTY(EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int SpellCost = 20;
+	
+	/** Max amount of mana a player has (Can be upgraded) */
+	UPROPERTY(EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int MaxMana = 100;
+	
+	/** The current amount of mana */
+	UPROPERTY(EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int CurMana;
+	
+	/** Amount of mana the player gets back after ManaRegenInterval seconds */
+	UPROPERTY(EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int ManaRegenAmount = 5;
+	
+	/** How often the player gets mana back */
+	UPROPERTY(EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float ManaRegenInterval = 2.0f;
+	
+	/** Cost of a charged shot */
+	UPROPERTY(EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int ChargedSpellCost = 50;
+	
+#pragma endregion
+	
+#pragma region SPELL
+	
+	/** The amount of time between magic shots */
+	UPROPERTY(EditAnywhere, Category = "Player|Magic|Spell", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float SpellCooldown = 1.0f;
+	
+	/** The amount of time it takes for the charged spell shot to charge up */
+	UPROPERTY(EditAnywhere, Category = "Player|Magic|Spell", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float ChargeUpTime = 3.0f;
+
+#pragma endregion	
+#pragma endregion
+	
+#pragma region MELEE
+	
+	/** Amount of time between allowed mêlée attacks */
+	UPROPERTY(EditAnywhere, Category = "Player|Melee", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float MeleeCooldown = 1.0f;
+	
+	/** Amount of damage dealt by mêlée attack */
+	UPROPERTY(EditAnywhere, Category = "Player|Melee", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float MeleeDamage = 10.0f;
+	
+#pragma endregion	
 };

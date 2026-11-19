@@ -115,13 +115,10 @@ void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 	}
 	
 	//Creates AOE damage bara om spellen har en AOE komponent :p 
-	if (AOEComponent)
+	if (AOEComponent && HitInfo.bBlockingHit)
 	{
 		AOEComponent->Explode(HitActor);
 	}
-	
-	// Creates AOE damage 
-	AOEComponent->Explode(HitActor);
 	
 	// Turn off necessary stuff for it to not look weird
 	if (ParticleSystem) { ParticleSystem->Deactivate(); }

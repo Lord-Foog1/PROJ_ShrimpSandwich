@@ -24,6 +24,8 @@ class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+#pragma region COMPONENTS	
+	
 	/** Pawn mesh: first person view (arms; seen only by self) */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	USkeletalMeshComponent* FirstPersonMesh;
@@ -32,10 +34,14 @@ class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FirstPersonCameraComponent;
 
+#pragma endregion	
+	
 public:
 	AMyCharacter();
 	
 	virtual void Tick(float DeltaSeconds) override;
+
+#pragma region GETTERS_SETTERS
 	
 	/** Returns the first person mesh **/
 	USkeletalMeshComponent* GetFirstPersonMesh() const { return FirstPersonMesh; }
@@ -43,12 +49,14 @@ public:
 	/** Returns first person camera component **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 	
-	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
-	
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	UFUNCTION(BlueprintPure, Category = "Player")
 	float GetHealthPercent() const {return MaxHealth > 0.f ? Health / MaxHealth : 0.f;}
+	
+#pragma endregion	
+	
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 	
 	UPROPERTY(BlueprintAssignable, Category = "Input")
 	FOnInteractPromptUpdated OnInteractPromptUpdated;
@@ -81,9 +89,6 @@ protected:
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* InteractAction;
 #pragma endregion	
-	
-	UPROPERTY(EditAnywhere, Category ="Dash")
-	float DashCooldown = 3.0f;
 
 #pragma region INPUT_METHODS	
 	/** Set up input action bindings */
@@ -132,6 +137,8 @@ protected:
 	
 	FHitResult DoInteractionSweep();
 	
+#pragma region HEALTH
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Stats")
 	float MaxHealth = 100.f;
 	
@@ -146,7 +153,11 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Player")
 	void OnHealthDepleted();
 	
+#pragma endregion	
+	
 private:
+
+#pragma region INPUT_VARIABLES	
 	
 	UPROPERTY(EditAnywhere, Category="Dash")
 	float DashSpeed = 4000.0f;
@@ -156,12 +167,17 @@ private:
 	
 	float WalkSpeed;
 	
+	UPROPERTY(EditAnywhere, Category ="Dash", meta = (AllowPrivateAccess = true))
+	float DashCooldown = 3.0f;
+	
 	// dash cooldown helper variable
 	float LastDashTime = 0.0f;
 	
 	UPROPERTY(EditAnywhere, Category="Input")
 	int InteractionRange = 200;
 	
-	UPROPERTY(EditAnywhere, Category = "Player", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+#pragma endregion	
+	
+	UPROPERTY(EditAnywhere, Category = "Player|Magic", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EMagicType MagicType;
 };

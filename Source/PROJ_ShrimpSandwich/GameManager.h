@@ -45,19 +45,21 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	TSoftObjectPtr<UWorld> GetPreviousLevel();
 	
+	
 protected:
 	UPROPERTY(BlueprintReadWrite)
 	bool LevelStarted;
 
 private:
 	UFUNCTION()
+	void HandleLevelShown();
+	
+	UFUNCTION()
 	void LevelLoaded();
 	
 	UFUNCTION()
 	void LevelUnloaded();
-
-	UFUNCTION()
-	void BroadcastLoaded();
+	
 
 	bool FirstTime = true;
 };

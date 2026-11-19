@@ -17,7 +17,13 @@ void UGameManager::LoadLevel(TSoftObjectPtr<UWorld> Level)
 	{
 		PreviousLevel = CurrentLevel;
 	}
-	
+	ULevelStreaming* StreamingLevel = UGameplayStatics::GetStreamingLevel(GetWorld(), FName(*Level.GetAssetName()));
+	if (StreamingLevel)
+	{
+		// Use AddUniqueDynamic so you don't bind it twice if the same level reloads later
+		StreamingLevel->bShouldBlockOnLoad = true;
+		StreamingLevel->OnLevelShown.AddUniqueDynamic(this, &UGameManager::HandleLevelShown);
+	}
 	CurrentLevel = Level;
 	FLatentActionInfo LatentInfo;
 	LatentInfo.CallbackTarget = this;
@@ -26,13 +32,13 @@ void UGameManager::LoadLevel(TSoftObjectPtr<UWorld> Level)
 	{
 		LatentInfo.ExecutionFunction = FName("LevelLoaded");
 		LatentInfo.Linkage = 0;
-		UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),Level, true, false, LatentInfo);
+		UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),Level, true, true, LatentInfo);
 	}
 	else
 	{
 		LatentInfo.ExecutionFunction = FName("LevelUnloaded");
 		LatentInfo.Linkage = 0;
-		UGameplayStatics::UnloadStreamLevelBySoftObjectPtr(GetWorld(), Level, LatentInfo, false);
+		UGameplayStatics::UnloadStreamLevelBySoftObjectPtr(GetWorld(), Level, LatentInfo, true);
 	}
 	
 }
@@ -55,6 +61,11 @@ TSoftObjectPtr<UWorld> UGameManager::GetCurrentLevel()
 TSoftObjectPtr<UWorld> UGameManager::GetPreviousLevel()
 {
 	return PreviousLevel;
+}
+
+void UGameManager::HandleLevelShown()
+{
+	LevelHasBeenAdded.Broadcast();
 }
 
 void UGameManager::LevelLoaded()
@@ -89,7 +100,3 @@ void UGameManager::LevelUnloaded()
 	UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),CurrentLevel, true, false, LatentInfo);
 }
 
-void UGameManager::BroadcastLoaded()
-{
-	OnLevelLoadedInternal.Broadcast();
-}

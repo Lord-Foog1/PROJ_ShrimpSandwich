@@ -15,7 +15,7 @@ void UQuestManager::SetQuests(const TArray<FQuest>& NewQuests)
 {
 	for (const FQuest& Quest : NewQuests)
 	{
-		//Quests.AddUnique(Quest);
+		Quests.AddUnique(Quest);
 	}
 }
 

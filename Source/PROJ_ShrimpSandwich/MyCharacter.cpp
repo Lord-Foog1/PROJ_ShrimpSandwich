@@ -7,6 +7,7 @@
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/BoxComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
@@ -41,6 +42,8 @@ AMyCharacter::AMyCharacter()
 	FirstPersonCameraComponent->FirstPersonFieldOfView = 70.0f;
 	FirstPersonCameraComponent->FirstPersonScale = 0.6f;
 
+	MeleeBoxComponent = GetComponentByClass<UBoxComponent>();
+	
 	// Configure the character comps
 	GetMesh()->SetOwnerNoSee(true);
 	GetMesh()->FirstPersonPrimitiveType = EFirstPersonPrimitiveType::WorldSpaceRepresentation;
@@ -53,6 +56,7 @@ AMyCharacter::AMyCharacter()
 	
 	
 	WalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
+	CurMana = MaxMana;
 }
 
 void AMyCharacter::BeginPlay()
@@ -129,6 +133,8 @@ void AMyCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 	DOREPLIFETIME(AMyCharacter, Health);
 }
 
+#pragma region HEALTH
+
 /**
  * 
  * Unreals skadefunktion, anropas a apply damage
@@ -164,6 +170,10 @@ void AMyCharacter::OnRep_Health()
 	OnHealthChanged.Broadcast(Health, MaxHealth);
 }
 
+#pragma endregion
+
+#pragma region MOVEMENT
+
 void AMyCharacter::MoveInput(const FInputActionValue& Value)
 {
 	// get the Vector2D move axis
@@ -171,25 +181,6 @@ void AMyCharacter::MoveInput(const FInputActionValue& Value)
 
 	// pass the axis values to the move input
 	DoMove(MovementVector.X, MovementVector.Y);
-}
-
-void AMyCharacter::LookInput(const FInputActionValue& Value)
-{
-	// get the Vector2D look axis
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
-
-	// pass the axis values to the aim input
-	DoAim(LookAxisVector.X, LookAxisVector.Y);
-}
-
-void AMyCharacter::DoAim(float Yaw, float Pitch)
-{
-	if (GetController())
-	{
-		// pass the rotation inputs
-		AddControllerYawInput(Yaw);
-		AddControllerPitchInput(Pitch);
-	}
 }
 
 void AMyCharacter::DoMove(float Right, float Forward)
@@ -258,6 +249,33 @@ void AMyCharacter::StopSprint()
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
 
+#pragma endregion
+
+#pragma region CAMERA_MOVEMENT
+
+void AMyCharacter::LookInput(const FInputActionValue& Value)
+{
+	// get the Vector2D look axis
+	FVector2D LookAxisVector = Value.Get<FVector2D>();
+
+	// pass the axis values to the aim input
+	DoAim(LookAxisVector.X, LookAxisVector.Y);
+}
+
+void AMyCharacter::DoAim(float Yaw, float Pitch)
+{
+	if (GetController())
+	{
+		// pass the rotation inputs
+		AddControllerYawInput(Yaw);
+		AddControllerPitchInput(Pitch);
+	}
+}
+
+#pragma endregion
+
+#pragma region INTERACTION
+
 void AMyCharacter::DoInteract()
 {
 	FHitResult Hit = DoInteractionSweep();
@@ -294,3 +312,5 @@ void AMyCharacter::SendServerInteract_Implementation(FHitResult Hit)
 {
 	IInteractable::Execute_Server_OnInteract(Hit.GetActor(), this);
 }
+
+#pragma endregion

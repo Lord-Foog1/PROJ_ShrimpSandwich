@@ -102,25 +102,7 @@ void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 	// Create the impact VFX
 	if (SpellImpactSystem)
 	{
-		UNiagaraComponent* SpawnedParticle = UNiagaraFunctionLibrary::SpawnSystemAtLocation(
-			GetWorld(),
-			SpellImpactSystem,
-			HitInfo.ImpactPoint,
-			FRotator::ZeroRotator,
-			FVector(1.0f, 1.0f, 1.0f),
-			true,
-			false,
-			ENCPoolMethod::None,
-			true
-		);
-		
-		if (SpawnedParticle)
-		{
-			SpawnedParticle->SetRenderCustomDepth(true);
-			SpawnedParticle->SetCustomDepthStencilValue(1);
-			SpawnedParticle->SetNiagaraVariableVec3(FString(TEXT("User_ImpactNormal")), HitInfo.ImpactNormal);
-			SpawnedParticle->Activate();
-		}
+		CreateExplosionParticles(HitInfo);
 	}
 	
 	// Damage hit actor if possible
@@ -129,13 +111,7 @@ void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 	
 	if (IsValid(HitActor) && HasAuthority())
 	{
-		UGameplayStatics::ApplyDamage(
-			HitActor,
-			DamageAmount,
-			GetInstigatorController(),
-			this,
-			nullptr
-		);
+		DealDamage(HitActor);
 	}
 	
 	//Creates AOE damage bara om spellen har en AOE komponent :p 
@@ -155,6 +131,40 @@ void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 		Collider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 	if (Movement) { Movement->Deactivate(); }
+}
+
+void ASpell::DealDamage(AActor* DamagedActor)
+{
+	UGameplayStatics::ApplyDamage(
+		DamagedActor,
+		DamageAmount,
+		GetInstigatorController(),
+		this,
+		nullptr
+		);
+}
+
+void ASpell::CreateExplosionParticles(FHitResult Hit)
+{
+	UNiagaraComponent* SpawnedParticle = UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+		GetWorld(),
+		SpellImpactSystem,
+		Hit.ImpactPoint,
+		FRotator::ZeroRotator,
+		FVector(1.0f, 1.0f, 1.0f),
+		true,
+		false,
+		ENCPoolMethod::None,
+		true
+		);
+		
+	if (SpawnedParticle)
+	{
+		SpawnedParticle->SetRenderCustomDepth(true);
+		SpawnedParticle->SetCustomDepthStencilValue(1);
+		SpawnedParticle->SetNiagaraVariableVec3(FString(TEXT("User_ImpactNormal")), Hit.ImpactNormal);
+		SpawnedParticle->Activate();
+	}
 }
 
 void ASpell::DestroyAfterParticles(class UNiagaraComponent* PSystem)

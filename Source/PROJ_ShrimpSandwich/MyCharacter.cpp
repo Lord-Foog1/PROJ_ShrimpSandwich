@@ -17,6 +17,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 //#include "Shader/Preshader2.h"
 //#include "WorldPartition/ContentBundle/ContentBundleLog.h"
+#include "UpgradeManager.h"
 #include "Net/UnrealNetwork.h"
 
 AMyCharacter::AMyCharacter()
@@ -58,6 +59,7 @@ AMyCharacter::AMyCharacter()
 	WalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
 	CurMana = MaxMana;
 }
+
 
 void AMyCharacter::BeginPlay()
 {
@@ -121,17 +123,118 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	}
 }
 
+#pragma region STATS
+
 /**
  * 
  * Listan över vilka variabler som skickas över nätverket.
- * Health replikeras till alla datorer, machealth behövs inte (den ändras aldrig)
+ * Health replikeras till alla datorer, machealth behövs inte (den ändras aldrig)(Nu gör den det)
  */
 void AMyCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	
 	DOREPLIFETIME(AMyCharacter, Health);
+	DOREPLIFETIME(AMyCharacter, MaxHealth);
+	
+	DOREPLIFETIME(AMyCharacter, SpellCooldownModifier);
+	DOREPLIFETIME(AMyCharacter, MeleeCooldownModifier);
+	DOREPLIFETIME(AMyCharacter, ManaRegenCooldownModifier);
+	
+	DOREPLIFETIME(AMyCharacter, ChargeUpTimeModifier);
+	
+	DOREPLIFETIME(AMyCharacter, SpellDamageModifier);
+	DOREPLIFETIME(AMyCharacter, MeleeDamageModifier);
+	
+	DOREPLIFETIME(AMyCharacter, ManaCostModifier);
+	DOREPLIFETIME(AMyCharacter, ChargeShotCostModifier);
+	
+	DOREPLIFETIME(AMyCharacter, MaxManaModifier);
+	DOREPLIFETIME(AMyCharacter, ManaRegenModifier);
+	DOREPLIFETIME(AMyCharacter, MaxHealthModifier);
+	
+	DOREPLIFETIME(AMyCharacter, MagicType);
+	
+	DOREPLIFETIME(AMyCharacter, SpellCost);
+	
+	DOREPLIFETIME(AMyCharacter, MaxMana);
+	DOREPLIFETIME(AMyCharacter, CurMana);
+	
+	DOREPLIFETIME(AMyCharacter, ManaRegenAmount);
+	DOREPLIFETIME(AMyCharacter, ManaRegenInterval);
+	
+	DOREPLIFETIME(AMyCharacter, ChargedSpellCost);
+	
+	DOREPLIFETIME(AMyCharacter, SpellCooldown);
+	DOREPLIFETIME(AMyCharacter, ChargeUpTime);
+	DOREPLIFETIME(AMyCharacter, MeleeCooldown);
+	
+	DOREPLIFETIME(AMyCharacter, MeleeDamage);
 }
+
+#pragma region UPGRADES
+
+void AMyCharacter::Server_UpgradeStat_Implementation(EUpgradeModifierType StatToUpgrade, float DeltaValue)
+{
+	ApplyUpgradeStat(StatToUpgrade, DeltaValue);
+}
+
+void AMyCharacter::ApplyUpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue)
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	float* TargetModifier = nullptr;
+
+	switch (StatToUpgrade)
+	{
+	case EUpgradeModifierType::SpellCooldown:
+		TargetModifier = &SpellCooldownModifier;
+		break;
+	case EUpgradeModifierType::MeleeCooldown:
+		TargetModifier = &MeleeCooldownModifier;
+		break;
+	case EUpgradeModifierType::ChargeUpTime:
+		TargetModifier = &ChargeUpTimeModifier;
+		break;
+	case EUpgradeModifierType::ManaRegenCooldown:
+		TargetModifier = &ManaRegenCooldownModifier;
+		break;
+	case EUpgradeModifierType::SpellDamage:
+		TargetModifier = &SpellDamageModifier;
+		break;
+	case EUpgradeModifierType::MeleeDamage:
+		TargetModifier = &MeleeDamageModifier;
+		break;
+	case EUpgradeModifierType::ManaCost:
+		TargetModifier = &ManaCostModifier;
+		break;
+	case EUpgradeModifierType::ChargeShotCost:
+		TargetModifier = &ChargeShotCostModifier;
+		break;
+	case EUpgradeModifierType::MaxMana:
+		TargetModifier = &MaxManaModifier;
+		break;
+	case EUpgradeModifierType::ManaRegen:
+		TargetModifier = &ManaRegenModifier;
+		break;
+	case EUpgradeModifierType::MaxHealth:
+		TargetModifier = &MaxHealthModifier;
+		break;
+	default:
+		break;
+	}
+
+	if (TargetModifier)
+	{
+		*TargetModifier = FMath::Max(0.05f, *TargetModifier + DeltaValue);
+	}
+}
+
+#pragma endregion
+#pragma endregion
 
 #pragma region HEALTH
 

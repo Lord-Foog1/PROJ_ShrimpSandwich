@@ -9,6 +9,7 @@
 #include "MyCharacter.generated.h"
 
 #pragma region PREDECLARATIONS
+enum class EUpgradeModifierType : uint8;
 class UBoxComponent;
 class UInputComponent;
 class USkeletalMeshComponent;
@@ -69,12 +70,64 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, Category = "Player")
 	FOnPlayerHealthChanged OnHealthChanged;
+
+	UFUNCTION(BlueprintCallable, Server, Reliable, Category = "Upgrades")
+	void Server_UpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue);
+
+	void ApplyUpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue);
 	
-#pragma region UPGRADE_FUNCTIONS
+#pragma region UPGRADE_MODIFIERS
 	
+#pragma region COOLDOWN
 	
+	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float SpellCooldownModifier = 1.0f;
+	
+	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float MeleeCooldownModifier = 1.0f;
+	
+	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float ChargeUpTimeModifier = 1.0f;
+	
+	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float ManaRegenCooldownModifier = 1.0f;
+	
+#pragma endregion
+	
+#pragma region DAMAGE
+	
+	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float SpellDamageModifier = 1.0f;
+	
+	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float MeleeDamageModifier = 1.0f;
+	
+#pragma endregion
+	
+#pragma region MANA_COST
+	
+	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float ManaCostModifier = 1.0f;
+	
+	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float ChargeShotCostModifier = 1.0f;
+	
+#pragma endregion
+	
+#pragma region STATS
+	
+	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float MaxManaModifier = 1.0f;
+	
+	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float ManaRegenModifier = 1.0f;
+	
+	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float MaxHealthModifier = 1.0f;
 	
 #pragma endregion	
+	
+#pragma endregion
 	
 protected:
 	virtual void BeginPlay() override;
@@ -151,7 +204,7 @@ protected:
 	
 #pragma region HEALTH
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Stats")
+	UPROPERTY(Replicated, EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Stats")
 	float MaxHealth = 100.f;
 	
 	//Ändras bara på server
@@ -193,33 +246,33 @@ private:
 #pragma region MAGIC_VARIABLES
 	
 	/** Type of magic the player has */
-	UPROPERTY(EditAnywhere, Category = "Player|Magic", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EMagicType MagicType;
 	
 #pragma region MANA
 	
 	/** Cost of a spell */
-	UPROPERTY(EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int SpellCost = 20;
 	
 	/** Max amount of mana a player has (Can be upgraded) */
-	UPROPERTY(EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int MaxMana = 100;
 	
 	/** The current amount of mana */
-	UPROPERTY(EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int CurMana;
 	
 	/** Amount of mana the player gets back after ManaRegenInterval seconds */
-	UPROPERTY(EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int ManaRegenAmount = 5;
 	
 	/** How often the player gets mana back */
-	UPROPERTY(EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float ManaRegenInterval = 2.0f;
 	
 	/** Cost of a charged shot */
-	UPROPERTY(EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int ChargedSpellCost = 50;
 	
 #pragma endregion
@@ -227,11 +280,11 @@ private:
 #pragma region SPELL
 	
 	/** The amount of time between magic shots */
-	UPROPERTY(EditAnywhere, Category = "Player|Magic|Spell", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Spell", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float SpellCooldown = 1.0f;
 	
 	/** The amount of time it takes for the charged spell shot to charge up */
-	UPROPERTY(EditAnywhere, Category = "Player|Magic|Spell", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Spell", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float ChargeUpTime = 3.0f;
 
 #pragma endregion
@@ -240,65 +293,12 @@ private:
 #pragma region MELEE
 	
 	/** Amount of time between allowed mêlée attacks */
-	UPROPERTY(EditAnywhere, Category = "Player|Melee", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Melee", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float MeleeCooldown = 1.0f;
 	
 	/** Amount of damage dealt by mêlée attack */
-	UPROPERTY(EditAnywhere, Category = "Player|Melee", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Melee", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float MeleeDamage = 10.0f;
-	
-#pragma endregion
-	
-#pragma region UPGRADE_MODIFIERS
-	
-#pragma region COOLDOWN
-	
-	UPROPERTY()
-	float SpellCooldownModifier = 1.0f;
-	
-	UPROPERTY()
-	float MeleeCooldownModifier = 1.0f;
-	
-	UPROPERTY()
-	float ChargeUpTimeModifier = 1.0f;
-	
-	UPROPERTY()
-	float ManaRegenCooldownModifier = 1.0f;
-	
-#pragma endregion
-	
-#pragma region DAMAGE
-	
-	UPROPERTY()
-	float SpellDamageModifier = 1.0f;
-	
-	UPROPERTY()
-	float MeleeDamageModifier = 1.0f;
-	
-#pragma endregion
-	
-#pragma region MANA_COST
-	
-	UPROPERTY()
-	float ManaCostModifier = 1.0f;
-	
-	UPROPERTY()
-	float ChargeShotCostModifier = 1.0f;
-	
-#pragma endregion
-	
-#pragma region STATS
-	
-	UPROPERTY()
-	float MaxManaModifier = 1.0f;
-	
-	UPROPERTY()
-	float ManaRegenModifier = 1.0f;
-	
-	UPROPERTY()
-	float MaxHealthModifier = 1.0f;
-	
-#pragma endregion	
 	
 #pragma endregion
 };

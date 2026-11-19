@@ -28,4 +28,16 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AcceptQuest(const FQuest& Quest);
 	
+	UFUNCTION(BlueprintCallable)
+	void RerollQuests();
+	
+	UFUNCTION(BlueprintCallable)
+	void PickQuests();
+	
+private:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess, UIMin = 0, ClampMin = 0))
+	int32 NumberOfQuestsOnBoard;
+	
+	UPROPERTY()
+	TArray<FQuest> ShownQuests;
 };

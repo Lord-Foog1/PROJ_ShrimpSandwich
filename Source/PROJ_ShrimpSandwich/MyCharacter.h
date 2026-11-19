@@ -163,5 +163,5 @@ private:
 	int InteractionRange = 200;
 	
 	UPROPERTY(EditAnywhere, Category = "Player", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EMagicType MagicType = EMagicType::Fire;
+	EMagicType MagicType;
 };

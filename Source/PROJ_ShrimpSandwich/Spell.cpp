@@ -125,7 +125,7 @@ void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 	
 	// Damage hit actor if possible
 	//EnemySPells skadar bara spelare, så slime inte skadar varandra
-	const bool bCanDamage = !bOnlyDamagePlayers || (HitActor && HitActor->IsA<AMyCharacter());
+	const bool bCanDamage = !bOnlyDamagePlayers || (HitActor && HitActor->IsA<AMyCharacter>());
 	
 	if (IsValid(HitActor) && HasAuthority())
 	{

@@ -49,6 +49,12 @@ public:
 	void DoHit(AActor* HitActor, FHitResult HitInfo);
 	
 	UFUNCTION()
+	void DealDamage(AActor* DamagedActor);
+	
+	UFUNCTION()
+	void CreateExplosionParticles(FHitResult Hit);
+	
+	UFUNCTION()
 	void DestroyAfterParticles(class UNiagaraComponent* PSystem);
 	
 private:

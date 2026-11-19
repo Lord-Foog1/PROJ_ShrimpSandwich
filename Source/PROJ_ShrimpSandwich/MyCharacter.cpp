@@ -7,6 +7,7 @@
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/BoxComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
@@ -16,6 +17,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 //#include "Shader/Preshader2.h"
 //#include "WorldPartition/ContentBundle/ContentBundleLog.h"
+#include "UpgradeManager.h"
 #include "Net/UnrealNetwork.h"
 
 AMyCharacter::AMyCharacter()
@@ -41,6 +43,8 @@ AMyCharacter::AMyCharacter()
 	FirstPersonCameraComponent->FirstPersonFieldOfView = 70.0f;
 	FirstPersonCameraComponent->FirstPersonScale = 0.6f;
 
+	MeleeBoxComponent = GetComponentByClass<UBoxComponent>();
+	
 	// Configure the character comps
 	GetMesh()->SetOwnerNoSee(true);
 	GetMesh()->FirstPersonPrimitiveType = EFirstPersonPrimitiveType::WorldSpaceRepresentation;
@@ -53,7 +57,9 @@ AMyCharacter::AMyCharacter()
 	
 	
 	WalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
+	CurMana = MaxMana;
 }
+
 
 void AMyCharacter::BeginPlay()
 {
@@ -117,17 +123,120 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	}
 }
 
+#pragma region STATS
+
 /**
  * 
  * Listan över vilka variabler som skickas över nätverket.
- * Health replikeras till alla datorer, machealth behövs inte (den ändras aldrig)
+ * Health replikeras till alla datorer, machealth behövs inte (den ändras aldrig)(Nu gör den det)
  */
 void AMyCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	
 	DOREPLIFETIME(AMyCharacter, Health);
+	DOREPLIFETIME(AMyCharacter, MaxHealth);
+	
+	DOREPLIFETIME(AMyCharacter, SpellCooldownModifier);
+	DOREPLIFETIME(AMyCharacter, MeleeCooldownModifier);
+	DOREPLIFETIME(AMyCharacter, ManaRegenCooldownModifier);
+	
+	DOREPLIFETIME(AMyCharacter, ChargeUpTimeModifier);
+	
+	DOREPLIFETIME(AMyCharacter, SpellDamageModifier);
+	DOREPLIFETIME(AMyCharacter, MeleeDamageModifier);
+	
+	DOREPLIFETIME(AMyCharacter, ManaCostModifier);
+	DOREPLIFETIME(AMyCharacter, ChargeShotCostModifier);
+	
+	DOREPLIFETIME(AMyCharacter, MaxManaModifier);
+	DOREPLIFETIME(AMyCharacter, ManaRegenModifier);
+	DOREPLIFETIME(AMyCharacter, MaxHealthModifier);
+	
+	DOREPLIFETIME(AMyCharacter, MagicType);
+	
+	DOREPLIFETIME(AMyCharacter, SpellCost);
+	
+	DOREPLIFETIME(AMyCharacter, MaxMana);
+	DOREPLIFETIME(AMyCharacter, CurMana);
+	
+	DOREPLIFETIME(AMyCharacter, ManaRegenAmount);
+	DOREPLIFETIME(AMyCharacter, ManaRegenInterval);
+	
+	DOREPLIFETIME(AMyCharacter, ChargedSpellCost);
+	
+	DOREPLIFETIME(AMyCharacter, SpellCooldown);
+	DOREPLIFETIME(AMyCharacter, ChargeUpTime);
+	DOREPLIFETIME(AMyCharacter, MeleeCooldown);
+	
+	DOREPLIFETIME(AMyCharacter, MeleeDamage);
 }
+
+#pragma region UPGRADES
+
+void AMyCharacter::Server_UpgradeStat_Implementation(EUpgradeModifierType StatToUpgrade, float DeltaValue)
+{
+	ApplyUpgradeStat(StatToUpgrade, DeltaValue);
+}
+
+void AMyCharacter::ApplyUpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue)
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	float* TargetModifier = nullptr;
+
+	switch (StatToUpgrade)
+	{
+	case EUpgradeModifierType::SpellCooldown:
+		TargetModifier = &SpellCooldownModifier;
+		break;
+	case EUpgradeModifierType::MeleeCooldown:
+		TargetModifier = &MeleeCooldownModifier;
+		break;
+	case EUpgradeModifierType::ChargeUpTime:
+		TargetModifier = &ChargeUpTimeModifier;
+		break;
+	case EUpgradeModifierType::ManaRegenCooldown:
+		TargetModifier = &ManaRegenCooldownModifier;
+		break;
+	case EUpgradeModifierType::SpellDamage:
+		TargetModifier = &SpellDamageModifier;
+		break;
+	case EUpgradeModifierType::MeleeDamage:
+		TargetModifier = &MeleeDamageModifier;
+		break;
+	case EUpgradeModifierType::ManaCost:
+		TargetModifier = &ManaCostModifier;
+		break;
+	case EUpgradeModifierType::ChargeShotCost:
+		TargetModifier = &ChargeShotCostModifier;
+		break;
+	case EUpgradeModifierType::MaxMana:
+		TargetModifier = &MaxManaModifier;
+		break;
+	case EUpgradeModifierType::ManaRegen:
+		TargetModifier = &ManaRegenModifier;
+		break;
+	case EUpgradeModifierType::MaxHealth:
+		TargetModifier = &MaxHealthModifier;
+		break;
+	default:
+		break;
+	}
+
+	if (TargetModifier)
+	{
+		*TargetModifier = FMath::Max(0.05f, *TargetModifier + DeltaValue);
+	}
+}
+
+#pragma endregion
+#pragma endregion
+
+#pragma region HEALTH
 
 /**
  * 
@@ -164,6 +273,10 @@ void AMyCharacter::OnRep_Health()
 	OnHealthChanged.Broadcast(Health, MaxHealth);
 }
 
+#pragma endregion
+
+#pragma region MOVEMENT
+
 void AMyCharacter::MoveInput(const FInputActionValue& Value)
 {
 	// get the Vector2D move axis
@@ -171,25 +284,6 @@ void AMyCharacter::MoveInput(const FInputActionValue& Value)
 
 	// pass the axis values to the move input
 	DoMove(MovementVector.X, MovementVector.Y);
-}
-
-void AMyCharacter::LookInput(const FInputActionValue& Value)
-{
-	// get the Vector2D look axis
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
-
-	// pass the axis values to the aim input
-	DoAim(LookAxisVector.X, LookAxisVector.Y);
-}
-
-void AMyCharacter::DoAim(float Yaw, float Pitch)
-{
-	if (GetController())
-	{
-		// pass the rotation inputs
-		AddControllerYawInput(Yaw);
-		AddControllerPitchInput(Pitch);
-	}
 }
 
 void AMyCharacter::DoMove(float Right, float Forward)
@@ -258,6 +352,33 @@ void AMyCharacter::StopSprint()
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
 
+#pragma endregion
+
+#pragma region CAMERA_MOVEMENT
+
+void AMyCharacter::LookInput(const FInputActionValue& Value)
+{
+	// get the Vector2D look axis
+	FVector2D LookAxisVector = Value.Get<FVector2D>();
+
+	// pass the axis values to the aim input
+	DoAim(LookAxisVector.X, LookAxisVector.Y);
+}
+
+void AMyCharacter::DoAim(float Yaw, float Pitch)
+{
+	if (GetController())
+	{
+		// pass the rotation inputs
+		AddControllerYawInput(Yaw);
+		AddControllerPitchInput(Pitch);
+	}
+}
+
+#pragma endregion
+
+#pragma region INTERACTION
+
 void AMyCharacter::DoInteract()
 {
 	FHitResult Hit = DoInteractionSweep();
@@ -294,3 +415,5 @@ void AMyCharacter::SendServerInteract_Implementation(FHitResult Hit)
 {
 	IInteractable::Execute_Server_OnInteract(Hit.GetActor(), this);
 }
+
+#pragma endregion

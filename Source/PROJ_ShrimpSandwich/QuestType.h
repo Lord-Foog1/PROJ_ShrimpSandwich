@@ -5,23 +5,28 @@
 #include "CoreMinimal.h"
 #include "QuestType.generated.h"
 
-/**
- * 
- */
-USTRUCT()
+UENUM(BlueprintType)
+enum class EQuestGoal : uint8
+{
+	None,
+	KillAmount,
+	TimeLimit,
+	KnockoutLimit,
+	PlayerDamageLimit,
+	
+};
+
+USTRUCT(BlueprintType)
 struct FQuestType
 {
 	GENERATED_BODY();
 	
-	UPROPERTY()
-	int TimeFrame;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EQuestGoal GoalType;
 	
-	UPROPERTY()
-	float DamageTakenRequirement;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (UIMin = 0, ClampMin = 0))
+	float LimitAndAmountNumber = 0;
 	
-	UPROPERTY()
-	int EnemyKills;
-	
-	UPROPERTY()
-	AActor* EnemyType;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	AActor* TargetEnemy = nullptr;
 };

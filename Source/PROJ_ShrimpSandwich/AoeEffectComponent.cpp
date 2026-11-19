@@ -19,12 +19,21 @@ UAoeEffectComponent::UAoeEffectComponent()
 }
 
 // Called when the game starts
+// AoeEffectComponent.cpp
 void UAoeEffectComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	if (AActor* Owner = GetOwner())
+	{
+		if (USceneComponent* Root = Owner->GetRootComponent())
+		{
+			ExplosionCollider->AttachToComponent(Root, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+		}
+	}
+
+	ExplosionCollider->SetGenerateOverlapEvents(true);
 	ExplosionCollider->OnComponentBeginOverlap.AddDynamic(this, &UAoeEffectComponent::OnExplosion);
-	
 }
 
 

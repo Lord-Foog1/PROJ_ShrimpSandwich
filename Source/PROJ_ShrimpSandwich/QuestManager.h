@@ -23,7 +23,7 @@ public:
 	void AcceptQuest(const FQuest& Quest);
     
 	// Returns one of the arrays/maps
-	TMap<FQuest, FQuestType> GetQuests() const { return Quests; }
+	TArray<FQuest> GetQuests() const { return Quests; }
 	const TArray<FQuest>& GetActiveQuests() const { return ActiveQuests; }
 	const TArray<FQuest>& GetCompletedQuests() const { return CompletedQuests; }
     
@@ -39,7 +39,35 @@ private:
     
 	TArray<FQuest> ActiveQuests;
     
-	TMap<FQuest, FQuestType> Quests;
+	TArray<FQuest> Quests;
     
 	TArray<FQuest> CompletedQuests;
 };
+
+/**
+ * 
+ * Quest:
+ * Name,
+ * Description,
+ * Reward,
+ * Difficulty
+ * 
+ * Quest Types:
+ * Goal of Quests?
+ * Time Limit,
+ * kill Count,
+ * Player Damage Limit,
+ * Player Knockout Limit
+ * 
+ * QuestManager:
+ * Store Quests (Get/Set/Add),
+ * Store Active Quests (Get/Set/Add),
+ * Store Completed Quests (Get/Set/Add)
+ * 
+ * Quest Functions:
+ * Accept Quests,
+ * Reroll Quests,
+ * Complete Quests and Get Rewards,
+ * Change How The Round Functions
+ * 
+ */

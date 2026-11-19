@@ -62,7 +62,7 @@
 	</object>
 	<object class="EventAutomatableProperties" id="{0f571446-66d2-4b01-a0cd-4b2aa63cd351}">
 		<property name="maximumDistance">
-			<value>25</value>
+			<value>30</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{14ec20ab-4356-4119-acdf-be57b4ed3250}" />
@@ -227,7 +227,7 @@
 			<value>1</value>
 		</property>
 		<property name="curveShape">
-			<value>-0.124480329</value>
+			<value>-0.155425459</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{88a04e96-7b70-4187-9c9b-f2e688c213b7}">

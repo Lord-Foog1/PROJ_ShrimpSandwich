@@ -57,6 +57,7 @@ void UAoeEffectComponent::DoDamage(AActor* DamagedActor)
 	if (GetOwner() == DamagedActor) return;
 	if (DamagedActor == ShotActor) return;
 	if (DamagedActor == GetOwner()->GetOwner()) return;
+	if (!GetOwner()->HasAuthority()) return;
 	
 	UGameplayStatics::ApplyDamage(
 		DamagedActor,

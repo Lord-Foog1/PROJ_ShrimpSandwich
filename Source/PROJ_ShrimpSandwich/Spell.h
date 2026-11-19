@@ -6,6 +6,7 @@
 #include "MagicType.h"
 #include "GameFramework/Actor.h"
 #include "Kismet/GameplayStatics.h"
+#include "MyCharacter.h"
 #include "Spell.generated.h"
 
 UCLASS()
@@ -69,6 +70,9 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category = "Spell", meta = (AllowPrivateAccess), BlueprintReadWrite)
 	class UNiagaraSystem* SpellImpactSystem;
+	
+	UPROPERTY(EditAnywhere, Category = "Spell", meta = (AllowPrivateAccess), BlueprintReadWrite)
+	bool bOnlyDamagePlayers = false;
 	
 	UPROPERTY()
 	class UNiagaraComponent* ParticleSystem;

@@ -22,10 +22,10 @@ void ASpell::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (!HasAuthority())
-	{
-		return;
-	}
+	// if (!HasAuthority())
+	// {
+	// 	return;
+	// }
 	
 	ParticleSystem = GetComponentByClass<UNiagaraComponent>();
 	Collider = GetComponentByClass<USphereComponent>();
@@ -36,6 +36,7 @@ void ASpell::BeginPlay()
 	{
 		Collider->SetNotifyRigidBodyCollision(true);
 		Collider->OnComponentHit.AddDynamic(this, &ASpell::OnHit);
+		Collider->IgnoreActorWhenMoving(GetInstigator(), true);
 	}
 	
 	if (ParticleSystem)
@@ -92,12 +93,6 @@ void ASpell::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimi
 
 void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 {
-	// Checks the authority of the caller of the method
-	if (!HasAuthority())
-	{
-		return;
-	}
-	
 	// Checks that it didn't hit the owner
 	if (GetOwner() == HitActor)
 	{
@@ -129,7 +124,10 @@ void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 	}
 	
 	// Damage hit actor if possible
-	if (IsValid(HitActor))
+	//EnemySPells skadar bara spelare, så slime inte skadar varandra
+	const bool bCanDamage = !bOnlyDamagePlayers || (HitActor && HitActor->IsA<AMyCharacter>());
+	
+	if (IsValid(HitActor) && HasAuthority())
 	{
 		UGameplayStatics::ApplyDamage(
 			HitActor,
@@ -140,7 +138,13 @@ void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 		);
 	}
 	
-	// Creates AOE damage
+	//Creates AOE damage bara om spellen har en AOE komponent :p 
+	if (AOEComponent)
+	{
+		AOEComponent->Explode(HitActor);
+	}
+	
+	// Creates AOE damage 
 	AOEComponent->Explode(HitActor);
 	
 	// Turn off necessary stuff for it to not look weird

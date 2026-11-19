@@ -27,7 +27,7 @@ class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-#pragma region COMPONENTS	
+#pragma region COMPONENTS
 	
 	/** Pawn mesh: first person view (arms; seen only by self) */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
@@ -40,7 +40,7 @@ class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	UBoxComponent* MeleeBoxComponent;
 
-#pragma endregion	
+#pragma endregion
 	
 public:
 	AMyCharacter();
@@ -70,10 +70,16 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Player")
 	FOnPlayerHealthChanged OnHealthChanged;
 	
+#pragma region UPGRADE_FUNCTIONS
+	
+	
+	
+#pragma endregion	
+	
 protected:
 	virtual void BeginPlay() override;
 	
-#pragma region INPUT_ACTIONS	
+#pragma region INPUT_ACTIONS
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* JumpAction;
 	
@@ -94,9 +100,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* InteractAction;
-#pragma endregion	
+#pragma endregion
 
-#pragma region INPUT_METHODS	
+#pragma region INPUT_METHODS
 	/** Set up input action bindings */
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	
@@ -139,7 +145,7 @@ protected:
 	
 	UFUNCTION(Server, Reliable)
 	void SendServerInteract(FHitResult Hit);
-#pragma endregion	
+#pragma endregion
 	
 	FHitResult DoInteractionSweep();
 	
@@ -159,11 +165,11 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Player")
 	void OnHealthDepleted();
 	
-#pragma endregion	
+#pragma endregion
 	
 private:
 
-#pragma region INPUT_VARIABLES	
+#pragma region INPUT_VARIABLES
 	
 	UPROPERTY(EditAnywhere, Category="Dash")
 	float DashSpeed = 4000.0f;
@@ -182,14 +188,15 @@ private:
 	UPROPERTY(EditAnywhere, Category="Input")
 	int InteractionRange = 200;
 	
-#pragma endregion	
-	
-	UPROPERTY(EditAnywhere, Category = "Player|Magic", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EMagicType MagicType;
+#pragma endregion
 	
 #pragma region MAGIC_VARIABLES
 	
-#pragma region MANA	
+	/** Type of magic the player has */
+	UPROPERTY(EditAnywhere, Category = "Player|Magic", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EMagicType MagicType;
+	
+#pragma region MANA
 	
 	/** Cost of a spell */
 	UPROPERTY(EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
@@ -227,7 +234,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Player|Magic|Spell", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float ChargeUpTime = 3.0f;
 
-#pragma endregion	
+#pragma endregion
 #pragma endregion
 	
 #pragma region MELEE
@@ -240,5 +247,58 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Player|Melee", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float MeleeDamage = 10.0f;
 	
+#pragma endregion
+	
+#pragma region UPGRADE_MODIFIERS
+	
+#pragma region COOLDOWN
+	
+	UPROPERTY()
+	float SpellCooldownModifier = 1.0f;
+	
+	UPROPERTY()
+	float MeleeCooldownModifier = 1.0f;
+	
+	UPROPERTY()
+	float ChargeUpTimeModifier = 1.0f;
+	
+	UPROPERTY()
+	float ManaRegenCooldownModifier = 1.0f;
+	
+#pragma endregion
+	
+#pragma region DAMAGE
+	
+	UPROPERTY()
+	float SpellDamageModifier = 1.0f;
+	
+	UPROPERTY()
+	float MeleeDamageModifier = 1.0f;
+	
+#pragma endregion
+	
+#pragma region MANA_COST
+	
+	UPROPERTY()
+	float ManaCostModifier = 1.0f;
+	
+	UPROPERTY()
+	float ChargeShotCostModifier = 1.0f;
+	
+#pragma endregion
+	
+#pragma region STATS
+	
+	UPROPERTY()
+	float MaxManaModifier = 1.0f;
+	
+	UPROPERTY()
+	float ManaRegenModifier = 1.0f;
+	
+	UPROPERTY()
+	float MaxHealthModifier = 1.0f;
+	
 #pragma endregion	
+	
+#pragma endregion
 };

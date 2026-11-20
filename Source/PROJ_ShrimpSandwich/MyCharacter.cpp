@@ -17,6 +17,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 //#include "Shader/Preshader2.h"
 //#include "WorldPartition/ContentBundle/ContentBundleLog.h"
+#include "PlayerUpgradeComponent.h"
 #include "UpgradeManager.h"
 #include "Net/UnrealNetwork.h"
 
@@ -42,8 +43,6 @@ AMyCharacter::AMyCharacter()
 	FirstPersonCameraComponent->bEnableFirstPersonScale = true;
 	FirstPersonCameraComponent->FirstPersonFieldOfView = 70.0f;
 	FirstPersonCameraComponent->FirstPersonScale = 0.6f;
-
-	MeleeBoxComponent = GetComponentByClass<UBoxComponent>();
 	
 	// Configure the character comps
 	GetMesh()->SetOwnerNoSee(true);
@@ -70,6 +69,9 @@ void AMyCharacter::BeginPlay()
 		Health = MaxHealth;
 		OnRep_Health();
 	}
+	
+	MeleeBoxComponent = GetComponentByClass<UBoxComponent>();
+	UpgradeComponent = GetComponentByClass<UPlayerUpgradeComponent>();
 }
 
 void AMyCharacter::Tick(float DeltaSeconds)
@@ -137,22 +139,6 @@ void AMyCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 	DOREPLIFETIME(AMyCharacter, Health);
 	DOREPLIFETIME(AMyCharacter, MaxHealth);
 	
-	DOREPLIFETIME(AMyCharacter, SpellCooldownModifier);
-	DOREPLIFETIME(AMyCharacter, MeleeCooldownModifier);
-	DOREPLIFETIME(AMyCharacter, ManaRegenCooldownModifier);
-	
-	DOREPLIFETIME(AMyCharacter, ChargeUpTimeModifier);
-	
-	DOREPLIFETIME(AMyCharacter, SpellDamageModifier);
-	DOREPLIFETIME(AMyCharacter, MeleeDamageModifier);
-	
-	DOREPLIFETIME(AMyCharacter, ManaCostModifier);
-	DOREPLIFETIME(AMyCharacter, ChargeShotCostModifier);
-	
-	DOREPLIFETIME(AMyCharacter, MaxManaModifier);
-	DOREPLIFETIME(AMyCharacter, ManaRegenModifier);
-	DOREPLIFETIME(AMyCharacter, MaxHealthModifier);
-	
 	DOREPLIFETIME(AMyCharacter, MagicType);
 	
 	DOREPLIFETIME(AMyCharacter, SpellCost);
@@ -185,52 +171,8 @@ void AMyCharacter::ApplyUpgradeStat(EUpgradeModifierType StatToUpgrade, float De
 	{
 		return;
 	}
-
-	float* TargetModifier = nullptr;
-
-	switch (StatToUpgrade)
-	{
-	case EUpgradeModifierType::SpellCooldown:
-		TargetModifier = &SpellCooldownModifier;
-		break;
-	case EUpgradeModifierType::MeleeCooldown:
-		TargetModifier = &MeleeCooldownModifier;
-		break;
-	case EUpgradeModifierType::ChargeUpTime:
-		TargetModifier = &ChargeUpTimeModifier;
-		break;
-	case EUpgradeModifierType::ManaRegenCooldown:
-		TargetModifier = &ManaRegenCooldownModifier;
-		break;
-	case EUpgradeModifierType::SpellDamage:
-		TargetModifier = &SpellDamageModifier;
-		break;
-	case EUpgradeModifierType::MeleeDamage:
-		TargetModifier = &MeleeDamageModifier;
-		break;
-	case EUpgradeModifierType::ManaCost:
-		TargetModifier = &ManaCostModifier;
-		break;
-	case EUpgradeModifierType::ChargeShotCost:
-		TargetModifier = &ChargeShotCostModifier;
-		break;
-	case EUpgradeModifierType::MaxMana:
-		TargetModifier = &MaxManaModifier;
-		break;
-	case EUpgradeModifierType::ManaRegen:
-		TargetModifier = &ManaRegenModifier;
-		break;
-	case EUpgradeModifierType::MaxHealth:
-		TargetModifier = &MaxHealthModifier;
-		break;
-	default:
-		break;
-	}
-
-	if (TargetModifier)
-	{
-		*TargetModifier = FMath::Max(0.05f, *TargetModifier + DeltaValue);
-	}
+	
+	UpgradeComponent->ApplyUpgrades(StatToUpgrade, DeltaValue);
 }
 
 #pragma endregion

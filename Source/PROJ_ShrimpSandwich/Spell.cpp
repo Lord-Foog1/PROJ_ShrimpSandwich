@@ -8,6 +8,8 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "SpellUpgradeComponent.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 ASpell::ASpell()
@@ -31,6 +33,7 @@ void ASpell::BeginPlay()
 	Collider = GetComponentByClass<USphereComponent>();
 	Movement = GetComponentByClass<UProjectileMovementComponent>();
 	AOEComponent = GetComponentByClass<UAoeEffectComponent>();
+	SpellUpgrade = GetComponentByClass<USpellUpgradeComponent>();
 	
 	if (Collider)
 	{
@@ -83,6 +86,16 @@ void ASpell::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ASpell::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME(ASpell, Lifetime);
+	DOREPLIFETIME(ASpell, DamageAmount);
+	DOREPLIFETIME(ASpell, SpellSpeed);
+	DOREPLIFETIME(ASpell, SpellMaxSpeed);
 }
 
 void ASpell::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
@@ -167,4 +180,12 @@ void ASpell::CreateExplosionParticles(FHitResult Hit)
 void ASpell::DestroyAfterParticles(class UNiagaraComponent* PSystem)
 {
 	this->Destroy();
+}
+
+void ASpell::ApplyUpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue)
+{
+}
+
+void ASpell::Server_UpgradeStat_Implementation(EUpgradeModifierType StatToUpgrade, float DeltaValue)
+{
 }

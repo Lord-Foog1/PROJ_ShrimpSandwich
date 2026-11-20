@@ -12,15 +12,20 @@ UENUM(BlueprintType)
 enum class EUpgradeModifierType : uint8
 {
 	SpellCooldown        UMETA(DisplayName = "Spell Cooldown"),
-	MeleeCooldown        UMETA(DisplayName = "Melee Cooldown"),
-	ChargeUpTime         UMETA(DisplayName = "Charge Up Time"),
-	ManaRegenCooldown    UMETA(DisplayName = "Mana Regen Cooldown"),
 	SpellDamage          UMETA(DisplayName = "Spell Damage"),
+	SpellCost            UMETA(DisplayName = "Spell Cost"),
+	SpellSpeed           UMETA(DisplayName = "Spell Speed"),
+	SpellLifetime        UMETA(DisplayName = "Spell Lifetime"),
+	MeleeCooldown        UMETA(DisplayName = "Melee Cooldown"),
 	MeleeDamage          UMETA(DisplayName = "Melee Damage"),
-	ManaCost             UMETA(DisplayName = "Mana Cost"),
+	MeleeRange           UMETA(DisplayName = "Melee Range"),
+	ChargeUpTime         UMETA(DisplayName = "Charge Up Time"),
 	ChargeShotCost       UMETA(DisplayName = "Charge Shot Cost"),
-	MaxMana              UMETA(DisplayName = "Max Mana"),
+	ChargeDamage         UMETA(DisplayName = "Charge Damage"),
+	ChargeCooldown       UMETA(DisplayName = "Charge Cooldown"),
+	ManaRegenCooldown    UMETA(DisplayName = "Mana Regen Cooldown"),
 	ManaRegen            UMETA(DisplayName = "Mana Regen"),
+	MaxMana              UMETA(DisplayName = "Max Mana"),
 	MaxHealth            UMETA(DisplayName = "Max Health")
 };
 
@@ -32,7 +37,8 @@ class PROJ_SHRIMPSANDWICH_API UUpgradeManager : public UGameInstanceSubsystem
 public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Upgrades")
-	void UpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue, AMyCharacter* TargetCharacter = nullptr);
+	void UpgradePlayerStat(EUpgradeModifierType StatToUpgrade, float DeltaValue, AMyCharacter* TargetCharacter = nullptr);
 	
-private:	
+	UFUNCTION(BlueprintCallable, Category = "Upgrades")
+	void UpgradeSpellStat(EUpgradeModifierType StatToUpgrade, float DeltaValue, ASpell* TargetSpell = nullptr);
 };

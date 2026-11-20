@@ -9,6 +9,7 @@
 #include "MyCharacter.generated.h"
 
 #pragma region PREDECLARATIONS
+class UPlayerUpgradeComponent;
 enum class EUpgradeModifierType : uint8;
 class UBoxComponent;
 class UInputComponent;
@@ -40,6 +41,9 @@ class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	UBoxComponent* MeleeBoxComponent;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
+	UPlayerUpgradeComponent* UpgradeComponent;
 
 #pragma endregion
 	
@@ -75,59 +79,6 @@ public:
 	void Server_UpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue);
 
 	void ApplyUpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue);
-	
-#pragma region UPGRADE_MODIFIERS
-	
-#pragma region COOLDOWN
-	
-	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float SpellCooldownModifier = 1.0f;
-	
-	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float MeleeCooldownModifier = 1.0f;
-	
-	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float ChargeUpTimeModifier = 1.0f;
-	
-	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float ManaRegenCooldownModifier = 1.0f;
-	
-#pragma endregion
-	
-#pragma region DAMAGE
-	
-	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float SpellDamageModifier = 1.0f;
-	
-	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float MeleeDamageModifier = 1.0f;
-	
-#pragma endregion
-	
-#pragma region MANA_COST
-	
-	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float ManaCostModifier = 1.0f;
-	
-	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float ChargeShotCostModifier = 1.0f;
-	
-#pragma endregion
-	
-#pragma region STATS
-	
-	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float MaxManaModifier = 1.0f;
-	
-	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float ManaRegenModifier = 1.0f;
-	
-	UPROPERTY(Replicated, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float MaxHealthModifier = 1.0f;
-	
-#pragma endregion	
-	
-#pragma endregion
 	
 protected:
 	virtual void BeginPlay() override;

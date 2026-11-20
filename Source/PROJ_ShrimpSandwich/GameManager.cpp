@@ -3,13 +3,6 @@
 #include "GameManager.h"
 #include "Kismet/GameplayStatics.h"
 
-void UGameManager::Init()
-{
-	Super::Init();
-	
-	FWorldDelegates::LevelAddedToWorld.AddUObject(this, &UGameManager::OnLevelAddedToWorld);
-}
-
 void UGameManager::LoadLevel(TSoftObjectPtr<UWorld> Level)
 {
 	// Checks if there is a previous level to despawn
@@ -17,11 +10,13 @@ void UGameManager::LoadLevel(TSoftObjectPtr<UWorld> Level)
 	{
 		PreviousLevel = CurrentLevel;
 	}
+	
 	ULevelStreaming* StreamingLevel = UGameplayStatics::GetStreamingLevel(GetWorld(), FName(*Level.GetAssetName()));
+	
 	if (StreamingLevel)
 	{
 		// Use AddUniqueDynamic so you don't bind it twice if the same level reloads later
-		StreamingLevel->bShouldBlockOnLoad = true;
+		StreamingLevel->bShouldBlockOnLoad = false;
 		StreamingLevel->OnLevelShown.AddUniqueDynamic(this, &UGameManager::HandleLevelShown);
 	}
 	CurrentLevel = Level;
@@ -32,20 +27,15 @@ void UGameManager::LoadLevel(TSoftObjectPtr<UWorld> Level)
 	{
 		LatentInfo.ExecutionFunction = FName("LevelLoaded");
 		LatentInfo.Linkage = 0;
-		UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),Level, true, true, LatentInfo);
+		UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),Level, true, false, LatentInfo);
 	}
 	else
 	{
 		LatentInfo.ExecutionFunction = FName("LevelUnloaded");
 		LatentInfo.Linkage = 0;
-		UGameplayStatics::UnloadStreamLevelBySoftObjectPtr(GetWorld(), Level, LatentInfo, true);
+		UGameplayStatics::UnloadStreamLevelBySoftObjectPtr(GetWorld(), Level, LatentInfo, false);
 	}
 	
-}
-
-void UGameManager::OnLevelAddedToWorld(ULevel* InLevel, UWorld* InWorld)
-{
-	LevelHasBeenAdded.Broadcast();
 }
 
 bool UGameManager::GetLevelStarted()
@@ -99,4 +89,3 @@ void UGameManager::LevelUnloaded()
 	
 	UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),CurrentLevel, true, false, LatentInfo);
 }
-

@@ -159,7 +159,7 @@
 			<destination>{34f58171-c27a-4533-9717-97dac8965ed1}</destination>
 			<destination>{cc81ba57-6e36-4b22-8992-dce5cc065180}</destination>
 			<destination>{90c74548-a042-4122-a889-d0ecf5b8a882}</destination>
-			<destination>{b1eb9a27-f0fe-4c22-9926-a76e86ef2175}</destination>
+			<destination>{be7b0857-b734-4d9d-8dcb-98317fac33cb}</destination>
 			<destination>{b46ac255-bae3-4a94-a9a3-52f506d8d3ff}</destination>
 			<destination>{8a9080f9-275e-482a-a384-06603eaffed9}</destination>
 		</relationship>
@@ -220,13 +220,17 @@
 			<destination>{af1ca5ac-f819-449a-9b3d-c35fe9f850f5}</destination>
 		</relationship>
 	</object>
-	<object class="ProxyEffect" id="{b1eb9a27-f0fe-4c22-9926-a76e86ef2175}">
-		<property name="inputFormat">
+	<object class="SpatialiserEffect" id="{be7b0857-b734-4d9d-8dcb-98317fac33cb}">
+		<property name="name" />
+		<property name="extentMode">
 			<value>1</value>
 		</property>
-		<relationship name="preset">
-			<destination>{28699ec2-3fab-43c7-8e11-c2c60456fcda}</destination>
-		</relationship>
+		<property name="soundSize">
+			<value>3.60000014</value>
+		</property>
+		<property name="minimumExtent">
+			<value>38</value>
+		</property>
 	</object>
 	<object class="MixerSend" id="{b46ac255-bae3-4a94-a9a3-52f506d8d3ff}">
 		<property name="inputFormat">

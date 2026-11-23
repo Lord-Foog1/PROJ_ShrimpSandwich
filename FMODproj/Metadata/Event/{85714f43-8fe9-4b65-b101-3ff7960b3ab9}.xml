@@ -121,7 +121,7 @@
 		</property>
 		<property name="name" />
 		<property name="pitch">
-			<value>2.20000005</value>
+			<value>-2.79999995</value>
 		</property>
 		<relationship name="fadeInCurve">
 			<destination>{ff9171ae-b1ee-47e9-9892-9163c4848cb2}</destination>
@@ -295,7 +295,7 @@
 			<value>1</value>
 		</property>
 		<property name="curveShape">
-			<value>-0.390251547</value>
+			<value>0.0221811906</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{1af5c976-f86a-4d00-8c52-32d744f192e1}">

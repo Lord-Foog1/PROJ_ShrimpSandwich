@@ -65,7 +65,7 @@
 			<value>true</value>
 		</property>
 		<property name="dopplerScale">
-			<value>500</value>
+			<value>245</value>
 		</property>
 		<property name="maximumDistance">
 			<value>25</value>
@@ -125,7 +125,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{267c7308-bfac-48d6-89e3-a59ad0fb61cf}">
 		<property name="volume">
-			<value>-7.5</value>
+			<value>-2.5</value>
 		</property>
 		<property name="name">
 			<value>OneShot</value>

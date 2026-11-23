@@ -122,6 +122,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{9b24cb73-29e5-42a1-b9a6-19ab075498ab}">
+		<property name="volume">
+			<value>-2</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{4108aa3e-16c3-4799-99ce-f62effaf24bd}</destination>
 		</relationship>
@@ -251,8 +254,11 @@
 		<property name="timelockedOffset">
 			<value>0.28605514301336299</value>
 		</property>
+		<property name="volume">
+			<value>-3</value>
+		</property>
 		<property name="pitch">
-			<value>-10.5</value>
+			<value>-0.699999988</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{f247b950-c835-432b-80d2-18559da5d9cb}</destination>
@@ -597,13 +603,13 @@
 	<object class="MixerBusFader" id="{b68b9d11-bc28-4929-ad11-4ffa21d8ef17}" />
 	<object class="AutomationPoint" id="{a1d18934-0abb-47f9-b13d-090e47074f6b}">
 		<property name="position">
-			<value>0.59355385041210429</value>
+			<value>0.56000000000000005</value>
 		</property>
 		<property name="value">
 			<value>1</value>
 		</property>
 		<property name="curveShape">
-			<value>0.0892839283</value>
+			<value>-0.100606136</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{e60430d8-bf23-4723-b048-9393c4bd86fe}">

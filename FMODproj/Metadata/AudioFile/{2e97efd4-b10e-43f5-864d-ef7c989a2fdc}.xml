@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{2e97efd4-b10e-43f5-864d-ef7c989a2fdc}">
+		<property name="assetPath">
+			<value>Magic, Shimmer, Chime, Crystal, Glint, Twinkle, Fantasy 01 SND86221 1.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.06965625</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3815178179</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{7c0e6de9-2bff-4b61-ae89-d9b9a6158da2}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{7c0e6de9-2bff-4b61-ae89-d9b9a6158da2}">
+		<relationship name="assetMarkers">
+			<destination>{8a08a8bb-18d0-44b7-aa8b-510581f402b8}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{8a08a8bb-18d0-44b7-aa8b-510581f402b8}">
+		<property name="name" />
+	</object>
+</objects>

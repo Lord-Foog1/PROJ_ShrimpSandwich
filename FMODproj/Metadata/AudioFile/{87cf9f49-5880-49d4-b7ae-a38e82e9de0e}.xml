@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{87cf9f49-5880-49d4-b7ae-a38e82e9de0e}">
+		<property name="assetPath">
+			<value>Footsteps, Human, Wood, Creaky, Sneaker, Fast SND1114 S17.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>0.67012499999999997</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>1045484179</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{c5b9577b-acee-4cbe-8826-11e6c0f5b167}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{c5b9577b-acee-4cbe-8826-11e6c0f5b167}">
+		<relationship name="assetMarkers">
+			<destination>{c6ff7e98-56c3-4730-8879-455698cb08e0}</destination>
+			<destination>{219f025b-2fa5-4941-9dff-d69ac65a0bbb}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{c6ff7e98-56c3-4730-8879-455698cb08e0}">
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{219f025b-2fa5-4941-9dff-d69ac65a0bbb}">
+		<property name="positionSec">
+			<value>0.67012499999999997</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

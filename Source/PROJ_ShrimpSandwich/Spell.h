@@ -64,6 +64,12 @@ public:
 
 	void ApplyUpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue);
 	
+	UFUNCTION(BlueprintCallable, Category = "Upgrades")
+	void ApplyStatChange();
+	
+	UFUNCTION()
+	void SaveBaseStats() const;
+	
 private:
 	
 	UPROPERTY(Replicated, EditAnywhere, Category = "Spell", meta = (ClampMin = 0, UIMin = 0, AllowPrivateAccess), BlueprintReadWrite)

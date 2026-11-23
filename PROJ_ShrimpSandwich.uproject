@@ -36,6 +36,10 @@
 		{
 			"Name": "NiagaraUIRenderer",
 			"Enabled": true
+		},
+		{
+			"Name": "MeshTerrainMode",
+			"Enabled": true
 		}
 	]
 }

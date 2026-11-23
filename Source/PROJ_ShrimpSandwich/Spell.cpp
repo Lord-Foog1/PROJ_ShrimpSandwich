@@ -42,12 +42,18 @@ void ASpell::BeginPlay()
 		Collider->IgnoreActorWhenMoving(GetInstigator(), true);
 	}
 	
+	if (SpellUpgrade)
+	{
+		SaveBaseStats();
+		ApplyStatChange();
+	}
+
 	if (ParticleSystem)
 	{
 		ParticleSystem->OnSystemFinished.AddDynamic(this, &ASpell::DestroyAfterParticles);
 		ParticleSystem->SetNiagaraVariableFloat("User_Lifetime", Lifetime);
 	}
-	
+
 	if (Movement)
 	{
 		Movement->InitialSpeed = SpellSpeed;
@@ -184,8 +190,46 @@ void ASpell::DestroyAfterParticles(class UNiagaraComponent* PSystem)
 
 void ASpell::ApplyUpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue)
 {
+	if (!HasAuthority()) return;
+	
+	SpellUpgrade->ApplyUpgrades(StatToUpgrade, DeltaValue);
+	ApplyStatChange();
+}
+
+void ASpell::ApplyStatChange()
+{
+	if (!SpellUpgrade) return;
+	
+	if (!HasAuthority()) return;
+
+	DamageAmount = FMath::Max(0.f, SpellUpgrade->BaseSpellDamage * SpellUpgrade->SpellDamageModifier);
+	Lifetime = FMath::Max(0.1f, SpellUpgrade->BaseSpellLifetime * SpellUpgrade->SpellLifetimeModifier);
+
+	const float NewSpeed = FMath::Max(0.f, SpellUpgrade->BaseSpellSpeed * SpellUpgrade->SpellSpeedModifier);
+	SpellSpeed = NewSpeed;
+	SpellMaxSpeed = NewSpeed;
+
+	if (Movement)
+	{
+		Movement->InitialSpeed = SpellSpeed;
+		Movement->MaxSpeed = SpellMaxSpeed;
+		Movement->UpdateComponentVelocity();
+	}
+
+	if (ParticleSystem)
+	{
+		ParticleSystem->SetNiagaraVariableFloat("User_Lifetime", Lifetime);
+	}
+}
+
+void ASpell::SaveBaseStats() const
+{
+	SpellUpgrade->BaseSpellDamage = DamageAmount;
+	SpellUpgrade->BaseSpellSpeed = SpellMaxSpeed;
+	SpellUpgrade->BaseSpellLifetime = Lifetime;
 }
 
 void ASpell::Server_UpgradeStat_Implementation(EUpgradeModifierType StatToUpgrade, float DeltaValue)
 {
+	ApplyUpgradeStat(StatToUpgrade, DeltaValue);
 }

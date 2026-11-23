@@ -72,6 +72,8 @@ void AMyCharacter::BeginPlay()
 	
 	MeleeBoxComponent = GetComponentByClass<UBoxComponent>();
 	UpgradeComponent = GetComponentByClass<UPlayerUpgradeComponent>();
+	
+	SaveBaseStats();
 }
 
 void AMyCharacter::Tick(float DeltaSeconds)
@@ -128,9 +130,8 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 #pragma region STATS
 
 /**
- * 
  * Listan över vilka variabler som skickas över nätverket.
- * Health replikeras till alla datorer, machealth behövs inte (den ändras aldrig)(Nu gör den det)
+ * Health replikeras till alla datorer
  */
 void AMyCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
@@ -173,6 +174,65 @@ void AMyCharacter::ApplyUpgradeStat(EUpgradeModifierType StatToUpgrade, float De
 	}
 	
 	UpgradeComponent->ApplyUpgrades(StatToUpgrade, DeltaValue);
+	ApplyStatChange();
+}
+
+void AMyCharacter::ApplyStatChange()
+{
+	if (!HasAuthority() || !UpgradeComponent) return;
+
+	const float PreviousMaxHealth = MaxHealth;
+	MaxHealth = UpgradeComponent->BaseMaxHealth * UpgradeComponent->MaxHealthModifier;
+
+	if (MaxHealth > PreviousMaxHealth)
+	{
+		Health += (MaxHealth - PreviousMaxHealth);
+	}
+	else
+	{
+		Health = FMath::Min(Health, MaxHealth);
+	}
+	OnRep_Health();
+
+	const int32 PreviousMaxMana = MaxMana;
+	MaxMana = FMath::Max(1, FMath::RoundToInt(UpgradeComponent->BaseMaxMana * UpgradeComponent->MaxManaModifier));
+	ManaRegenAmount = FMath::Max(0, FMath::RoundToInt(UpgradeComponent->BaseManaRegen * UpgradeComponent->ManaRegenModifier));
+	ManaRegenInterval = FMath::Max(0.05f, UpgradeComponent->BaseManaRegenInterval * UpgradeComponent->ManaRegenIntervalModifier);
+
+	if (MaxMana > PreviousMaxMana)
+	{
+		CurMana += (MaxMana - PreviousMaxMana);
+	}
+	else
+	{
+		CurMana = FMath::Min(CurMana, MaxMana);
+	}
+
+	SpellCost = FMath::Max(0, FMath::RoundToInt(UpgradeComponent->BaseSpellCost * UpgradeComponent->SpellCostModifier));
+	SpellCooldown = FMath::Max(0.05f, UpgradeComponent->BaseSpellCooldown * UpgradeComponent->SpellCooldownModifier);
+
+	ChargedSpellCost = FMath::Max(0, FMath::RoundToInt(UpgradeComponent->BaseChargedCost * UpgradeComponent->ChargedCostModifier));
+	ChargeUpTime = FMath::Max(0.05f, UpgradeComponent->BaseChargeTime * UpgradeComponent->ChargeTimeModifier);
+
+	MeleeDamage = FMath::Max(0.f, UpgradeComponent->BaseMeleeDamage * UpgradeComponent->MeleeDamageModifier);
+	MeleeCooldown = FMath::Max(0.05f, UpgradeComponent->BaseMeleeCooldown * UpgradeComponent->MeleeCooldownModifier);
+}
+
+void AMyCharacter::SaveBaseStats() const
+{
+	UpgradeComponent->BaseMaxHealth = MaxHealth;
+	UpgradeComponent->BaseMaxMana = MaxMana;
+	
+	UpgradeComponent->BaseSpellCost = SpellCost;
+	
+	UpgradeComponent->BaseManaRegen = ManaRegenAmount;
+	UpgradeComponent->BaseManaRegenInterval = ManaRegenInterval;
+	
+	UpgradeComponent->BaseChargedCost = ChargedSpellCost;
+	UpgradeComponent->BaseChargeTime = ChargeUpTime;
+	
+	UpgradeComponent->BaseMeleeCooldown = MeleeCooldown;
+	UpgradeComponent->BaseMeleeDamage = MeleeDamage;
 }
 
 #pragma endregion

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{aa79cdd7-a486-4b07-918a-0262c3c79771}">
+		<property name="assetPath">
+			<value>Magic, Elemental, Fire Magic Spell, Continuous SND117378.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.3438958333333333</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3919249430</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{ead02c3e-3856-4eb8-916f-364a9af0486f}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{ead02c3e-3856-4eb8-916f-364a9af0486f}">
+		<relationship name="assetMarkers">
+			<destination>{85bc4d77-51b9-499a-bdf5-061f42415917}</destination>
+			<destination>{5e3c8c99-6619-41c0-938e-25f8217bfe59}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{85bc4d77-51b9-499a-bdf5-061f42415917}">
+		<property name="name" />
+	</object>
+	<object class="AssetMarker" id="{5e3c8c99-6619-41c0-938e-25f8217bfe59}">
+		<property name="positionSec">
+			<value>1.5420208333333334</value>
+		</property>
+		<property name="name" />
+	</object>
+</objects>

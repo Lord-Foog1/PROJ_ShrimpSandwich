@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{dd093b90-c13b-433a-b886-6c776e8d8381}">
+		<property name="assetPath">
+			<value>Weapons, Armor, Shields, Digital, Swoosh SND115638.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.9708541666666666</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3815178179</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{ced9d878-252e-4484-b1fb-6c293bd9ade5}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{ced9d878-252e-4484-b1fb-6c293bd9ade5}">
+		<relationship name="assetMarkers">
+			<destination>{a76f5b65-dff2-4f79-82a7-b471a67f8960}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{a76f5b65-dff2-4f79-82a7-b471a67f8960}">
+		<property name="name" />
+	</object>
+</objects>

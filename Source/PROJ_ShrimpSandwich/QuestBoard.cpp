@@ -19,6 +19,13 @@ void AQuestBoard::BeginPlay()
 	
 	UpdateQuests();
 	PickQuests();
+	if (UGameInstance* Game = GetWorld()->GetGameInstance())
+	{
+		if (UQuestManager* QM = Game->GetSubsystem<UQuestManager>())
+		{
+			QM->SetShownQuests(ShownQuests);
+		}
+	}
 }
 
 // Called every frame

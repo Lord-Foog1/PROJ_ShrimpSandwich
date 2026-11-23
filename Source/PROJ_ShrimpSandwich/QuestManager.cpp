@@ -62,6 +62,11 @@ bool UQuestManager::GetActiveQuest(const FQuest& Quest, FQuest& OutQuest) const
 	return GetActiveQuestByName(Quest.QuestName, OutQuest);
 }
 
+void UQuestManager::AcceptQuests(const FQuest& Quests)
+{
+	ActiveQuests.AddUnique(Quests);
+}
+
 void UQuestManager::CompleteQuest(const FQuest& Quest)
 {
 	FQuest FoundQuest;

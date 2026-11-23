@@ -43,4 +43,17 @@ public:
 	float SpellLifetimeModifier = 1.0f;
 	
 #pragma endregion MODIFIERS	
+	
+#pragma region BASE_STATS
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Stats|Mana")
+	float BaseSpellDamage;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Stats|Mana")
+	float BaseSpellSpeed;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Stats|Mana")
+	float BaseSpellLifetime;
+	
+#pragma endregion BASE_STATS	
 };

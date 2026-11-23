@@ -65,6 +65,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Player")
 	float GetHealthPercent() const {return MaxHealth > 0.f ? Health / MaxHealth : 0.f;}
 	
+	UFUNCTION(BlueprintPure, Category = "Player")
+	float GetManaPercent() const { return MaxMana > 0.f ? CurMana / MaxMana : 0.f; }
+	
 #pragma endregion	
 	
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
@@ -79,6 +82,12 @@ public:
 	void Server_UpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue);
 
 	void ApplyUpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue);
+	
+	UFUNCTION(BlueprintCallable, Category = "Upgrades")
+	void ApplyStatChange();
+	
+	UFUNCTION()
+	void SaveBaseStats() const;
 	
 protected:
 	virtual void BeginPlay() override;

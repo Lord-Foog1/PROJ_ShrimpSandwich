@@ -92,6 +92,69 @@ public:
 #pragma endregion HEALTH	
 	
 #pragma endregion MODIFIERS	
+	
+#pragma region BASE_STATS
+	
+#pragma region SPELL
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Stats|Mana")
+	int BaseSpellCost;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Stats|Mana")
+	float BaseSpellCooldown;
+	
+#pragma endregion SPELL
+	
+#pragma region MANA
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Stats|Mana")
+	int BaseMaxMana;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Stats|Mana")
+	int BaseManaRegen;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Stats|Mana")
+	float BaseManaRegenInterval;
+	
+#pragma endregion MANA
+	
+#pragma region CHARGED_SPELL
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Stats|Mana")
+	float BaseChargedDamage;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Stats|Mana")
+	int BaseChargedCost;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Stats|Mana")
+	float BaseChargedCooldown;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Stats|Mana")
+	float BaseChargeTime;
+	
+#pragma endregion CHARGED_SPELL
+	
+#pragma region MELEE
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Stats|Mana")
+	float BaseMeleeDamage;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Stats|Mana")
+	float BaseMeleeCooldown;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Stats|Mana")
+	float BaseMeleeRange;
+	
+#pragma endregion MELEE
+	
+#pragma region HEALTH
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base Stats|Mana")
+	float BaseMaxHealth;
+	
+#pragma endregion HEALTH	
+	
+#pragma endregion BASE_STATS	
 };
 
 /**

@@ -36,9 +36,24 @@ class PROJ_SHRIMPSANDWICH_API UUpgradeManager : public UGameInstanceSubsystem
 	
 public:
 	
+	/**
+	 * 
+	 * Upgrades the stats of the selected player
+	 * 
+	 * @param StatToUpgrade Which stat to upgrade
+	 * @param DeltaValue How much the multiplier should increase by (ex. 0.1 == 10%)
+	 * @param TargetCharacter The character that is to be upgrade
+	*/
 	UFUNCTION(BlueprintCallable, Category = "Upgrades")
 	void UpgradePlayerStat(EUpgradeModifierType StatToUpgrade, float DeltaValue, AMyCharacter* TargetCharacter = nullptr);
 	
+	/**
+	 * Upgrades the stats of the selected spell
+	 * 
+	 * @param StatToUpgrade Which stat to be upgraded
+	 * @param DeltaValue How much the multiplier should increase by (ex. 0.1 == 10%)
+	 * @param TargetSpell The spell that is to be upgrade
+	 */
 	UFUNCTION(BlueprintCallable, Category = "Upgrades")
 	void UpgradeSpellStat(EUpgradeModifierType StatToUpgrade, float DeltaValue, ASpell* TargetSpell = nullptr);
 };

@@ -10,7 +10,7 @@ class UWidget;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLevelLoadedInternal);
 
 UCLASS()
-class PROJ_SHRIMPSANDWICH_API AGameManager : public AGameMode
+class PROJ_SHRIMPSANDWICH_API UGameManager : public UGameInstance
 {
 	GENERATED_BODY()
 	

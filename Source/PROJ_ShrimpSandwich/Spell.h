@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "MagicType.h"
 #include "GameFramework/Actor.h"
 #include "Kismet/GameplayStatics.h"
+#include "MyCharacter.h"
 #include "Spell.generated.h"
 
 UCLASS()
@@ -15,6 +17,8 @@ class PROJ_SHRIMPSANDWICH_API ASpell : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ASpell();
+	
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
 	// Called when the game starts or when spawned
@@ -47,27 +51,44 @@ public:
 	void DoHit(AActor* HitActor, FHitResult HitInfo);
 	
 	UFUNCTION()
+	void DealDamage(AActor* DamagedActor);
+	
+	UFUNCTION()
+	void CreateExplosionParticles(FHitResult Hit);
+	
+	UFUNCTION()
 	void DestroyAfterParticles(class UNiagaraComponent* PSystem);
+	
+	UFUNCTION(BlueprintCallable, Server, Reliable, Category = "Upgrades")
+	void Server_UpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue);
+
+	void ApplyUpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue);
 	
 private:
 	
-	UPROPERTY(EditAnywhere, Category = "Spell", meta = (ClampMin = 0, UIMin = 0, AllowPrivateAccess), BlueprintReadWrite)
-	float DamageAmount;
+	UPROPERTY(Replicated, EditAnywhere, Category = "Spell", meta = (ClampMin = 0, UIMin = 0, AllowPrivateAccess), BlueprintReadWrite)
+	float DamageAmount = 25;
 	
-	UPROPERTY(EditAnywhere, Category = "Spell", meta = (ClampMin = 0, UIMin = 0, AllowPrivateAccess), BlueprintReadWrite)
-	float SpellSpeed;
+	UPROPERTY(Replicated, EditAnywhere, Category = "Spell", meta = (ClampMin = 0, UIMin = 0, AllowPrivateAccess), BlueprintReadWrite)
+	float SpellSpeed = 1400;
+	
+	UPROPERTY(Replicated, EditAnywhere, Category = "Spell", meta = (ClampMin = 0, UIMin = 0, AllowPrivateAccess), BlueprintReadWrite)
+	float SpellMaxSpeed = 1400;
 	
 	UPROPERTY(EditAnywhere, Category = "Spell", meta = (AllowPrivateAccess), BlueprintReadWrite)
-	FString SpellType;
+	EMagicType SpellType;
 	
-	UPROPERTY(EditAnywhere, Category = "Spell", meta = (AllowPrivateAccess, ClampMin = 0.1f, UIMin = 0.1f), BlueprintReadWrite)
-	float Lifetime = 2.0f;
+	UPROPERTY(Replicated, EditAnywhere, Category = "Spell", meta = (AllowPrivateAccess, ClampMin = 0.1f, UIMin = 0.1f), BlueprintReadWrite)
+	float Lifetime = 1.5f;
 	
 	UPROPERTY(EditAnywhere, Category = "Spell", meta = (AllowPrivateAccess), BlueprintReadWrite)
 	class UNiagaraSystem* SpellImpactSystem;
 	
+	UPROPERTY(EditAnywhere, Category = "Spell", meta = (AllowPrivateAccess), BlueprintReadWrite)
+	bool bOnlyDamagePlayers = false;
+	
 	UPROPERTY()
-	class UNiagaraComponent* ParticleSystem;
+	UNiagaraComponent* ParticleSystem;
 	
 	UPROPERTY()
 	class USphereComponent* Collider;
@@ -75,6 +96,9 @@ private:
 	UPROPERTY()
 	class UProjectileMovementComponent* Movement;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Spell", meta = (AllowPrivateAccess), BlueprintReadWrite)
-	TSubclassOf<AActor> AoeEffect;
+	UPROPERTY()
+	class UAoeEffectComponent* AOEComponent;
+	
+	UPROPERTY()
+	class USpellUpgradeComponent* SpellUpgrade;
 };

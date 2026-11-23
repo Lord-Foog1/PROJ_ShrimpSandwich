@@ -7,6 +7,7 @@
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/BoxComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
@@ -16,6 +17,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 //#include "Shader/Preshader2.h"
 //#include "WorldPartition/ContentBundle/ContentBundleLog.h"
+#include "PlayerUpgradeComponent.h"
+#include "UpgradeManager.h"
 #include "Net/UnrealNetwork.h"
 
 AMyCharacter::AMyCharacter()
@@ -40,7 +43,7 @@ AMyCharacter::AMyCharacter()
 	FirstPersonCameraComponent->bEnableFirstPersonScale = true;
 	FirstPersonCameraComponent->FirstPersonFieldOfView = 70.0f;
 	FirstPersonCameraComponent->FirstPersonScale = 0.6f;
-
+	
 	// Configure the character comps
 	GetMesh()->SetOwnerNoSee(true);
 	GetMesh()->FirstPersonPrimitiveType = EFirstPersonPrimitiveType::WorldSpaceRepresentation;
@@ -53,7 +56,9 @@ AMyCharacter::AMyCharacter()
 	
 	
 	WalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
+	CurMana = MaxMana;
 }
+
 
 void AMyCharacter::BeginPlay()
 {
@@ -64,6 +69,11 @@ void AMyCharacter::BeginPlay()
 		Health = MaxHealth;
 		OnRep_Health();
 	}
+	
+	MeleeBoxComponent = GetComponentByClass<UBoxComponent>();
+	UpgradeComponent = GetComponentByClass<UPlayerUpgradeComponent>();
+	
+	SaveBaseStats();
 }
 
 void AMyCharacter::Tick(float DeltaSeconds)
@@ -117,17 +127,118 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	}
 }
 
+#pragma region STATS
+
 /**
- * 
  * Listan över vilka variabler som skickas över nätverket.
- * Health replikeras till alla datorer, machealth behövs inte (den ändras aldrig)
+ * Health replikeras till alla datorer
  */
 void AMyCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	
 	DOREPLIFETIME(AMyCharacter, Health);
+	DOREPLIFETIME(AMyCharacter, MaxHealth);
+	
+	DOREPLIFETIME(AMyCharacter, MagicType);
+	
+	DOREPLIFETIME(AMyCharacter, SpellCost);
+	
+	DOREPLIFETIME(AMyCharacter, MaxMana);
+	DOREPLIFETIME(AMyCharacter, CurMana);
+	
+	DOREPLIFETIME(AMyCharacter, ManaRegenAmount);
+	DOREPLIFETIME(AMyCharacter, ManaRegenInterval);
+	
+	DOREPLIFETIME(AMyCharacter, ChargedSpellCost);
+	
+	DOREPLIFETIME(AMyCharacter, SpellCooldown);
+	DOREPLIFETIME(AMyCharacter, ChargeUpTime);
+	DOREPLIFETIME(AMyCharacter, MeleeCooldown);
+	
+	DOREPLIFETIME(AMyCharacter, MeleeDamage);
 }
+
+#pragma region UPGRADES
+
+void AMyCharacter::Server_UpgradeStat_Implementation(EUpgradeModifierType StatToUpgrade, float DeltaValue)
+{
+	ApplyUpgradeStat(StatToUpgrade, DeltaValue);
+}
+
+void AMyCharacter::ApplyUpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue)
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+	
+	UpgradeComponent->ApplyUpgrades(StatToUpgrade, DeltaValue);
+	ApplyStatChange();
+}
+
+void AMyCharacter::ApplyStatChange()
+{
+	if (!HasAuthority() || !UpgradeComponent) return;
+
+	const float PreviousMaxHealth = MaxHealth;
+	MaxHealth = UpgradeComponent->BaseMaxHealth * UpgradeComponent->MaxHealthModifier;
+
+	if (MaxHealth > PreviousMaxHealth)
+	{
+		Health += (MaxHealth - PreviousMaxHealth);
+	}
+	else
+	{
+		Health = FMath::Min(Health, MaxHealth);
+	}
+	OnRep_Health();
+
+	const int32 PreviousMaxMana = MaxMana;
+	MaxMana = FMath::Max(1, FMath::RoundToInt(UpgradeComponent->BaseMaxMana * UpgradeComponent->MaxManaModifier));
+	ManaRegenAmount = FMath::Max(0, FMath::RoundToInt(UpgradeComponent->BaseManaRegen * UpgradeComponent->ManaRegenModifier));
+	ManaRegenInterval = FMath::Max(0.05f, UpgradeComponent->BaseManaRegenInterval * UpgradeComponent->ManaRegenIntervalModifier);
+
+	if (MaxMana > PreviousMaxMana)
+	{
+		CurMana += (MaxMana - PreviousMaxMana);
+	}
+	else
+	{
+		CurMana = FMath::Min(CurMana, MaxMana);
+	}
+
+	SpellCost = FMath::Max(0, FMath::RoundToInt(UpgradeComponent->BaseSpellCost * UpgradeComponent->SpellCostModifier));
+	SpellCooldown = FMath::Max(0.05f, UpgradeComponent->BaseSpellCooldown * UpgradeComponent->SpellCooldownModifier);
+
+	ChargedSpellCost = FMath::Max(0, FMath::RoundToInt(UpgradeComponent->BaseChargedCost * UpgradeComponent->ChargedCostModifier));
+	ChargeUpTime = FMath::Max(0.05f, UpgradeComponent->BaseChargeTime * UpgradeComponent->ChargeTimeModifier);
+
+	MeleeDamage = FMath::Max(0.f, UpgradeComponent->BaseMeleeDamage * UpgradeComponent->MeleeDamageModifier);
+	MeleeCooldown = FMath::Max(0.05f, UpgradeComponent->BaseMeleeCooldown * UpgradeComponent->MeleeCooldownModifier);
+}
+
+void AMyCharacter::SaveBaseStats() const
+{
+	UpgradeComponent->BaseMaxHealth = MaxHealth;
+	UpgradeComponent->BaseMaxMana = MaxMana;
+	
+	UpgradeComponent->BaseSpellCost = SpellCost;
+	
+	UpgradeComponent->BaseManaRegen = ManaRegenAmount;
+	UpgradeComponent->BaseManaRegenInterval = ManaRegenInterval;
+	
+	UpgradeComponent->BaseChargedCost = ChargedSpellCost;
+	UpgradeComponent->BaseChargeTime = ChargeUpTime;
+	
+	UpgradeComponent->BaseMeleeCooldown = MeleeCooldown;
+	UpgradeComponent->BaseMeleeDamage = MeleeDamage;
+}
+
+#pragma endregion
+#pragma endregion
+
+#pragma region HEALTH
 
 /**
  * 
@@ -164,6 +275,10 @@ void AMyCharacter::OnRep_Health()
 	OnHealthChanged.Broadcast(Health, MaxHealth);
 }
 
+#pragma endregion
+
+#pragma region MOVEMENT
+
 void AMyCharacter::MoveInput(const FInputActionValue& Value)
 {
 	// get the Vector2D move axis
@@ -171,25 +286,6 @@ void AMyCharacter::MoveInput(const FInputActionValue& Value)
 
 	// pass the axis values to the move input
 	DoMove(MovementVector.X, MovementVector.Y);
-}
-
-void AMyCharacter::LookInput(const FInputActionValue& Value)
-{
-	// get the Vector2D look axis
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
-
-	// pass the axis values to the aim input
-	DoAim(LookAxisVector.X, LookAxisVector.Y);
-}
-
-void AMyCharacter::DoAim(float Yaw, float Pitch)
-{
-	if (GetController())
-	{
-		// pass the rotation inputs
-		AddControllerYawInput(Yaw);
-		AddControllerPitchInput(Pitch);
-	}
 }
 
 void AMyCharacter::DoMove(float Right, float Forward)
@@ -258,6 +354,33 @@ void AMyCharacter::StopSprint()
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
 
+#pragma endregion
+
+#pragma region CAMERA_MOVEMENT
+
+void AMyCharacter::LookInput(const FInputActionValue& Value)
+{
+	// get the Vector2D look axis
+	FVector2D LookAxisVector = Value.Get<FVector2D>();
+
+	// pass the axis values to the aim input
+	DoAim(LookAxisVector.X, LookAxisVector.Y);
+}
+
+void AMyCharacter::DoAim(float Yaw, float Pitch)
+{
+	if (GetController())
+	{
+		// pass the rotation inputs
+		AddControllerYawInput(Yaw);
+		AddControllerPitchInput(Pitch);
+	}
+}
+
+#pragma endregion
+
+#pragma region INTERACTION
+
 void AMyCharacter::DoInteract()
 {
 	FHitResult Hit = DoInteractionSweep();
@@ -294,3 +417,5 @@ void AMyCharacter::SendServerInteract_Implementation(FHitResult Hit)
 {
 	IInteractable::Execute_Server_OnInteract(Hit.GetActor(), this);
 }
+
+#pragma endregion

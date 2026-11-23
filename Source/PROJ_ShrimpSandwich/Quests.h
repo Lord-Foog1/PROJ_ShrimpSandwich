@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "QuestType.h"
 #include "Quests.generated.h"
 
 USTRUCT(BlueprintType)
@@ -10,6 +11,9 @@ struct FQuest
 {
 	GENERATED_BODY()
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FQuestType QuestType;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString QuestName;
 

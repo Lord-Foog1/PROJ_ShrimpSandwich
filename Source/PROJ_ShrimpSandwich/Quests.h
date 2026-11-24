@@ -21,13 +21,13 @@ struct FQuest
 	FString QuestDescription;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "1", ClampMax = "5", UIMin = "1", UIMax = "5"))
-	int Difficulty;
+	int Difficulty = 1;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "1", UIMin = "1"))
-	int SoulGemReward;
+	int SoulGemReward = 1;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "1", UIMin = "1"))
-	int LightCrystalReward;
+	int LightCrystalReward = 1;
 	
 	bool operator==(const FQuest& Other) const
 	{

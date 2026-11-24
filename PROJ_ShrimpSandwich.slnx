@@ -10,14 +10,14 @@
     <Platform Name="Win64-arm64ec" />
   </Configurations>
   <Folder Name="/Engine/">
-    <Project Path="Intermediate/ProjectFiles/UE5.vcxproj" Id="1a6b2fd9-8dd7-3708-858e-22499b058b28">
+    <Project Path="Intermediate/ProjectFiles/UE5.vcxproj" Id="8ae5b42c-ac6e-3c31-bd98-17cdc3ca5922">
       <BuildType Project="BuiltWithUnrealBuildTool" />
       <Platform Project="Win64" />
       <Build Project="false" />
     </Project>
   </Folder>
   <Folder Name="/Games/">
-    <Project Path="Intermediate/ProjectFiles/PROJ_ShrimpSandwich.vcxproj" Id="282ef1d6-aa26-3961-b3aa-dd2f70d6827d">
+    <Project Path="Intermediate/ProjectFiles/PROJ_ShrimpSandwich.vcxproj" Id="9ee021a3-ccaa-3786-9f5b-5943c9c2c075">
       <BuildType Solution="DebugGame Editor|Win64" Project="DebugGame_Editor" />
       <BuildType Solution="DebugGame Editor|Win64-arm64" Project="Win64_arm64_DebugGame_Editor" />
       <BuildType Solution="DebugGame Editor|Win64-arm64ec" Project="Win64_arm64ec_DebugGame_Editor" />

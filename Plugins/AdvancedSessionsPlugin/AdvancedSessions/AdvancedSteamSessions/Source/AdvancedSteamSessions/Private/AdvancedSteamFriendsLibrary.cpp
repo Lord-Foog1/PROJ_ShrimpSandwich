@@ -161,7 +161,7 @@ FString UAdvancedSteamFriendsLibrary::GetSteamPersonaName(const FBPUniqueNetId U
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid() || UniqueNetId.UniqueNetId->GetType() != STEAM_SUBSYSTEM)
 	{
-		UE_LOGF(AdvancedSteamFriendsLog, Warning, "GetSteamPersonaName Had a bad UniqueNetId!");
+		//UE_LOGF(AdvancedSteamFriendsLog, Warning, "GetSteamPersonaName Had a bad UniqueNetId!");
 		return FString(TEXT(""));
 	}
 

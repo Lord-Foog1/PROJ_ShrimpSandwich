@@ -34,6 +34,16 @@ public:
 	
 	UFUNCTION(Reliable, Server, BlueprintCallable, Category = "MagicTurret|Aiming")
 	void Server_Aim();
+	
+	UPROPERTY(ReplicatedUsing = OnRep_TargetTowerRotation)
+	FRotator TargetTowerRotation = FRotator(90.f, 0.f, 0.f);
+
+	UFUNCTION()
+	void OnRep_TargetTowerRotation();
+
+	void ApplyTowerRotation(const FRotator& NewRotation);
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
 	// Called when the game starts or when spawned
@@ -45,7 +55,7 @@ public:
 	
 	/** How big radius the turret should check in */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MagicTurret|Aiming")
-	float DetectionRadius = 128.0f;
+	float DetectionRadius = 512.0f;
 
 	/** How long between shots */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MagicTurret|Shooting")
@@ -69,7 +79,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "MagicTurret|Aiming")
 	TObjectPtr<AMyCharacter> ClosestPlayer = nullptr;
 	
-	UPROPERTY(BlueprintReadWrite, Category = "MagicTurret|Aiming")
+	UPROPERTY(Replicated, BlueprintReadWrite, Category = "MagicTurret|Aiming")
 	TArray<TObjectPtr<AMyCharacter>> AllPlayersInRange;
 	
 #pragma region COMPONENTS

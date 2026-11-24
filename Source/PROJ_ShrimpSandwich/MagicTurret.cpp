@@ -6,13 +6,14 @@
 #include "Spell.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 AMagicTurret::AMagicTurret()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	
+	bReplicates = true;
 }
 
 // Called when the game starts or when spawned
@@ -31,6 +32,8 @@ void AMagicTurret::BeginPlay()
 		DetectionSphere->SetSphereRadius(DetectionRadius);
 	}
 	
+	ApplyTowerRotation(TargetTowerRotation);
+	
 	GetWorldTimerManager().SetTimer(DistanceCheckTimer, this, &AMagicTurret::GetClosestPlayer, DistanceCheckInterval, true);
 }
 
@@ -39,7 +42,14 @@ void AMagicTurret::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	Aim();
+	if (HasAuthority())
+	{
+		Aim();
+	}
+	else
+	{
+		ApplyTowerRotation(TargetTowerRotation);
+	}
 }
 
 void AMagicTurret::ShootMagic(FTransform SpawnTransform)
@@ -84,19 +94,43 @@ void AMagicTurret::Aim()
 {
 	if (!HasAuthority())
 	{
-		Server_Aim();
 		return;
 	}
-	
-	if (!IsValid(ClosestPlayer) || !IsValid(TurretTowerMesh)) return;
-	
+
+	if (!IsValid(ClosestPlayer) || !IsValid(TurretTowerMesh))
+	{
+		return;
+	}
+
 	const FVector StartLocation = TurretTowerMesh->GetComponentLocation();
 	const FVector TargetLocation = ClosestPlayer->GetActorLocation();
-	
+
 	FRotator LookAtRotation = (TargetLocation - StartLocation).Rotation();
 	LookAtRotation.Pitch += 90.0f;
+
+	TargetTowerRotation = LookAtRotation;
+	ApplyTowerRotation(TargetTowerRotation);
+}
+
+void AMagicTurret::OnRep_TargetTowerRotation()
+{
+	ApplyTowerRotation(TargetTowerRotation);
+}
+
+void AMagicTurret::ApplyTowerRotation(const FRotator& NewRotation)
+{
+	if (IsValid(TurretTowerMesh))
+	{
+		TurretTowerMesh->SetWorldRotation(NewRotation);
+	}
+}
+
+void AMagicTurret::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	
-	TurretTowerMesh->SetWorldRotation(LookAtRotation);
+	DOREPLIFETIME(AMagicTurret, TargetTowerRotation);
+	DOREPLIFETIME(AMagicTurret, AllPlayersInRange);
 }
 
 void AMagicTurret::Server_Aim_Implementation()

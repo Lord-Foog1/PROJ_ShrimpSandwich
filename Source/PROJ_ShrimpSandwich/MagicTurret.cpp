@@ -53,7 +53,10 @@ void AMagicTurret::Tick(float DeltaTime)
 
 void AMagicTurret::ShootMagic()
 {
-	if (!IsValid(ClosestPlayer) || !SpellType || !GetWorld()) return;
+	if (!IsValid(ClosestPlayer) || !IsValid(SpellSpawnPoint) || !SpellType || !GetWorld())
+	{
+		return;
+	}
 	
 	const FTransform SpawnTransform = SpellSpawnPoint->GetComponentTransform();
 

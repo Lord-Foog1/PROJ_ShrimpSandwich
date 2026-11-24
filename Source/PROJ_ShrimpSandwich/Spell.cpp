@@ -24,25 +24,20 @@ ASpell::ASpell()
 void ASpell::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	// if (!HasAuthority())
-	// {
-	// 	return;
-	// }
-	
+
 	ParticleSystem = GetComponentByClass<UNiagaraComponent>();
 	Collider = GetComponentByClass<USphereComponent>();
 	Movement = GetComponentByClass<UProjectileMovementComponent>();
 	AOEComponent = GetComponentByClass<UAoeEffectComponent>();
 	SpellUpgrade = GetComponentByClass<USpellUpgradeComponent>();
-	
+
 	if (Collider)
 	{
 		Collider->SetNotifyRigidBodyCollision(true);
 		Collider->OnComponentHit.AddDynamic(this, &ASpell::OnHit);
 		Collider->IgnoreActorWhenMoving(GetInstigator(), true);
 	}
-	
+
 	if (SpellUpgrade)
 	{
 		SaveBaseStats();
@@ -60,16 +55,21 @@ void ASpell::BeginPlay()
 		Movement->InitialSpeed = SpellSpeed;
 		Movement->MaxSpeed = SpellMaxSpeed;
 	}
-	
+
 	// Handles the object after its lifetime is over
 	FTimerHandle ParticleTimerHandle;
+	TWeakObjectPtr<ASpell> WeakThis = this;
 	TWeakObjectPtr<UNiagaraComponent> WeakParticleSystem = ParticleSystem;
 	TWeakObjectPtr<USphereComponent> WeakCollider = Collider;
 	TWeakObjectPtr<UProjectileMovementComponent> WeakMovement = Movement;
 	GetWorldTimerManager().SetTimer(
 		ParticleTimerHandle,
-		[WeakParticleSystem, WeakCollider, WeakMovement]()
+		[WeakThis, WeakParticleSystem, WeakCollider, WeakMovement]()
 		{
+			if (WeakThis.IsValid())
+			{
+				WeakThis->OnExpired();
+			}
 			if (WeakParticleSystem.IsValid())
 			{
 				WeakParticleSystem->Deactivate();

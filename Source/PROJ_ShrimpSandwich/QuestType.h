@@ -22,7 +22,7 @@ struct FQuestType
 	GENERATED_BODY();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	EQuestGoal GoalType;
+	EQuestGoal GoalType = EQuestGoal::None;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (UIMin = 0, ClampMin = 0))
 	float LimitAndAmountNumber = 0;

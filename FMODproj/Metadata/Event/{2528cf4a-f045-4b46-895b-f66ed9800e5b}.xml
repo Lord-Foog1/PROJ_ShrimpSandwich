@@ -164,7 +164,7 @@
 			<value>1.2308253578585495</value>
 		</property>
 		<property name="pitch">
-			<value>3</value>
+			<value>12</value>
 		</property>
 		<relationship name="sounds">
 			<destination>{c9c1be1b-7b21-4745-b438-5e45bb0a2fca}</destination>

@@ -41,15 +41,27 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Quests")
 	bool GetActiveQuest(const FQuest& Quest, FQuest& OutQuest) const;
+	
+	UFUNCTION(BlueprintCallable, Category = "Quests")
+	TArray<FQuest> GetShownQuests() const { return ShownQuests; }
+	
+	UFUNCTION(BlueprintCallable, Category = "Quests")
+	void SetShownQuests(const TArray<FQuest>& NewQuests) { ShownQuests = NewQuests; }
 
 #pragma endregion GETTERS_SETTERS
 
 	UFUNCTION(BlueprintCallable, Category = "Quests")
 	void CompleteQuest(const FQuest& Quest);
+	
+	UFUNCTION(BlueprintCallable, Category = "Quests")
+	void AcceptQuests(const FQuest& Quests);
 
 private:
 	UPROPERTY()
 	TArray<FQuest> ActiveQuests;
+	
+	UPROPERTY()
+	TArray<FQuest> ShownQuests;
 
 	UPROPERTY()
 	TArray<FQuest> Quests;

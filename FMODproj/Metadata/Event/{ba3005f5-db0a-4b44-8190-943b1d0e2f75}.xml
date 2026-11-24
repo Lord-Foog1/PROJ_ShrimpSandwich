@@ -118,7 +118,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{7d9bb249-e242-4a25-98d8-2e12cabdb7a0}">
 		<property name="volume">
-			<value>-10.5</value>
+			<value>-11</value>
 		</property>
 		<property name="name">
 			<value>Audio 1</value>
@@ -152,7 +152,7 @@
 			<destination>{ed534b7b-4705-410f-85fb-348911a6156f}</destination>
 			<destination>{4199433e-976e-4c61-8941-df25bd1d4db2}</destination>
 			<destination>{a02f6356-e04c-430e-8579-34809235f6d5}</destination>
-			<destination>{13c551ea-5f56-4552-b860-339b92234cb6}</destination>
+			<destination>{e0d74cb1-d7c5-4755-a854-d62514251b8a}</destination>
 			<destination>{cff78136-1082-4c35-804b-a30c43815fcd}</destination>
 			<destination>{702bb029-01b0-487d-a0cb-f213004ac611}</destination>
 		</relationship>
@@ -188,13 +188,17 @@
 			<destination>{af1ca5ac-f819-449a-9b3d-c35fe9f850f5}</destination>
 		</relationship>
 	</object>
-	<object class="ProxyEffect" id="{13c551ea-5f56-4552-b860-339b92234cb6}">
-		<property name="inputFormat">
+	<object class="SpatialiserEffect" id="{e0d74cb1-d7c5-4755-a854-d62514251b8a}">
+		<property name="name" />
+		<property name="extentMode">
 			<value>1</value>
 		</property>
-		<relationship name="preset">
-			<destination>{28699ec2-3fab-43c7-8e11-c2c60456fcda}</destination>
-		</relationship>
+		<property name="soundSize">
+			<value>3.60000014</value>
+		</property>
+		<property name="minimumExtent">
+			<value>46</value>
+		</property>
 	</object>
 	<object class="MixerSend" id="{cff78136-1082-4c35-804b-a30c43815fcd}">
 		<property name="inputFormat">

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{ae00dd05-5ca3-4c34-bd9d-0c32af783607}">
+		<property name="assetPath">
+			<value>Metal, Movement, Bobcat Micro Digger, Lever, Rattle SND64569.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.0245833333333334</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3815178179</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{406c0dde-1f26-4938-ae24-cba258985c98}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{406c0dde-1f26-4938-ae24-cba258985c98}">
+		<relationship name="assetMarkers">
+			<destination>{fac469ba-fd7c-4630-b4ce-f20f80b0ef4b}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{fac469ba-fd7c-4630-b4ce-f20f80b0ef4b}">
+		<property name="name" />
+	</object>
+</objects>

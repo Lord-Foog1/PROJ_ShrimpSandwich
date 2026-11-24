@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{cd38ad8a-ce09-496a-b445-eba4db9151ed}">
+		<property name="assetPath">
+			<value>Whistles, Misc, Aztec, Death, Whistle, Blow, Designed 02 SND64509.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>3.7783541666666665</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3815178179</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{848d53f6-231d-4031-b62b-1a6c2e966280}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{848d53f6-231d-4031-b62b-1a6c2e966280}">
+		<relationship name="assetMarkers">
+			<destination>{01386a91-417a-484e-ae7f-7d2bc160d95f}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{01386a91-417a-484e-ae7f-7d2bc160d95f}">
+		<property name="name" />
+	</object>
+</objects>

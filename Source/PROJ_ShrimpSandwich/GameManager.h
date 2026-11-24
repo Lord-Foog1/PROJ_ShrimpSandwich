@@ -3,14 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameMode.h"
+#include "AdvancedFriendsGameInstance.h"
 #include "GameManager.generated.h"
 
 class UWidget;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLevelLoadedInternal);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLevelHasBeenAdded);
 
 UCLASS()
-class PROJ_SHRIMPSANDWICH_API UGameManager : public UGameInstance
+class PROJ_SHRIMPSANDWICH_API UGameManager : public UAdvancedFriendsGameInstance
 {
 	GENERATED_BODY()
 	
@@ -26,8 +27,11 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void PauseGame();
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintAssignable)
 	FOnLevelLoadedInternal OnLevelLoadedInternal;
+	
+	UPROPERTY(BlueprintAssignable)
+	FLevelHasBeenAdded LevelHasBeenAdded;
 	
 	bool GetLevelStarted();
 	
@@ -36,20 +40,20 @@ public:
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	TSoftObjectPtr<UWorld> GetPreviousLevel();
-	
+
 protected:
 	UPROPERTY(BlueprintReadWrite)
 	bool LevelStarted;
 
 private:
 	UFUNCTION()
+	void HandleLevelShown();
+	
+	UFUNCTION()
 	void LevelLoaded();
 	
 	UFUNCTION()
 	void LevelUnloaded();
-
-	UFUNCTION()
-	void BroadcastLoaded();
-
+	
 	bool FirstTime = true;
 };

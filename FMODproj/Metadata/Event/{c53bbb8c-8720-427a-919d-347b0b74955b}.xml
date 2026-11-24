@@ -5,7 +5,7 @@
 			<value>Amb_RoomSwapping</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{32f919ac-4cbc-4650-ab35-70804ed7653f}</destination>
@@ -114,7 +114,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{3f3e33e9-741d-4ea1-9d4a-3be5c99358c0}">
 		<property name="volume">
-			<value>-5.5</value>
+			<value>-6</value>
 		</property>
 		<property name="name">
 			<value>Audio 1</value>
@@ -136,9 +136,8 @@
 		<property name="timelockedOffset">
 			<value>1</value>
 		</property>
-		<property name="name" />
 		<property name="pitch">
-			<value>-1.20000005</value>
+			<value>1.80000007</value>
 		</property>
 		<relationship name="audioFile">
 			<destination>{0c42237b-95b2-44cf-8c5a-32f673370e1a}</destination>
@@ -146,7 +145,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{a8669081-44f9-44bb-8a77-e06de2ef04dc}">
 		<property name="volume">
-			<value>-9</value>
+			<value>-16</value>
 		</property>
 		<property name="name">
 			<value>Audio 2</value>
@@ -193,6 +192,8 @@
 	<object class="MixerBusEffectChain" id="{6bf5ece5-2136-41bd-a88c-e9185a559425}">
 		<relationship name="effects">
 			<destination>{3aae384a-a1c2-4f25-8dff-6059002ff1ce}</destination>
+			<destination>{883ba53c-5cbb-420e-8ac2-f565f0a592ff}</destination>
+			<destination>{68f596fc-760e-4458-b485-e095a3494204}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{04a106b9-d9f8-4dee-b118-52214db29e9b}" />
@@ -211,6 +212,25 @@
 	</object>
 	<object class="MixerBusPanner" id="{21d7948b-5ced-4e3e-a185-080d57a7d56a}" />
 	<object class="MixerBusFader" id="{3aae384a-a1c2-4f25-8dff-6059002ff1ce}" />
+	<object class="MultibandEqEffect" id="{883ba53c-5cbb-420e-8ac2-f565f0a592ff}">
+		<property name="frequencyA">
+			<value>2030.62256</value>
+		</property>
+		<property name="qualityA">
+			<value>0.393034458</value>
+		</property>
+	</object>
+	<object class="SpatialiserEffect" id="{68f596fc-760e-4458-b485-e095a3494204}">
+		<property name="extentMode">
+			<value>1</value>
+		</property>
+		<property name="soundSize">
+			<value>12.5</value>
+		</property>
+		<property name="minimumExtent">
+			<value>104</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{280f1292-c2d8-470c-8877-a1654c7fae02}" />
 	<object class="MixerBusFader" id="{60cc4765-d49e-4aff-b147-b938dd0e4957}" />
 	<object class="FlangerEffect" id="{ae91771c-6ce3-47d1-ab52-6c8e35d2a3ea}">

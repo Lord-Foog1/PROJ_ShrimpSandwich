@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{86637fd1-a219-4142-8625-096eabc15185}">
+		<property name="assetPath">
+			<value>Magic, Misc, Potion Action, Pick Up, Use, Grab, Equip 05 SND110947.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.35570833333333335</value>
+		</property>
+		<property name="embeddedMetadataTagsHash">
+			<value>3815178179</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{97201a88-78a2-493c-99ee-536254cff3fd}</destination>
+		</relationship>
+		<relationship name="metadataTags">
+			<destination>{f2d08a44-afb7-4960-a5f9-93cee4cacb05}</destination>
+		</relationship>
+	</object>
+	<object class="MetadataTags" id="{f2d08a44-afb7-4960-a5f9-93cee4cacb05}">
+		<relationship name="assetMarkers">
+			<destination>{3babe106-68d1-4b75-82be-26d81808bae2}</destination>
+		</relationship>
+	</object>
+	<object class="AssetMarker" id="{3babe106-68d1-4b75-82be-26d81808bae2}">
+		<property name="name" />
+	</object>
+</objects>

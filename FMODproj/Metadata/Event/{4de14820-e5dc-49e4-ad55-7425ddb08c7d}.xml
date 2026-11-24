@@ -110,7 +110,7 @@
 			<value>-2.5</value>
 		</property>
 		<property name="pitch">
-			<value>-0.699999988</value>
+			<value>-4.5</value>
 		</property>
 		<relationship name="audioFile">
 			<destination>{ae00dd05-5ca3-4c34-bd9d-0c32af783607}</destination>

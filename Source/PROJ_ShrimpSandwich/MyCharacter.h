@@ -191,6 +191,12 @@ protected:
 	UFUNCTION(Reliable, Server)
 	void Server_SelectMagicType(EMagicType ChosenMagicType);
 	
+	UFUNCTION()
+	void SetSpell(EMagicType SpellType);
+	
+	UFUNCTION(Reliable, Server)
+	void Server_SetSpell(EMagicType SpellType);
+	
 #pragma endregion
 	
 private:
@@ -221,6 +227,21 @@ private:
 	/** Type of magic the player has */
 	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EMagicType MagicType;
+	
+	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class ASpell> SelectedSpell;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Player|Magic")
+	TSubclassOf<class ASpell> FireSpell = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Player|Magic")
+	TSubclassOf<class ASpell> WaterSpell = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Player|Magic")
+	TSubclassOf<class ASpell> NatureSpell = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Player|Magic")
+	TSubclassOf<class ASpell> WindSpell = nullptr;
 	
 #pragma region MANA
 	

@@ -65,7 +65,7 @@
 			<value>true</value>
 		</property>
 		<property name="dopplerScale">
-			<value>500</value>
+			<value>290</value>
 		</property>
 		<property name="maximumDistance">
 			<value>25</value>
@@ -171,7 +171,7 @@
 			<value>0.577777863</value>
 		</property>
 		<property name="releaseTime">
-			<value>192.307709</value>
+			<value>282.051331</value>
 		</property>
 		<property name="finalValue">
 			<value>-80</value>

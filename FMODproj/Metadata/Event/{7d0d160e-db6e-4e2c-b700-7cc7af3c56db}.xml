@@ -118,6 +118,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{59f5f1ca-19de-4811-a9ef-853127827216}">
+		<property name="volume">
+			<value>-2.5</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{145f6c88-8ae6-4dd4-a28f-72746e6d1fab}</destination>
 		</relationship>
@@ -152,7 +155,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{267c7308-bfac-48d6-89e3-a59ad0fb61cf}">
 		<property name="volume">
-			<value>-4</value>
+			<value>-10.5</value>
 		</property>
 		<property name="name">
 			<value>OneShot</value>
@@ -183,7 +186,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{6f340820-d104-4132-bbb2-af76024014ae}">
 		<property name="volume">
-			<value>-20.5</value>
+			<value>-28.5</value>
 		</property>
 		<property name="name">
 			<value>Audio 1</value>
@@ -221,9 +224,6 @@
 		</property>
 		<property name="attackTime">
 			<value>0</value>
-		</property>
-		<property name="peakValue">
-			<value>1.73333359</value>
 		</property>
 		<property name="releaseTime">
 			<value>192.307816</value>

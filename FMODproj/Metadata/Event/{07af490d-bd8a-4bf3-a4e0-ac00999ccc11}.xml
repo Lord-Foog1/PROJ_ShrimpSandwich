@@ -99,6 +99,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{c53d93dd-833a-438a-bd6a-f0227083d703}">
+		<property name="volume">
+			<value>-2.5</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{32bf8380-3455-418d-afb1-4d0258fa7e31}</destination>
 		</relationship>
@@ -133,6 +136,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{a5531fd6-479e-45af-a6f3-6e37619d7501}">
+		<property name="volume">
+			<value>-8.5</value>
+		</property>
 		<property name="name">
 			<value>OneShot</value>
 		</property>

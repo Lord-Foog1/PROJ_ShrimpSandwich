@@ -133,10 +133,13 @@ void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 	{
 		DealDamage(HitActor);
 		
-		//ElementEffekt (eld, vatten, natur, vind) om målet kan ta emot effekter
-		if (UStatusEffectComponent* Status = HitActor->FindComponentByClass<UStatusEffectComponent>())
+		if (!(HitActor->IsA<AMyCharacter>() && GetOwner()->IsA<AMyCharacter>()))
 		{
-			Status->ApplyElementEffect(SpellType, GetInstigatorController(), this);
+			//ElementEffekt (eld, vatten, natur, vind) om målet kan ta emot effekter
+			if (UStatusEffectComponent* Status = HitActor->FindComponentByClass<UStatusEffectComponent>())
+			{
+				Status->ApplyElementEffect(SpellType, GetInstigatorController(), this);
+			}
 		}
 	}
 	
@@ -158,6 +161,8 @@ void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 
 void ASpell::DealDamage(AActor* DamagedActor)
 {
+	if (DamagedActor->IsA<AMyCharacter>() && GetOwner()->IsA<AMyCharacter>()) return;
+	
 	UGameplayStatics::ApplyDamage(
 		DamagedActor,
 		DamageAmount,

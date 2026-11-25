@@ -21,9 +21,15 @@ struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
+#pragma region DELEGATES
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractPromptUpdated, FText, InteractText);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerHealthChanged, float, NewHealth, float, InMaxHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerManaChanged, float, NewMana, float, InMaxMana);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDamaged);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDash);
+
+#pragma endregion DELEGATES
 
 UCLASS(abstract, Blueprintable, BlueprintType)
 class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
@@ -72,6 +78,8 @@ public:
 #pragma endregion	
 	
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+#pragma region DELEGATE_FUNCTIONS	
 	
 	UPROPERTY(BlueprintAssignable, Category = "Input")
 	FOnInteractPromptUpdated OnInteractPromptUpdated;
@@ -81,6 +89,14 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, Category = "Player|Magic|Mana")
 	FOnPlayerManaChanged OnManaChanged;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Player")
+	FOnPlayerDamaged OnDamaged;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Player")
+	FOnPlayerDash OnDash;
+	
+#pragma endregion DELEGATE_FUNCTIONS
 	
 	UFUNCTION(BlueprintCallable, Category = "Player|Magic|Mana")
 	void OnRep_Mana();
@@ -98,7 +114,7 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
-	
+
 #pragma region INPUT_ACTIONS
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* JumpAction;
@@ -157,8 +173,14 @@ protected:
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoSprint();
 	
+	UFUNCTION(Server, Reliable)
+	void Server_DoSprint();
+	
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void StopSprint();
+	
+	UFUNCTION(Server, Reliable)
+	void Server_StopSprint();
 	
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoInteract();
@@ -168,6 +190,9 @@ protected:
 #pragma endregion
 	
 	FHitResult DoInteractionSweep();
+	
+	void EndDash();
+	void ResetDashCooldown();
 	
 #pragma region HEALTH
 	
@@ -203,19 +228,37 @@ private:
 
 #pragma region INPUT_VARIABLES
 	
-	UPROPERTY(EditAnywhere, Category="Dash")
-	float DashSpeed = 4000.0f;
+#pragma region DASH_VARIABLES
+
+	/** Cooldown between dashes in seconds */
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category="Player|Dash", meta=(AllowPrivateAccess="true", ClampMin="0.0"))
+	float DashCooldown = 3.0f;
+
+	/** Total distance the dash should cover (same on ground and in air) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Player|Dash", meta=(AllowPrivateAccess="true", ClampMin="50.0"))
+	float DashDistance = 700.0f;
+
+	/** Duration of the dash burst in seconds */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Player|Dash", meta=(AllowPrivateAccess="true", ClampMin="0.05"))
+	float DashDuration = 0.18f;
+
+	bool bIsDashing = false;
+	bool bCanDash = true;
+
+	float SavedGravityScale = 1.0f;
+	float SavedGroundFriction = 8.0f;
+	float SavedBrakingDecelerationWalking = 2048.0f;
+	float SavedBrakingDecelerationFalling = 1500.0f;
+
+	FTimerHandle DashDurationTimerHandle;
+	FTimerHandle DashCooldownTimerHandle;
+
+#pragma endregion
 	
-	UPROPERTY(EditAnywhere, Category="Sprint")
+	UPROPERTY(EditAnywhere, Category="Input|Sprint")
 	float SprintSpeed = 1000.0f;
 	
 	float WalkSpeed;
-	
-	UPROPERTY(EditAnywhere, Category ="Dash", meta = (AllowPrivateAccess = true))
-	float DashCooldown = 3.0f;
-	
-	// dash cooldown helper variable
-	float LastDashTime = 0.0f;
 	
 	UPROPERTY(EditAnywhere, Category="Input")
 	int InteractionRange = 200;

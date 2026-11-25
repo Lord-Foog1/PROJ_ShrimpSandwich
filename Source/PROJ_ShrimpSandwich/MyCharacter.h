@@ -114,7 +114,7 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
-	
+
 #pragma region INPUT_ACTIONS
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* JumpAction;
@@ -191,6 +191,9 @@ protected:
 	
 	FHitResult DoInteractionSweep();
 	
+	void EndDash();
+	void ResetDashCooldown();
+	
 #pragma region HEALTH
 	
 	UPROPERTY(Replicated, EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Stats")
@@ -225,19 +228,37 @@ private:
 
 #pragma region INPUT_VARIABLES
 	
-	UPROPERTY(EditAnywhere, Category="Dash")
-	float DashSpeed = 4000.0f;
+#pragma region DASH_VARIABLES
+
+	/** Cooldown between dashes in seconds */
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category="Player|Dash", meta=(AllowPrivateAccess="true", ClampMin="0.0"))
+	float DashCooldown = 3.0f;
+
+	/** Total distance the dash should cover (same on ground and in air) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Player|Dash", meta=(AllowPrivateAccess="true", ClampMin="50.0"))
+	float DashDistance = 700.0f;
+
+	/** Duration of the dash burst in seconds */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Player|Dash", meta=(AllowPrivateAccess="true", ClampMin="0.05"))
+	float DashDuration = 0.18f;
+
+	bool bIsDashing = false;
+	bool bCanDash = true;
+
+	float SavedGravityScale = 1.0f;
+	float SavedGroundFriction = 8.0f;
+	float SavedBrakingDecelerationWalking = 2048.0f;
+	float SavedBrakingDecelerationFalling = 1500.0f;
+
+	FTimerHandle DashDurationTimerHandle;
+	FTimerHandle DashCooldownTimerHandle;
+
+#pragma endregion
 	
-	UPROPERTY(EditAnywhere, Category="Sprint")
+	UPROPERTY(EditAnywhere, Category="Input|Sprint")
 	float SprintSpeed = 1000.0f;
 	
 	float WalkSpeed;
-	
-	UPROPERTY(EditAnywhere, Category ="Dash", meta = (AllowPrivateAccess = true))
-	float DashCooldown = 3.0f;
-	
-	// dash cooldown helper variable
-	float LastDashTime = 0.0f;
 	
 	UPROPERTY(EditAnywhere, Category="Input")
 	int InteractionRange = 200;

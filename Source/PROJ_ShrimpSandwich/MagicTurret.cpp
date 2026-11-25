@@ -53,7 +53,7 @@ void AMagicTurret::Tick(float DeltaTime)
 
 void AMagicTurret::ShootMagic()
 {
-	if (!IsValid(ClosestPlayer) || !IsValid(SpellSpawnPoint) || !SpellType || !GetWorld())
+	if (!IsValid(ClosestPlayer) || !IsValid(SpellSpawnPoint) || !SpellType || !GetWorld() || !bCanShot)
 	{
 		return;
 	}

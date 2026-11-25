@@ -82,6 +82,9 @@ public:
 	UPROPERTY(Replicated, BlueprintReadWrite, Category = "MagicTurret|Aiming")
 	TArray<TObjectPtr<AMyCharacter>> AllPlayersInRange;
 	
+	UPROPERTY(BlueprintReadWrite, Category = "MagicTurret")
+	bool bCanShot = true;
+	
 #pragma region COMPONENTS
 	
 	UPROPERTY()

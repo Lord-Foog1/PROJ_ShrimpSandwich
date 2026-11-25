@@ -169,6 +169,11 @@ void AMyCharacter::OnRep_Mana()
 	OnManaChanged.Broadcast(CurMana, MaxMana);
 }
 
+void AMyCharacter::OnRep_Element()
+{
+	OnElementPicked.Broadcast();
+}
+
 void AMyCharacter::SelectMagicType(EMagicType ChosenMagicType)
 {
 	if (!HasAuthority())

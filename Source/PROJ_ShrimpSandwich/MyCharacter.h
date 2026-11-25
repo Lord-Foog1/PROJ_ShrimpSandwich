@@ -21,9 +21,15 @@ struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
+#pragma region DELEGATES
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractPromptUpdated, FText, InteractText);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerHealthChanged, float, NewHealth, float, InMaxHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerManaChanged, float, NewMana, float, InMaxMana);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDamaged);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDash);
+
+#pragma endregion DELEGATES
 
 UCLASS(abstract, Blueprintable, BlueprintType)
 class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
@@ -72,6 +78,8 @@ public:
 #pragma endregion	
 	
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+#pragma region DELEGATE_FUNCTIONS	
 	
 	UPROPERTY(BlueprintAssignable, Category = "Input")
 	FOnInteractPromptUpdated OnInteractPromptUpdated;
@@ -81,6 +89,14 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, Category = "Player|Magic|Mana")
 	FOnPlayerManaChanged OnManaChanged;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Player")
+	FOnPlayerDamaged OnDamaged;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Player")
+	FOnPlayerDash OnDash;
+	
+#pragma endregion DELEGATE_FUNCTIONS
 	
 	UFUNCTION(BlueprintCallable, Category = "Player|Magic|Mana")
 	void OnRep_Mana();
@@ -157,8 +173,14 @@ protected:
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoSprint();
 	
+	UFUNCTION(Server, Reliable)
+	void Server_DoSprint();
+	
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void StopSprint();
+	
+	UFUNCTION(Server, Reliable)
+	void Server_StopSprint();
 	
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoInteract();

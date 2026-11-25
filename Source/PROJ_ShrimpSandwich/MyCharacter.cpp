@@ -406,12 +406,34 @@ void AMyCharacter::Server_DoDash_Implementation()
 
 void AMyCharacter::DoSprint()
 {
+	if (!HasAuthority())
+	{
+		Server_DoSprint();
+		return;
+	}
+	
 	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+}
+
+void AMyCharacter::Server_DoSprint_Implementation()
+{
+	DoSprint();
 }
 
 void AMyCharacter::StopSprint()
 {
+	if (!HasAuthority())
+	{
+		Server_StopSprint();
+		return;
+	}
+	
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+}
+
+void AMyCharacter::Server_StopSprint_Implementation()
+{
+	StopSprint();
 }
 
 #pragma endregion

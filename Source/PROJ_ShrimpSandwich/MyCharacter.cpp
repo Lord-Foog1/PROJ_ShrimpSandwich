@@ -143,6 +143,7 @@ void AMyCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 	DOREPLIFETIME(AMyCharacter, MaxHealth);
 	
 	DOREPLIFETIME(AMyCharacter, MagicType);
+	DOREPLIFETIME(AMyCharacter, SelectedSpell)
 	
 	DOREPLIFETIME(AMyCharacter, SpellCost);
 	
@@ -159,11 +160,64 @@ void AMyCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 	DOREPLIFETIME(AMyCharacter, MeleeCooldown);
 	
 	DOREPLIFETIME(AMyCharacter, MeleeDamage);
+	
+	DOREPLIFETIME(AMyCharacter, DashCooldown);
 }
 
 void AMyCharacter::OnRep_Mana()
 {
 	OnManaChanged.Broadcast(CurMana, MaxMana);
+}
+
+void AMyCharacter::SelectMagicType(EMagicType ChosenMagicType)
+{
+	if (!HasAuthority())
+	{
+		Server_SelectMagicType(ChosenMagicType);
+		return;
+	}
+	
+	MagicType = ChosenMagicType;
+	SetSpell(MagicType);
+}
+
+
+void AMyCharacter::Server_SelectMagicType_Implementation(EMagicType ChosenMagicType)
+{
+	SelectMagicType(ChosenMagicType);
+}
+
+void AMyCharacter::SetSpell(EMagicType SpellType)
+{
+	if (!HasAuthority())
+	{
+		Server_SetSpell(SpellType);
+		return;
+	}
+	
+	switch (SpellType)
+	{
+	case EMagicType::Fire:
+		SelectedSpell = FireSpell;
+		break;
+	case EMagicType::Wind:
+		SelectedSpell = WindSpell;
+		break;
+	case EMagicType::Nature:
+		SelectedSpell = NatureSpell;
+		break;
+	case EMagicType::Water:
+		SelectedSpell = WaterSpell;
+		break;
+	default:
+		UE_LOG(LogTemp, Error, TEXT("No Spell Type Selected!"));
+		break;
+	}
+}
+
+void AMyCharacter::Server_SetSpell_Implementation(EMagicType SpellType)
+{
+	SetSpell(SpellType);
 }
 
 #pragma region UPGRADES
@@ -244,6 +298,7 @@ void AMyCharacter::SaveBaseStats() const
 }
 
 #pragma endregion
+
 #pragma endregion
 
 #pragma region HEALTH
@@ -298,6 +353,9 @@ void AMyCharacter::MoveInput(const FInputActionValue& Value)
 
 void AMyCharacter::DoMove(float Right, float Forward)
 {
+	
+	if (bIsDashing) return;
+	
 	if (GetController())
 	{
 		// pass the move inputs
@@ -305,6 +363,8 @@ void AMyCharacter::DoMove(float Right, float Forward)
 		AddMovementInput(GetActorForwardVector(), Forward);
 	}
 }
+
+#pragma region JUMP
 
 void AMyCharacter::DoJumpStart()
 {
@@ -318,32 +378,120 @@ void AMyCharacter::DoJumpEnd()
 	StopJumping();
 }
 
+#pragma endregion JUMP
+
+#pragma region DASH
+
 void AMyCharacter::DoDash()
 {
-	float CurrentTime = GetWorld()->GetTimeSeconds();
-	if (CurrentTime - LastDashTime < DashCooldown)
-	{
-		return;
-	}
-    
-	LastDashTime = CurrentTime;
-    
+	if (!bCanDash || bIsDashing) return;
+
+	const float SafeDuration = FMath::Max(0.05f, DashDuration);
+
 	if (!HasAuthority())
 	{
+		bCanDash = false;
+		bIsDashing = true;
+
+		if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
+		{
+			SavedGravityScale = MoveComp->GravityScale;
+			SavedGroundFriction = MoveComp->GroundFriction;
+			SavedBrakingDecelerationWalking = MoveComp->BrakingDecelerationWalking;
+			SavedBrakingDecelerationFalling = MoveComp->BrakingDecelerationFalling;
+
+			MoveComp->GravityScale = 0.0f;
+			MoveComp->GroundFriction = 0.0f;
+			MoveComp->BrakingDecelerationWalking = 0.0f;
+			MoveComp->BrakingDecelerationFalling = 0.0f;
+			MoveComp->StopMovementImmediately();
+
+			FVector DashDir = MoveComp->GetLastInputVector().GetSafeNormal2D();
+			if (DashDir.IsNearlyZero())
+			{
+				DashDir = GetActorForwardVector().GetSafeNormal2D();
+			}
+
+			MoveComp->Velocity = DashDir * (DashDistance / SafeDuration);
+		}
+
+		GetWorldTimerManager().SetTimer(
+			DashDurationTimerHandle,
+			this,
+			&AMyCharacter::EndDash,
+			SafeDuration,
+			false
+		);
+
+		if (DashCooldown > 0.0f)
+		{
+			GetWorldTimerManager().SetTimer(
+				DashCooldownTimerHandle,
+				this,
+				&AMyCharacter::ResetDashCooldown,
+				DashCooldown,
+				false
+			);
+		}
+		else
+		{
+			bCanDash = true;
+		}
+
 		Server_DoDash();
 		return;
 	}
-    
-	float DashForce = DashSpeed;
-	FVector Velocity = GetActorForwardVector() * DashForce;
-	
-	if (GetCharacterMovement()->MovementMode == MOVE_Falling)
+
+	UCharacterMovementComponent* MoveComp = GetCharacterMovement();
+	if (!MoveComp) return;
+
+	bCanDash = false;
+	bIsDashing = true;
+
+	SavedGravityScale = MoveComp->GravityScale;
+	SavedGroundFriction = MoveComp->GroundFriction;
+	SavedBrakingDecelerationWalking = MoveComp->BrakingDecelerationWalking;
+	SavedBrakingDecelerationFalling = MoveComp->BrakingDecelerationFalling;
+
+	MoveComp->GravityScale = 0.0f;
+	MoveComp->GroundFriction = 0.0f;
+	MoveComp->BrakingDecelerationWalking = 0.0f;
+	MoveComp->BrakingDecelerationFalling = 0.0f;
+	MoveComp->StopMovementImmediately();
+
+	FVector DashDir = MoveComp->GetLastInputVector().GetSafeNormal2D();
+	if (DashDir.IsNearlyZero())
 	{
-		Velocity /= 3.75f;
+		DashDir = GetActorForwardVector().GetSafeNormal2D();
 	}
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Falling);
-    
-	LaunchCharacter(Velocity, true, false);
+
+	const float DashSpeed = DashDistance / SafeDuration;
+	MoveComp->Velocity = DashDir * DashSpeed;
+
+	OnDash.Broadcast();
+
+	GetWorldTimerManager().SetTimer(
+		DashDurationTimerHandle,
+		this,
+		&AMyCharacter::EndDash,
+		SafeDuration,
+		false
+	);
+
+	if (DashCooldown > 0.0f)
+	{
+		GetWorldTimerManager().SetTimer(
+			DashCooldownTimerHandle,
+			this,
+			&AMyCharacter::ResetDashCooldown,
+			DashCooldown,
+			false
+		);
+	}
+	else
+	{
+		bCanDash = true;
+	}
 }
 
 void AMyCharacter::Server_DoDash_Implementation()
@@ -352,15 +500,68 @@ void AMyCharacter::Server_DoDash_Implementation()
 	DoDash();
 }
 
+void AMyCharacter::EndDash()
+{
+	const bool bWasFalling = GetCharacterMovement() ? GetCharacterMovement()->IsFalling() : false;
+	bIsDashing = false;
+
+	if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
+	{
+		MoveComp->GravityScale = SavedGravityScale;
+		MoveComp->GroundFriction = SavedGroundFriction;
+		MoveComp->BrakingDecelerationWalking = SavedBrakingDecelerationWalking;
+		MoveComp->BrakingDecelerationFalling = SavedBrakingDecelerationFalling;
+
+		const float VelocityKeepFactor = bWasFalling ? 0.1f : 0.35f;
+		FVector CurrentVel = MoveComp->Velocity;
+		CurrentVel.X *= VelocityKeepFactor;
+		CurrentVel.Y *= VelocityKeepFactor;
+		MoveComp->Velocity = CurrentVel;
+	}
+}
+
+void AMyCharacter::ResetDashCooldown()
+{
+	bCanDash = true;
+}
+
+#pragma endregion DASH
+
+#pragma region SPRINT
+
 void AMyCharacter::DoSprint()
 {
+	if (!HasAuthority())
+	{
+		Server_DoSprint();
+		return;
+	}
+	
 	GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+}
+
+void AMyCharacter::Server_DoSprint_Implementation()
+{
+	DoSprint();
 }
 
 void AMyCharacter::StopSprint()
 {
+	if (!HasAuthority())
+	{
+		Server_StopSprint();
+		return;
+	}
+	
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
+
+void AMyCharacter::Server_StopSprint_Implementation()
+{
+	StopSprint();
+}
+
+#pragma endregion SPRINT
 
 #pragma endregion
 

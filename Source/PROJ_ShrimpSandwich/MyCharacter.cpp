@@ -56,7 +56,6 @@ AMyCharacter::AMyCharacter()
 	
 	
 	WalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
-	CurMana = MaxMana;
 }
 
 
@@ -68,6 +67,9 @@ void AMyCharacter::BeginPlay()
 	{
 		Health = MaxHealth;
 		OnRep_Health();
+		
+		CurMana = MaxMana;
+		OnRep_Mana();
 	}
 	
 	MeleeBoxComponent = GetComponentByClass<UBoxComponent>();
@@ -159,6 +161,11 @@ void AMyCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 	DOREPLIFETIME(AMyCharacter, MeleeDamage);
 }
 
+void AMyCharacter::OnRep_Mana()
+{
+	OnManaChanged.Broadcast(CurMana, MaxMana);
+}
+
 #pragma region UPGRADES
 
 void AMyCharacter::Server_UpgradeStat_Implementation(EUpgradeModifierType StatToUpgrade, float DeltaValue)
@@ -207,6 +214,7 @@ void AMyCharacter::ApplyStatChange()
 	{
 		CurMana = FMath::Min(CurMana, MaxMana);
 	}
+	OnRep_Mana();
 
 	SpellCost = FMath::Max(0, FMath::RoundToInt(UpgradeComponent->BaseSpellCost * UpgradeComponent->SpellCostModifier));
 	SpellCooldown = FMath::Max(0.05f, UpgradeComponent->BaseSpellCooldown * UpgradeComponent->SpellCooldownModifier);

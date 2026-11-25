@@ -22,7 +22,8 @@ struct FInputActionValue;
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractPromptUpdated, FText, InteractText);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerHealthChanged, float, NewHealth, float, InMaxHealth); 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerHealthChanged, float, NewHealth, float, InMaxHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerManaChanged, float, NewMana, float, InMaxMana);
 
 UCLASS(abstract, Blueprintable, BlueprintType)
 class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
@@ -77,6 +78,12 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, Category = "Player")
 	FOnPlayerHealthChanged OnHealthChanged;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Player|Magic|Mana")
+	FOnPlayerManaChanged OnManaChanged;
+	
+	UFUNCTION(BlueprintCallable, Category = "Player|Magic|Mana")
+	void OnRep_Mana();
 
 	UFUNCTION(BlueprintCallable, Server, Reliable, Category = "Upgrades")
 	void Server_UpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue);
@@ -213,19 +220,19 @@ private:
 	
 	/** Cost of a spell */
 	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int SpellCost = 20;
+	float SpellCost = 20;
 	
 	/** Max amount of mana a player has (Can be upgraded) */
 	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int MaxMana = 100;
+	float MaxMana = 100;
 	
 	/** The current amount of mana */
-	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int CurMana;
+	UPROPERTY(ReplicatedUsing = OnRep_Mana, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float CurMana;
 	
 	/** Amount of mana the player gets back after ManaRegenInterval seconds */
 	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int ManaRegenAmount = 5;
+	float ManaRegenAmount = 5;
 	
 	/** How often the player gets mana back */
 	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
@@ -233,7 +240,7 @@ private:
 	
 	/** Cost of a charged shot */
 	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int ChargedSpellCost = 50;
+	float ChargedSpellCost = 50;
 	
 #pragma endregion
 	

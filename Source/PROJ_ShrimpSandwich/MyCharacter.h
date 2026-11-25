@@ -185,6 +185,12 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Player")
 	void OnHealthDepleted();
 	
+	UFUNCTION(BlueprintCallable, Category = "Player|Magic")
+	void SelectMagicType(EMagicType ChosenMagicType);
+	
+	UFUNCTION(Reliable, Server)
+	void Server_SelectMagicType(EMagicType ChosenMagicType);
+	
 #pragma endregion
 	
 private:

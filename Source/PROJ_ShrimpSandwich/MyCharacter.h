@@ -28,6 +28,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerHealthChanged, float, NewH
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerManaChanged, float, NewMana, float, InMaxMana);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDamaged);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDash);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnElementPicked);
 
 #pragma endregion DELEGATES
 
@@ -96,10 +97,16 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Player")
 	FOnPlayerDash OnDash;
 	
+	UPROPERTY(BlueprintAssignable, Category = "Player")
+	FOnElementPicked OnElementPicked;
+	
 #pragma endregion DELEGATE_FUNCTIONS
 	
 	UFUNCTION(BlueprintCallable, Category = "Player|Magic|Mana")
 	void OnRep_Mana();
+	
+	UFUNCTION(BlueprintCallable, Category = "Player|Magic")
+	void OnRep_Element();
 
 	UFUNCTION(BlueprintCallable, Server, Reliable, Category = "Upgrades")
 	void Server_UpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue);
@@ -268,7 +275,7 @@ private:
 #pragma region MAGIC_VARIABLES
 	
 	/** Type of magic the player has */
-	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(ReplicatedUsing = OnRep_Element, EditAnywhere, Category = "Player|Magic", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EMagicType MagicType;
 	
 	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))

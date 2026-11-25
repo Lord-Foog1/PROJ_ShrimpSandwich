@@ -3,6 +3,7 @@
 
 #include "AoeEffectComponent.h"
 
+#include "MyCharacter.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -67,6 +68,7 @@ void UAoeEffectComponent::DoDamage(AActor* DamagedActor)
 	if (DamagedActor == ShotActor) return;
 	if (DamagedActor == GetOwner()->GetOwner()) return;
 	if (!GetOwner()->HasAuthority()) return;
+	if (GetOwner()->GetOwner()->IsA<AMyCharacter>() && DamagedActor->IsA<AMyCharacter>()) return;
 	
 	UGameplayStatics::ApplyDamage(
 		DamagedActor,

@@ -21,7 +21,7 @@ public:
 	 * @param SpawnTransform The position and direction the magic is shot towards
 	 */
 	UFUNCTION(BlueprintCallable, Category = "MagicTurret|Shooting")
-	void ShootMagic(FTransform SpawnTransform);
+	void ShootMagic();
 	
 	/**
 	 * Retrieves the players position
@@ -93,13 +93,17 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "MagicTurret")
 	UStaticMeshComponent* TurretTowerMesh = nullptr;
 	
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "MagicTurret")
 	USceneComponent* SpellSpawnPoint = nullptr;
 	
 #pragma endregion COMPONENTS
 	
 	FTimerHandle DistanceCheckTimer;
 	
+	FTimerHandle ShotDelayTimer;
+	
+	FTimerHandle ShotTimerHandle;
+	
 	UPROPERTY(EditAnywhere)
-	float DistanceCheckInterval = 0.1f;
+	float DistanceCheckInterval = 0.05f;
 };

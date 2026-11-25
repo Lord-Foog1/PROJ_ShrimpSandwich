@@ -4,6 +4,7 @@
 #include "Spell.h"
 
 #include "AoeEffectComponent.h"
+#include "StatusEffectComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Components/SphereComponent.h"
@@ -23,25 +24,20 @@ ASpell::ASpell()
 void ASpell::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	// if (!HasAuthority())
-	// {
-	// 	return;
-	// }
-	
+
 	ParticleSystem = GetComponentByClass<UNiagaraComponent>();
 	Collider = GetComponentByClass<USphereComponent>();
 	Movement = GetComponentByClass<UProjectileMovementComponent>();
 	AOEComponent = GetComponentByClass<UAoeEffectComponent>();
 	SpellUpgrade = GetComponentByClass<USpellUpgradeComponent>();
-	
+
 	if (Collider)
 	{
 		Collider->SetNotifyRigidBodyCollision(true);
 		Collider->OnComponentHit.AddDynamic(this, &ASpell::OnHit);
 		Collider->IgnoreActorWhenMoving(GetInstigator(), true);
 	}
-	
+
 	if (SpellUpgrade)
 	{
 		SaveBaseStats();
@@ -59,16 +55,21 @@ void ASpell::BeginPlay()
 		Movement->InitialSpeed = SpellSpeed;
 		Movement->MaxSpeed = SpellMaxSpeed;
 	}
-	
+
 	// Handles the object after its lifetime is over
 	FTimerHandle ParticleTimerHandle;
+	TWeakObjectPtr<ASpell> WeakThis = this;
 	TWeakObjectPtr<UNiagaraComponent> WeakParticleSystem = ParticleSystem;
 	TWeakObjectPtr<USphereComponent> WeakCollider = Collider;
 	TWeakObjectPtr<UProjectileMovementComponent> WeakMovement = Movement;
 	GetWorldTimerManager().SetTimer(
 		ParticleTimerHandle,
-		[WeakParticleSystem, WeakCollider, WeakMovement]()
+		[WeakThis, WeakParticleSystem, WeakCollider, WeakMovement]()
 		{
+			if (WeakThis.IsValid())
+			{
+				WeakThis->OnExpired();
+			}
 			if (WeakParticleSystem.IsValid())
 			{
 				WeakParticleSystem->Deactivate();
@@ -128,9 +129,15 @@ void ASpell::DoHit(AActor* HitActor, FHitResult HitInfo)
 	//EnemySPells skadar bara spelare, så slime inte skadar varandra
 	const bool bCanDamage = !bOnlyDamagePlayers || (HitActor && HitActor->IsA<AMyCharacter>());
 	
-	if (IsValid(HitActor) && HasAuthority())
+	if (IsValid(HitActor) && HasAuthority() && bCanDamage)
 	{
 		DealDamage(HitActor);
+		
+		//ElementEffekt (eld, vatten, natur, vind) om målet kan ta emot effekter
+		if (UStatusEffectComponent* Status = HitActor->FindComponentByClass<UStatusEffectComponent>())
+		{
+			Status->ApplyElementEffect(SpellType, GetInstigatorController(), this);
+		}
 	}
 	
 	//Creates AOE damage bara om spellen har en AOE komponent :p 

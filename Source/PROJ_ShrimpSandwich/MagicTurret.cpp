@@ -7,6 +7,7 @@
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "Runtime/MovieSceneTracks/Private/MovieSceneTracksCustomAccessors.h"
 
 // Sets default values
 AMagicTurret::AMagicTurret()
@@ -24,9 +25,6 @@ void AMagicTurret::BeginPlay()
 	DetectionSphere = GetComponentByClass<USphereComponent>();
 	if (!DetectionSphere) UE_LOG(LogTemp, Error, TEXT("SphereComponent Not Found On '%s'"), *GetOwner()->GetName());
 	
-	SpellSpawnPoint = GetComponentByClass<USceneComponent>();
-	if (!SpellSpawnPoint) UE_LOG(LogTemp, Error, TEXT("SpellSpawnPoint Not Found On '%s'"), *GetOwner()->GetName());
-	
 	if (DetectionSphere)
 	{
 		DetectionSphere->SetSphereRadius(DetectionRadius);
@@ -35,6 +33,7 @@ void AMagicTurret::BeginPlay()
 	ApplyTowerRotation(TargetTowerRotation);
 	
 	GetWorldTimerManager().SetTimer(DistanceCheckTimer, this, &AMagicTurret::GetClosestPlayer, DistanceCheckInterval, true);
+	GetWorldTimerManager().SetTimer(ShotDelayTimer, this, &AMagicTurret::ShootMagic, (ShotDelay + ShotChargeTime), true);
 }
 
 // Called every frame
@@ -52,21 +51,46 @@ void AMagicTurret::Tick(float DeltaTime)
 	}
 }
 
-void AMagicTurret::ShootMagic(FTransform SpawnTransform)
+void AMagicTurret::ShootMagic()
 {
-	UWorld* World = GetWorld();
+	if (!IsValid(ClosestPlayer) || !IsValid(SpellSpawnPoint) || !SpellType || !GetWorld())
+	{
+		return;
+	}
 	
-	if (!World || !SpellType) return;
-	
+	const FTransform SpawnTransform = SpellSpawnPoint->GetComponentTransform();
+
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Owner = this;
 	SpawnParams.Instigator = GetInstigator();
-	
-	World->SpawnActor<ASpell>(
-		SpellType,
-		SpawnTransform.GetLocation(),
-		SpawnTransform.Rotator(),
-		SpawnParams
+
+	TWeakObjectPtr<AMagicTurret> WeakThis(this);
+	TSubclassOf<ASpell> SpellClassToSpawn = SpellType;
+
+	GetWorldTimerManager().SetTimer(
+		ShotTimerHandle,
+		[WeakThis, SpellClassToSpawn, SpawnTransform, SpawnParams]()
+		{
+			if (!WeakThis.IsValid() || !SpellClassToSpawn)
+			{
+				return;
+			}
+
+			UWorld* TimerWorld = WeakThis->GetWorld();
+			if (!IsValid(TimerWorld))
+			{
+				return;
+			}
+
+			TimerWorld->SpawnActor<ASpell>(
+				SpellClassToSpawn,
+				SpawnTransform.GetLocation(),
+				SpawnTransform.Rotator(),
+				SpawnParams
+			);
+		},
+		ShotDelay,
+		false
 	);
 }
 

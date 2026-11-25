@@ -27,7 +27,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	
+
 #pragma region GETTER_SETTER
 	
 	UFUNCTION(BlueprintCallable, Category = "Spell")
@@ -49,6 +49,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Spell")
 	void DoHit(AActor* HitActor, FHitResult HitInfo);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Audio")
+	void OnExpired();
 	
 	UFUNCTION()
 	void DealDamage(AActor* DamagedActor);

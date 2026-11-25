@@ -162,13 +162,10 @@
 			<value>-80</value>
 		</property>
 		<property name="attackTime">
-			<value>1403.84741</value>
-		</property>
-		<property name="peakValue">
-			<value>-1.73333359</value>
+			<value>551.282288</value>
 		</property>
 		<property name="releaseTime">
-			<value>1403.84619</value>
+			<value>641.025635</value>
 		</property>
 		<property name="finalValue">
 			<value>-80</value>

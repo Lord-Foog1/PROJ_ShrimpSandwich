@@ -65,7 +65,7 @@
 			<value>true</value>
 		</property>
 		<property name="dopplerScale">
-			<value>500</value>
+			<value>290</value>
 		</property>
 		<property name="maximumDistance">
 			<value>25</value>
@@ -99,6 +99,12 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{e7de4c78-dea0-44a5-ae90-060d24bf9511}">
+		<property name="volume">
+			<value>-2.5</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{b91f0b45-f93c-4a17-93e1-b4c4aae2bc47}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{842ed582-cd82-4315-81be-bf449c77ad10}</destination>
 		</relationship>
@@ -125,7 +131,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{615ced55-9047-403d-95d0-8db5ad898eb1}">
 		<property name="volume">
-			<value>-4</value>
+			<value>-9.5</value>
 		</property>
 		<property name="name">
 			<value>OneShot</value>
@@ -153,6 +159,23 @@
 		<relationship name="markerTrack">
 			<destination>{e26c1f33-98c2-4b45-8168-898bfb6019dd}</destination>
 		</relationship>
+	</object>
+	<object class="ADSRModulator" id="{b91f0b45-f93c-4a17-93e1-b4c4aae2bc47}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="initialValue">
+			<value>-80</value>
+		</property>
+		<property name="attackTime">
+			<value>44.8717918</value>
+		</property>
+		<property name="releaseTime">
+			<value>237.179565</value>
+		</property>
+		<property name="finalValue">
+			<value>-80</value>
+		</property>
 	</object>
 	<object class="MixerBusEffectChain" id="{842ed582-cd82-4315-81be-bf449c77ad10}">
 		<relationship name="effects">

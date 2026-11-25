@@ -21,8 +21,15 @@ struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
+#pragma region DELEGATES
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractPromptUpdated, FText, InteractText);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerHealthChanged, float, NewHealth, float, InMaxHealth); 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerHealthChanged, float, NewHealth, float, InMaxHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerManaChanged, float, NewMana, float, InMaxMana);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDamaged);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDash);
+
+#pragma endregion DELEGATES
 
 UCLASS(abstract, Blueprintable, BlueprintType)
 class PROJ_SHRIMPSANDWICH_API AMyCharacter : public ACharacter
@@ -71,12 +78,28 @@ public:
 #pragma endregion	
 	
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+#pragma region DELEGATE_FUNCTIONS	
 	
 	UPROPERTY(BlueprintAssignable, Category = "Input")
 	FOnInteractPromptUpdated OnInteractPromptUpdated;
 	
 	UPROPERTY(BlueprintAssignable, Category = "Player")
 	FOnPlayerHealthChanged OnHealthChanged;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Player|Magic|Mana")
+	FOnPlayerManaChanged OnManaChanged;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Player")
+	FOnPlayerDamaged OnDamaged;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Player")
+	FOnPlayerDash OnDash;
+	
+#pragma endregion DELEGATE_FUNCTIONS
+	
+	UFUNCTION(BlueprintCallable, Category = "Player|Magic|Mana")
+	void OnRep_Mana();
 
 	UFUNCTION(BlueprintCallable, Server, Reliable, Category = "Upgrades")
 	void Server_UpgradeStat(EUpgradeModifierType StatToUpgrade, float DeltaValue);
@@ -91,7 +114,7 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
-	
+
 #pragma region INPUT_ACTIONS
 	UPROPERTY(EditAnywhere, Category ="Input")
 	UInputAction* JumpAction;
@@ -150,8 +173,14 @@ protected:
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoSprint();
 	
+	UFUNCTION(Server, Reliable)
+	void Server_DoSprint();
+	
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void StopSprint();
+	
+	UFUNCTION(Server, Reliable)
+	void Server_StopSprint();
 	
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void DoInteract();
@@ -161,6 +190,9 @@ protected:
 #pragma endregion
 	
 	FHitResult DoInteractionSweep();
+	
+	void EndDash();
+	void ResetDashCooldown();
 	
 #pragma region HEALTH
 	
@@ -178,25 +210,55 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Player")
 	void OnHealthDepleted();
 	
+	UFUNCTION(BlueprintCallable, Category = "Player|Magic")
+	void SelectMagicType(EMagicType ChosenMagicType);
+	
+	UFUNCTION(Reliable, Server)
+	void Server_SelectMagicType(EMagicType ChosenMagicType);
+	
+	UFUNCTION()
+	void SetSpell(EMagicType SpellType);
+	
+	UFUNCTION(Reliable, Server)
+	void Server_SetSpell(EMagicType SpellType);
+	
 #pragma endregion
 	
 private:
 
 #pragma region INPUT_VARIABLES
 	
-	UPROPERTY(EditAnywhere, Category="Dash")
-	float DashSpeed = 4000.0f;
+#pragma region DASH_VARIABLES
+
+	/** Cooldown between dashes in seconds */
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category="Player|Dash", meta=(AllowPrivateAccess="true", ClampMin="0.0"))
+	float DashCooldown = 3.0f;
+
+	/** Total distance the dash should cover (same on ground and in air) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Player|Dash", meta=(AllowPrivateAccess="true", ClampMin="50.0"))
+	float DashDistance = 700.0f;
+
+	/** Duration of the dash burst in seconds */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Player|Dash", meta=(AllowPrivateAccess="true", ClampMin="0.05"))
+	float DashDuration = 0.18f;
+
+	bool bIsDashing = false;
+	bool bCanDash = true;
+
+	float SavedGravityScale = 1.0f;
+	float SavedGroundFriction = 8.0f;
+	float SavedBrakingDecelerationWalking = 2048.0f;
+	float SavedBrakingDecelerationFalling = 1500.0f;
+
+	FTimerHandle DashDurationTimerHandle;
+	FTimerHandle DashCooldownTimerHandle;
+
+#pragma endregion
 	
-	UPROPERTY(EditAnywhere, Category="Sprint")
+	UPROPERTY(EditAnywhere, Category="Input|Sprint")
 	float SprintSpeed = 1000.0f;
 	
 	float WalkSpeed;
-	
-	UPROPERTY(EditAnywhere, Category ="Dash", meta = (AllowPrivateAccess = true))
-	float DashCooldown = 3.0f;
-	
-	// dash cooldown helper variable
-	float LastDashTime = 0.0f;
 	
 	UPROPERTY(EditAnywhere, Category="Input")
 	int InteractionRange = 200;
@@ -209,23 +271,38 @@ private:
 	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EMagicType MagicType;
 	
+	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class ASpell> SelectedSpell;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Player|Magic")
+	TSubclassOf<class ASpell> FireSpell = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Player|Magic")
+	TSubclassOf<class ASpell> WaterSpell = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Player|Magic")
+	TSubclassOf<class ASpell> NatureSpell = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Player|Magic")
+	TSubclassOf<class ASpell> WindSpell = nullptr;
+	
 #pragma region MANA
 	
 	/** Cost of a spell */
 	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int SpellCost = 20;
+	float SpellCost = 20;
 	
 	/** Max amount of mana a player has (Can be upgraded) */
 	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int MaxMana = 100;
+	float MaxMana = 100;
 	
 	/** The current amount of mana */
-	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int CurMana;
+	UPROPERTY(ReplicatedUsing = OnRep_Mana, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float CurMana;
 	
 	/** Amount of mana the player gets back after ManaRegenInterval seconds */
 	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int ManaRegenAmount = 5;
+	float ManaRegenAmount = 5;
 	
 	/** How often the player gets mana back */
 	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
@@ -233,7 +310,7 @@ private:
 	
 	/** Cost of a charged shot */
 	UPROPERTY(Replicated, EditAnywhere, Category = "Player|Magic|Mana", BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int ChargedSpellCost = 50;
+	float ChargedSpellCost = 50;
 	
 #pragma endregion
 	

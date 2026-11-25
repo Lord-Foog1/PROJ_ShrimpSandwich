@@ -166,6 +166,23 @@ void AMyCharacter::OnRep_Mana()
 	OnManaChanged.Broadcast(CurMana, MaxMana);
 }
 
+void AMyCharacter::SelectMagicType(EMagicType ChosenMagicType)
+{
+	if (!HasAuthority())
+	{
+		Server_SelectMagicType(ChosenMagicType);
+		return;
+	}
+	
+	MagicType = ChosenMagicType;
+}
+
+void AMyCharacter::Server_SelectMagicType_Implementation(EMagicType ChosenMagicType)
+{
+	SelectMagicType(ChosenMagicType);
+}
+
+
 #pragma region UPGRADES
 
 void AMyCharacter::Server_UpgradeStat_Implementation(EUpgradeModifierType StatToUpgrade, float DeltaValue)

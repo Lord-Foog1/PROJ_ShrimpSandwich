@@ -143,6 +143,7 @@ void AMyCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 	DOREPLIFETIME(AMyCharacter, MaxHealth);
 	
 	DOREPLIFETIME(AMyCharacter, MagicType);
+	DOREPLIFETIME(AMyCharacter, SelectedSpell)
 	
 	DOREPLIFETIME(AMyCharacter, SpellCost);
 	
@@ -164,6 +165,57 @@ void AMyCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 void AMyCharacter::OnRep_Mana()
 {
 	OnManaChanged.Broadcast(CurMana, MaxMana);
+}
+
+void AMyCharacter::SelectMagicType(EMagicType ChosenMagicType)
+{
+	if (!HasAuthority())
+	{
+		Server_SelectMagicType(ChosenMagicType);
+		return;
+	}
+	
+	MagicType = ChosenMagicType;
+	SetSpell(MagicType);
+}
+
+
+void AMyCharacter::Server_SelectMagicType_Implementation(EMagicType ChosenMagicType)
+{
+	SelectMagicType(ChosenMagicType);
+}
+
+void AMyCharacter::SetSpell(EMagicType SpellType)
+{
+	if (!HasAuthority())
+	{
+		Server_SetSpell(SpellType);
+		return;
+	}
+	
+	switch (SpellType)
+	{
+	case EMagicType::Fire:
+		SelectedSpell = FireSpell;
+		break;
+	case EMagicType::Wind:
+		SelectedSpell = WindSpell;
+		break;
+	case EMagicType::Nature:
+		SelectedSpell = NatureSpell;
+		break;
+	case EMagicType::Water:
+		SelectedSpell = WaterSpell;
+		break;
+	default:
+		UE_LOG(LogTemp, Error, TEXT("No Spell Type Selected!"));
+		break;
+	}
+}
+
+void AMyCharacter::Server_SetSpell_Implementation(EMagicType SpellType)
+{
+	SetSpell(SpellType);
 }
 
 #pragma region UPGRADES

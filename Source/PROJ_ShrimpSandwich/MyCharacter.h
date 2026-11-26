@@ -207,7 +207,7 @@ protected:
 	float MaxHealth = 100.f;
 	
 	//Ändras bara på server
-	UPROPERTY(ReplicatedUsing = OnRep_Health, BlueprintReadOnly, Category = "Player")
+	UPROPERTY(ReplicatedUsing = OnRep_Health, BlueprintReadWrite, Category = "Player")
 	float Health = 0.f;
 	
 	UFUNCTION()

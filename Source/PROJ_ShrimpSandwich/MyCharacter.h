@@ -203,7 +203,7 @@ protected:
 	
 #pragma region HEALTH
 	
-	UPROPERTY(Replicated, EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Stats")
+	UPROPERTY(Replicated, BlueprintReadWrite, Category = "Player|Stats")
 	float MaxHealth = 100.f;
 	
 	//Ändras bara på server

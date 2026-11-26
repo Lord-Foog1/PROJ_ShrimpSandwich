@@ -120,7 +120,7 @@
 			<value>71.111938931062298</value>
 		</property>
 		<property name="pitch">
-			<value>-4</value>
+			<value>-9</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{ddb9ef15-3a66-4265-9990-f2b7dba990b3}</destination>
@@ -131,7 +131,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{48056feb-2b2e-4397-be89-f52f0b63360f}">
 		<property name="volume">
-			<value>-33</value>
+			<value>-36</value>
 		</property>
 		<property name="name">
 			<value>Audio 1</value>
@@ -151,7 +151,7 @@
 			<value>6</value>
 		</property>
 		<property name="length">
-			<value>64</value>
+			<value>65.111938931062298</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{46fcdd6e-e45c-4251-8521-84476b6b5b0f}</destination>

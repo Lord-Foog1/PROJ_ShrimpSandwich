@@ -124,10 +124,10 @@
 	</object>
 	<object class="LoopRegion" id="{81291c61-c86a-424a-9a08-a0d91413c572}">
 		<property name="position">
-			<value>0</value>
+			<value>2</value>
 		</property>
 		<property name="length">
-			<value>127.88967708333334</value>
+			<value>125.88967708333334</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{65e4a79a-c81e-4fa3-a54a-5931c25eec82}</destination>
@@ -164,9 +164,6 @@
 	<object class="RandomizerModulator" id="{89924c5a-b67b-4efc-8515-52fd87614a08}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>startOffset</value>
-		</property>
-		<property name="amount">
-			<value>100</value>
 		</property>
 	</object>
 	<object class="MixerBusEffectChain" id="{1d65cb73-2260-40af-b4c1-2c325f53d6fe}">
